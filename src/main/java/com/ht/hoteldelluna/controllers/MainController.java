@@ -31,7 +31,6 @@ import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -124,16 +123,11 @@ public class MainController implements Initializable {
 
 	private void initializeLoader() {
 		MFXLoader loader = new MFXLoader();
+		loader.addView(MFXLoaderBean.of("MONGOTESTING", loadURL("fxml/MongoTesting.fxml"))
+				.setBeanToNodeMapper(() -> createToggle("fas-database", "Mongo testing")).setDefaultRoot(true).get());
+
 		loader.addView(MFXLoaderBean.of("BUTTONS", loadURL("fxml/Buttons.fxml"))
-				.setBeanToNodeMapper(() -> createToggle("fas-circle-dot", "Buttons"))
-				.setDefaultRoot(true).get());
-
-		loader.addView(MFXLoaderBean.of("TABLES", loadURL("fxml/TableViews.fxml"))
-				.setBeanToNodeMapper(() -> createToggle("fas-table", "Tables")).get());
-
-		loader.addView(MFXLoaderBean.of("NOTIFICATIONS", loadURL("fxml/Notifications.fxml"))
-				.setBeanToNodeMapper(() -> createToggle("fas-bell", "Notifications"))
-				.setControllerFactory(c -> new NotificationsController(stage)).get());
+				.setBeanToNodeMapper(() -> createToggle("fas-circle-dot", "Buttons")).get());
 
 		loader.setOnLoadedAction(beans -> {
 			List<ToggleButton> nodes = beans.stream()

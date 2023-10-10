@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" 
+          hgap="20.0" styleClass="grid-pane" stylesheets="@../css/MongoTesting.css" vgap="20.0"
+          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.ht.hoteldelluna.controllers.MongoTestingController">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="50.0" prefHeight="32.0"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0"/>
+    </padding>
+    <StackPane minHeight="150.0" minWidth="300.0" styleClass="grid-background" GridPane.columnSpan="2147483647"
+               GridPane.rowSpan="3">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <GridPane.margin>
+            <Insets bottom="-7.0" left="-15.0" right="-15.0"/>
+        </GridPane.margin>
+    </StackPane>
+    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+           styleClass="header-label" text="Add entities" GridPane.columnSpan="2147483647"/>
+    <MFXTextField fx:id='textField' floatingText="Inline Mode" GridPane.rowIndex="1"/>
+    <MFXButton fx:id="submitButton" id="custom" minHeight="48.0" minWidth="150.0" text="Submit" buttonType="RAISED" GridPane.rowIndex="2" />
+    <StackPane minHeight="150.0" minWidth="300.0" styleClass="grid-background" GridPane.columnSpan="2147483647"
+               GridPane.rowIndex="4" GridPane.rowSpan="2147483647">
+        <GridPane.margin>
+            <Insets bottom="-15.0" left="-15.0" right="-15.0"/>
+        </GridPane.margin>
+    </StackPane>
+    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+           styleClass="header-label" text="Data" GridPane.columnSpan="2147483647" GridPane.rowIndex="4"/>
+    <MFXPaginatedTableView fx:id="paginatedTable" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="800.0"
+                           GridPane.columnSpan="2147483647" GridPane.rowIndex="5"/>
+</GridPane>

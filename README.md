@@ -27,8 +27,8 @@ A Hotel management application for our final OOP project
 
 ### Command Line
 
-1. Run `gradle clean build`.
-2. Run `gradle run`.
+1. Run `./gradlew clean build` or `gradle clean build`.
+2. Run `./gradlew run` or `gradle run`.
 
 ## Resources
 

@@ -18,6 +18,9 @@ module com.ht.hoteldelluna {
   // modules required by the app
   requires MaterialFX;
   requires VirtualizedFX;
+  requires org.mongodb.driver.core;
+  requires org.mongodb.driver.sync.client;
+  requires org.mongodb.bson;
 
   requires jdk.localedata;
 

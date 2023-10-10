@@ -18,17 +18,13 @@ package com.ht.hoteldelluna;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import com.ht.hoteldelluna.controllers.MainController;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class App extends Application {
