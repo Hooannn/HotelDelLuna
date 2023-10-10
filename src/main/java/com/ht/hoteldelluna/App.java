@@ -20,29 +20,30 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
+import io.github.palexdev.materialfx.css.themes.Themes;
+import com.ht.hoteldelluna.controllers.MainController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class App extends Application {
-    public static void main(String[] args) {
-
-        Application.launch(args);
-    }
-
     @Override
-    public void start(Stage stage) {
-
-        // set the title and size of the stage and show it
-        stage.setTitle("Hotel Del Luna");
-        stage.setWidth(800);
-        stage.setHeight(700);
-        stage.show();
-
-        // create a JavaFX scene with a stack pane as the root node and add it to the
-        // scene
-        StackPane stackPane = new StackPane();
-        Scene scene = new Scene(stackPane);
-        stage.setScene(scene);
-
-        String yourApiKey = "abc";
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/Main.fxml"));
+        loader.setControllerFactory(c -> new MainController(primaryStage));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Hotel Del Luna");
+        primaryStage.show();
     }
 
     /**

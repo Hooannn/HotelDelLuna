@@ -28,10 +28,15 @@ idea {
 
 repositories {
     mavenCentral()
+
+    flatDir {
+        dirs "./libs"
+    }
 }
 
 dependencies {
    implementation 'io.github.palexdev:materialfx:11.16.1'
+   implementation 'org.mongodb:mongodb-driver-sync:4.10.2'
 }
 
 javafx {

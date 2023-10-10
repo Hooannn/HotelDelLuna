@@ -16,7 +16,18 @@
 
 module com.ht.hoteldelluna {
   // modules required by the app
+  requires MaterialFX;
+  requires VirtualizedFX;
+
+  requires jdk.localedata;
+
+  requires javafx.controls;
+  requires javafx.fxml;
   requires javafx.graphics;
+  requires javafx.media;
+
+  opens com.ht.hoteldelluna;
+  opens com.ht.hoteldelluna.controllers;
 
   exports com.ht.hoteldelluna;
 }
