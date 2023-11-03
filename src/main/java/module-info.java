@@ -15,22 +15,23 @@
  */
 
 module com.ht.hoteldelluna {
-  // modules required by the app
-  requires MaterialFX;
-  requires VirtualizedFX;
-  requires org.mongodb.driver.core;
-  requires org.mongodb.driver.sync.client;
-  requires org.mongodb.bson;
+    // modules required by the app
+    requires MaterialFX;
+    requires VirtualizedFX;
+    requires org.mongodb.driver.core;
+    requires org.mongodb.driver.sync.client;
+    requires org.mongodb.bson;
 
-  requires jdk.localedata;
+    requires jdk.localedata;
 
-  requires javafx.controls;
-  requires javafx.fxml;
-  requires javafx.graphics;
-  requires javafx.media;
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.media;
+    //requires morphia.core;
+  
+    opens com.ht.hoteldelluna;
 
-  opens com.ht.hoteldelluna;
-
-  exports com.ht.hoteldelluna;
-  opens com.ht.hoteldelluna.controllers.test;
+    exports com.ht.hoteldelluna;
+    opens com.ht.hoteldelluna.controllers.test;
 }
