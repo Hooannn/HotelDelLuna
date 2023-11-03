@@ -30,7 +30,7 @@ module com.ht.hoteldelluna {
   requires javafx.media;
 
   opens com.ht.hoteldelluna;
-  opens com.ht.hoteldelluna.controllers;
 
   exports com.ht.hoteldelluna;
+  opens com.ht.hoteldelluna.controllers.test;
 }
