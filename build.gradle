@@ -35,14 +35,15 @@ repositories {
 }
 
 dependencies {
-   implementation 'io.github.palexdev:materialfx:11.16.1'
-   implementation 'org.mongodb:mongodb-driver-sync:4.10.2'
-   implementation 'org.mongodb:bson:4.3.1'
+    implementation 'io.github.palexdev:materialfx:11.16.1'
+    implementation 'org.mongodb:mongodb-driver-sync:4.10.2'
+    implementation 'org.mongodb:bson:4.3.1'
+    implementation 'dev.morphia.morphia:morphia-core:2.4.6'
 }
 
 javafx {
     version = "17.0.8"
-    modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.web', 'javafx.media' ]
+    modules = ['javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.web', 'javafx.media']
 }
 
 application {
