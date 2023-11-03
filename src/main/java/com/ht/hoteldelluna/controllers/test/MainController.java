@@ -16,7 +16,7 @@
  * along with MaterialFX.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ht.hoteldelluna.controllers;
+package com.ht.hoteldelluna.controllers.test;
 
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
