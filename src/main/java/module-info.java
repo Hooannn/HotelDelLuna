@@ -29,9 +29,9 @@ module com.ht.hoteldelluna {
     requires javafx.graphics;
     requires javafx.media;
     //requires morphia.core;
-
+  
     opens com.ht.hoteldelluna;
-    opens com.ht.hoteldelluna.controllers;
 
     exports com.ht.hoteldelluna;
+    opens com.ht.hoteldelluna.controllers.test;
 }
