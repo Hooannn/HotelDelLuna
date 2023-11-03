@@ -1,5 +1,6 @@
-package com.ht.hoteldelluna.models;
+package com.ht.hoteldelluna.backend;
 
+import com.ht.hoteldelluna.models.Text;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -10,15 +11,13 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.bson.Document;
-
-public class DataManager {
-    public static DataManager shared = new DataManager();
+public class Connection {
+    public static Connection shared = new Connection();
     private MongoClient client;
     private MongoDatabase database;
     private String connectionString = "mongodb+srv://hoanthui123:hoandaica123@default.evhwqpv.mongodb.net/?retryWrites=true&w=majority";
@@ -31,7 +30,7 @@ public class DataManager {
             .serverApi(serverApi)
             .build();
 
-    public DataManager() {
+    public Connection() {
         try {
             this.client = MongoClients.create(settings);
             this.database = this.client.getDatabase("Default");

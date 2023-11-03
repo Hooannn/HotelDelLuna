@@ -5,9 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.ht.hoteldelluna.backend.Connection;
 import org.bson.Document;
 
-import com.ht.hoteldelluna.models.DataManager;
 import com.ht.hoteldelluna.models.Text;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -28,7 +28,7 @@ import javafx.scene.control.Label;
 import java.net.URL;
 
 public class MongoTestingController implements Initializable {
-    DataManager dm = DataManager.shared;
+    Connection dm = Connection.shared;
     ObservableList<Text> sampleDocuments;
 
     @FXML
