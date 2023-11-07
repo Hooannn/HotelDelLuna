@@ -87,8 +87,12 @@ public class MainController implements Initializable {
             yOffset = stage.getY() - event.getScreenY();
         });
         windowHeader.setOnMouseDragged(event -> {
+            stage.setOpacity(0.7);
             stage.setX(event.getScreenX() + xOffset);
             stage.setY(event.getScreenY() + yOffset);
+        });
+        windowHeader.setOnMouseReleased(event -> {
+            stage.setOpacity(1.0);
         });
 
         initializeLoader();

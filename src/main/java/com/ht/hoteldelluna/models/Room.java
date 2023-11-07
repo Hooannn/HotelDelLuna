@@ -1,21 +1,46 @@
 package com.ht.hoteldelluna.models;
 
-//import dev.morphia.annotations.Id;
-//import dev.morphia.annotations.Entity;
-//import dev.morphia.annotations.Reference;
+import com.ht.hoteldelluna.enums.RoomStatus;
 
-//@Entity("rooms")
 public class Room {
-//    @Id
-//    private String id;
-//    private String name;
-//    @Reference
-//    private RoomType type;
-//    @Reference
-//    private Floor floor;
-//    private double overnightPrice;
-//    private RoomStatus status;
+    private String id;
+    private String name;
+    private RoomType type; // reference to RoomType
+    private Floor floor; // reference to Floor
+    private double overnightPrice;
+    private RoomStatus status;
 
-    // Constructors, getters, setters, etc.
+    public Room(String id, String name, RoomType type, Floor floor, double overnightPrice, RoomStatus status) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.floor = floor;
+        this.overnightPrice = overnightPrice;
+        this.status = status;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public RoomType getType() {
+        return this.type;
+    }
+
+    public Floor getFloor() {
+        return this.floor;
+    }
+
+    public double getOvernightPrice() {
+        return this.overnightPrice;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
+    }
 }
 

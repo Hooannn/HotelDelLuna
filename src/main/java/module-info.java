@@ -28,10 +28,11 @@ module com.ht.hoteldelluna {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.media;
-    //requires morphia.core;
   
     opens com.ht.hoteldelluna;
 
     exports com.ht.hoteldelluna;
+    opens com.ht.hoteldelluna.controllers.main;
     opens com.ht.hoteldelluna.controllers.test;
+    opens com.ht.hoteldelluna.controllers.auth;
 }

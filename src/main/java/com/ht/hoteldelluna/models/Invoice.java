@@ -1,20 +1,45 @@
 package com.ht.hoteldelluna.models;
 
-//import dev.morphia.annotations.Id;
-//import dev.morphia.annotations.Entity;
-//import dev.morphia.annotations.Reference;
 import java.util.Date;
 
-//@Entity("invoices")
 public class Invoice {
-//    @Id
-//    private String id;
-//    private Date checkInTime;
-//    private Date checkOutTime;
-//    private double total;
-//    private String customerName;
-//    @Reference
-//    private Room room;
+    private String id;
+    private Date checkInTime;
+    private Date checkOutTime;
+    private double total;
+    private String customerName;
+    private Room room; // reference to Room
 
-    // Constructors, getters, setters, etc.
+    public Invoice(String id, Date checkInTime, Date checkOutTime, double total, String customerName, Room room) {
+        this.id = id;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.total = total;
+        this.customerName = customerName;
+        this.room = room;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public Date getCheckInTime() {
+        return this.checkInTime;
+    }
+
+    public Date getCheckOutTime() {
+        return this.checkOutTime;
+    }
+
+    public double getTotal() {
+        return this.total;
+    }
+
+    public String getCustomerName() {
+        return this.customerName;
+    }
+
+    public Room getRoom() {
+        return this.room;
+    }
 }
