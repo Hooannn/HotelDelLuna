@@ -1,13 +1,19 @@
 package com.ht.hoteldelluna.models;
 
-//import dev.morphia.annotations.Entity;
-//import dev.morphia.annotations.Id;
-
-//@Entity("roomTypes")
 public class RoomType {
-//    @Id
-//    private String id;
-//    private String name;
+    private String id;
+    private String name;
 
-    // Constructors, getters, setters, etc.
+    public RoomType(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }

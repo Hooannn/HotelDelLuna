@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="560.0" prefWidth="800.0" styleClass="rootPane"
+            stylesheets="@../css/Authentication.css" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.auth.AuthController">
+    <HBox fx:id="windowHeader" alignment="CENTER_RIGHT" layoutY="6.0" prefHeight="50.0" prefWidth="1281.0"
+          spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets right="10.0"/>
+        </padding>
+        <MFXFontIcon fx:id="alwaysOnTopIcon" description="fas-circle" size="15.0" styleClass="always-on-top-icon"/>
+        <MFXFontIcon fx:id="minimizeIcon" description="fas-circle" size="15.0" styleClass="minimize-icon"/>
+        <MFXFontIcon fx:id="closeIcon" description="fas-circle" size="15.0" styleClass="close-icon"/>
+    </HBox>
+    <StackPane fx:id="contentPane" layoutX="254.28571428571428" layoutY="53.142857142857146" prefHeight="498.0"
+               prefWidth="535.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0"
+               AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="52.0">
+        <children>
+            <MFXButton fx:id="authLoginBtn" onAction="#login" text="Login">
+                <font>
+                    <Font size="18.0"/>
+                </font>
+            </MFXButton>
+        </children>
+    </StackPane>
+</AnchorPane>
