@@ -67,33 +67,19 @@
  * Sidebar
 **************************************************/
 .rootPane .sidebar {
-	-fx-background-color: -mfx-purple;
+	-fx-background-color: white;
 	-fx-background-insets: -1 -5 -1 -1;
 	-fx-background-radius: 0 20 20 0;
-}
-
-.rootPane .sidebar .header {
-	-fx-font-family: 'Visby Round CF Heavy';
-	-fx-font-size: 24;
-	-fx-text-fill: white;
 }
 
 .rootPane .sidebar .header .mfx-font-icon {
 	-mfx-color: white;
 }
 
-.rootPane .sidebar .mfx-scroll-pane {
-	-fx-background-color: transparent;
-
-	-track-color: rgba(255, 255, 255, 0.3);
-	-thumb-color: white;
-	-thumb-hover-color: white;
-}
-
 .rootPane .sidebar .menu-label {
 	-fx-font-family: 'Visby Round CF Bold';
 	-fx-font-size: 14;
-	-fx-text-fill: white;
+	-fx-text-fill: #9B9999;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node {
@@ -105,7 +91,7 @@
 
 	-fx-font-family: 'Visby Round CF Demi Bold';
 	-fx-font-size: 13;
-	-fx-text-fill: white;
+	-fx-text-fill: #737373;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-ripple-generator {
@@ -113,20 +99,20 @@
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-icon-wrapper .mfx-font-icon {
-	-mfx-color: white;
+	-mfx-color: #737373;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected {
 	-fx-background-color: white;
 	-fx-background-radius: 5;
-	-fx-text-fill: #601cbe;
+	-fx-text-fill: #23A6F0;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .selection-rectangle {
 	-fx-stroke: transparent;
-	-fx-fill: #601cbe;
+	-fx-fill: transparent;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .mfx-icon-wrapper .mfx-font-icon {
-	-mfx-color: #601cbe;
+	-mfx-color: #23A6F0;
 }
