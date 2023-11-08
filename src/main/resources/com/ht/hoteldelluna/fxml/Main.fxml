@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -49,14 +50,20 @@
             <Insets top="12.0" />
          </VBox.margin></VBox>
       <MFXFontIcon />
-      <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" onMouseClicked="#signOut" spacing="10.0">
+      <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" spacing="10.0">
          <children>
-            <MFXFontIcon description="fas-right-from-bracket" size="30.0">
+            <MFXFontIcon description="fas-right-from-bracket" onMouseClicked="#signOut" size="30.0">
                <color>
                   <Color red="0.45098039507865906" green="0.45098039507865906" blue="0.45098039507865906" />
-               </color></MFXFontIcon>
-            <Label fx:id="signOutLabel" styleClass="signOutlabel" text="Đăng xuất" />
+               </color>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></MFXFontIcon>
+            <Label fx:id="signOutLabel" onMouseClicked="#signOut" styleClass="signOutlabel" text="Đăng xuất" />
          </children>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </HBox>
       <padding>
          <Insets left="12.0" right="12.0" />

@@ -50,3 +50,7 @@ application {
     mainModule = "com.ht.hoteldelluna"
     mainClass = "com.ht.hoteldelluna.App"
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
