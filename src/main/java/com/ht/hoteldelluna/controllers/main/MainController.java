@@ -54,16 +54,14 @@ public class MainController implements Initializable {
     private AnchorPane rootPane;
 
     @FXML
-    private MFXScrollPane scrollPane;
+    private VBox staffNavBar;
 
     @FXML
-    private VBox navBar;
+    private VBox adminNavBar;
 
     @FXML
     private StackPane contentPane;
 
-    @FXML
-    private StackPane logoContainer;
 
     public MainController(Stage stage) {
         this.stage = stage;
@@ -96,24 +94,28 @@ public class MainController implements Initializable {
         });
 
         initializeLoader();
-
-        ScrollUtils.addSmoothScrolling(scrollPane);
-
-        // The only way to get a fucking smooth image in this shitty framework
-        Image image = new Image(MFXResourcesLoader.load("logo_alt.png"), 64, 64, true, true);
-        ImageView logo = new ImageView(image);
-        Circle clip = new Circle(30);
-        logo.setClip(clip);
-        logoContainer.getChildren().add(logo);
     }
 
     private void initializeLoader() {
         MFXLoader loader = new MFXLoader();
-        loader.addView(MFXLoaderBean.of("MONGOTESTING", loadURL("fxml/MongoTesting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-database", "Mongo testing")).setDefaultRoot(true).get());
+        loader.addView(MFXLoaderBean.of("ROOM_MANAGER", loadURL("fxml/main/RoomManager.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-house", "Sơ đồ phòng", "staff")).setDefaultRoot(true).get());
 
-        loader.addView(MFXLoaderBean.of("BUTTONS", loadURL("fxml/Buttons.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-circle-dot", "Buttons")).get());
+        loader.addView(MFXLoaderBean.of("CASHIER_MANAGER", loadURL("fxml/main/CashierManager.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân","staff")).get());
+
+        loader.addView(MFXLoaderBean.of("ROOM_SETTING", loadURL("fxml/main/RoomSetting.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-bed", "Thiết lập phòng","admin")).get());
+
+        loader.addView(MFXLoaderBean.of("ROOM_TYPE_SETTING", loadURL("fxml/main/RoomTypeSetting.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-list", "Thiết lập loại phòng","admin")).get());
+
+        loader.addView(MFXLoaderBean.of("STAFF_SETTING", loadURL("fxml/main/StaffSetting.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Thiết lập nhân viên","admin")).get());
+
+        loader.addView(MFXLoaderBean.of("FLOOR_SETTING", loadURL("fxml/main/FloorSetting.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-wrench", "Thiết lập tầng","admin")).get());
+
 
         loader.setOnLoadedAction(beans -> {
             List<ToggleButton> nodes = beans.stream()
@@ -127,21 +129,32 @@ public class MainController implements Initializable {
                         return toggle;
                     })
                     .toList();
-            navBar.getChildren().setAll(nodes);
+
+            List<ToggleButton> staffNodes = nodes.stream().filter(n -> {
+                return n.getUserData().equals("staff");
+            }).toList();
+
+            List<ToggleButton> adminNodes = nodes.stream().filter(n -> {
+                return n.getUserData().equals("admin");
+            }).toList();
+
+            staffNavBar.getChildren().setAll(staffNodes);
+            adminNavBar.getChildren().setAll(adminNodes);
         });
         loader.start();
     }
 
-    private ToggleButton createToggle(String icon, String text) {
-        return createToggle(icon, text, 0);
+    private ToggleButton createToggle(String icon, String text, Object userData) {
+        return createToggle(icon, text, userData, 0);
     }
 
-    private ToggleButton createToggle(String icon, String text, double rotate) {
-        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
+    private ToggleButton createToggle(String icon, String text, Object userData, double rotate) {
+        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 20, 24);
         MFXRectangleToggleNode toggleNode = new MFXRectangleToggleNode(text, wrapper);
         toggleNode.setAlignment(Pos.CENTER_LEFT);
         toggleNode.setMaxWidth(Double.MAX_VALUE);
         toggleNode.setToggleGroup(toggleGroup);
+        toggleNode.setUserData(userData);
         if (rotate != 0)
             wrapper.getIcon().setRotate(rotate);
         return toggleNode;
