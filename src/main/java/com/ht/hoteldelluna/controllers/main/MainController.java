@@ -1,9 +1,12 @@
 package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.controllers.auth.AuthController;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
+import io.github.palexdev.materialfx.css.themes.Themes;
 import io.github.palexdev.materialfx.utils.ScrollUtils;
 import io.github.palexdev.materialfx.utils.ToggleButtonsUtil;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoader;
@@ -12,8 +15,11 @@ import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -23,8 +29,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.List;
@@ -61,7 +69,30 @@ public class MainController implements Initializable {
 
     @FXML
     private StackPane contentPane;
+    
+    @FXML
+    private HBox signOutBtn;
 
+    @FXML
+    private void signOut() {
+        signOutBtn.getScene().getWindow().hide();
+
+        try {
+            Stage authStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/Authentication.fxml"));
+            loader.setControllerFactory(c -> new AuthController(authStage));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
+            scene.setFill(Color.TRANSPARENT);
+            authStage.initStyle(StageStyle.TRANSPARENT);
+            authStage.setScene(scene);
+            authStage.setTitle("Hotel Del Luna");
+            authStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public MainController(Stage stage) {
         this.stage = stage;
