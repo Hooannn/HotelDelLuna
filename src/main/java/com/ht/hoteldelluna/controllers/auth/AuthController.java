@@ -69,7 +69,6 @@ public class AuthController implements Initializable {
             loader.setControllerFactory(c -> new MainController(mainStage));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            mainStage.setScene(scene);
             MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
             scene.setFill(Color.TRANSPARENT);
             mainStage.initStyle(StageStyle.TRANSPARENT);
