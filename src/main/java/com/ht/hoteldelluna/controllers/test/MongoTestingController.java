@@ -59,7 +59,7 @@ public class MongoTestingController implements Initializable {
 
     private void handleSubmitButtonClick(ActionEvent event) {
         String textFromTextField = textField.getText();
-        dm.addSampleDocument(textFromTextField);
+        //dm.addSampleDocument(textFromTextField);
         textField.clear();
 
         fetchDocuments();
@@ -67,7 +67,7 @@ public class MongoTestingController implements Initializable {
     }
 
     private void fetchDocuments() {
-        this.sampleDocuments = FXCollections.observableList(dm.fetchSampleDocuments());
+        this.sampleDocuments = FXCollections.observableList(new ArrayList<>());
     }
 
     private void setupPaginated() {

@@ -1,17 +1,19 @@
 package com.ht.hoteldelluna.models;
 
+import org.bson.types.ObjectId;
+
 import java.util.Date;
 
 public class Invoice {
-    private String id;
+    private ObjectId _id;
     private Date checkInTime;
     private Date checkOutTime;
     private double total;
     private String customerName;
     private Room room; // reference to Room
 
-    public Invoice(String id, Date checkInTime, Date checkOutTime, double total, String customerName, Room room) {
-        this.id = id;
+    public Invoice() {}
+    public Invoice(Date checkInTime, Date checkOutTime, double total, String customerName, Room room) {
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.total = total;
@@ -19,8 +21,8 @@ public class Invoice {
         this.room = room;
     }
 
-    public String getId() {
-        return this.id;
+    public ObjectId getId() {
+        return this._id;
     }
 
     public Date getCheckInTime() {

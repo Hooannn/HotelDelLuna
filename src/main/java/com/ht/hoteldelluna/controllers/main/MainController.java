@@ -130,22 +130,28 @@ public class MainController implements Initializable {
     private void initializeLoader() {
         MFXLoader loader = new MFXLoader();
         loader.addView(MFXLoaderBean.of("ROOM_MANAGER", loadURL("fxml/main/RoomManager.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-house", "Sơ đồ phòng", "staff")).setDefaultRoot(true).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-house", "Sơ đồ phòng", "staff"))
+                .setDefaultRoot(true).get());
 
         loader.addView(MFXLoaderBean.of("CASHIER_MANAGER", loadURL("fxml/main/CashierManager.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân","staff")).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân","staff"))
+                .get());
 
         loader.addView(MFXLoaderBean.of("ROOM_SETTING", loadURL("fxml/main/RoomSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-bed", "Thiết lập phòng","admin")).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-bed", "Thiết lập phòng","admin"))
+                .get());
 
         loader.addView(MFXLoaderBean.of("ROOM_TYPE_SETTING", loadURL("fxml/main/RoomTypeSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-list", "Thiết lập loại phòng","admin")).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-list", "Thiết lập loại phòng","admin"))
+                .get());
 
         loader.addView(MFXLoaderBean.of("STAFF_SETTING", loadURL("fxml/main/StaffSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Thiết lập nhân viên","admin")).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Thiết lập nhân viên","admin"))
+                .get());
 
         loader.addView(MFXLoaderBean.of("FLOOR_SETTING", loadURL("fxml/main/FloorSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-wrench", "Thiết lập tầng","admin")).get());
+                .setBeanToNodeMapper(() -> createToggle("fas-wrench", "Thiết lập tầng","admin"))
+                .get());
 
 
         loader.setOnLoadedAction(beans -> {
@@ -160,15 +166,8 @@ public class MainController implements Initializable {
                         return toggle;
                     })
                     .toList();
-
-            List<ToggleButton> staffNodes = nodes.stream().filter(n -> {
-                return n.getUserData().equals("staff");
-            }).toList();
-
-            List<ToggleButton> adminNodes = nodes.stream().filter(n -> {
-                return n.getUserData().equals("admin");
-            }).toList();
-
+            List<ToggleButton> staffNodes = nodes.stream().filter(n -> n.getUserData().equals("staff")).toList();
+            List<ToggleButton> adminNodes = nodes.stream().filter(n -> n.getUserData().equals("admin")).toList();
             staffNavBar.getChildren().setAll(staffNodes);
             adminNavBar.getChildren().setAll(adminNodes);
         });
