@@ -1,17 +1,18 @@
 package com.ht.hoteldelluna.models;
 
 import com.ht.hoteldelluna.enums.RoomStatus;
+import org.bson.types.ObjectId;
 
 public class Room {
-    private String id;
+    private ObjectId _id;
     private String name;
     private RoomType type; // reference to RoomType
     private Floor floor; // reference to Floor
     private double overnightPrice;
     private RoomStatus status;
 
-    public Room(String id, String name, RoomType type, Floor floor, double overnightPrice, RoomStatus status) {
-        this.id = id;
+    public Room() {}
+    public Room(String name, RoomType type, Floor floor, double overnightPrice, RoomStatus status) {
         this.name = name;
         this.type = type;
         this.floor = floor;
@@ -19,8 +20,8 @@ public class Room {
         this.status = status;
     }
 
-    public String getId() {
-        return this.id;
+    public ObjectId getId() {
+        return this._id;
     }
 
     public String getName() {

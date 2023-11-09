@@ -1,16 +1,18 @@
 package com.ht.hoteldelluna.models;
 
+
+import org.bson.types.ObjectId;
+
 public class RoomType {
-    private String id;
+    private ObjectId _id;
     private String name;
 
-    public RoomType(String id, String name) {
-        this.id = id;
+    public RoomType() {}
+    public RoomType(String name) {
         this.name = name;
     }
-
-    public String getId() {
-        return this.id;
+    public ObjectId getId() {
+        return this._id;
     }
 
     public String getName() {

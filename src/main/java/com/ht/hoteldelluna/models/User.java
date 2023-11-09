@@ -1,23 +1,25 @@
 package com.ht.hoteldelluna.models;
 
 import com.ht.hoteldelluna.enums.UserRole;
+import org.bson.types.ObjectId;
+
 public class User {
-    private String id;
+    private ObjectId _id;
     private String fullName;
     private String username;
     private String password;
     private UserRole role;
 
-    public User(String id, String fullName, String username, String password, UserRole role) {
-        this.id = id;
+    public User() {}
+    public User(String fullName, String username, String password, UserRole role) {
         this.fullName = fullName;
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public String getId() {
-        return this.id;
+    public ObjectId getId() {
+        return this._id;
     }
 
     public String getFullName() {
