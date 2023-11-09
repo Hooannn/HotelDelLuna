@@ -23,87 +23,98 @@
         <MFXFontIcon fx:id="closeIcon" description="fas-circle" size="15.0" styleClass="close-icon" />
     </HBox>
     <VBox layoutX="227.0" layoutY="51.0" prefWidth="250.0" styleClass="sidebar" stylesheets="@../css/Main.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <VBox alignment="CENTER" prefHeight="125.0" prefWidth="226.0">
-         <children>
-            <ImageView fitHeight="151.0" fitWidth="185.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Logo_text.png" />
-               </image>
-            </ImageView>
-         </children>
-      </VBox>
+        <VBox alignment="CENTER" prefHeight="125.0" prefWidth="226.0">
+            <children>
+                <ImageView fitHeight="151.0" fitWidth="185.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../Logo_text.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
         <Label styleClass="menu-label" text="QUẢN LÝ">
             <VBox.margin>
                 <Insets left="5.0" />
             </VBox.margin>
         </Label>
-         <VBox fx:id="staffNavBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="124.0" prefWidth="226.0" spacing="5.0" styleClass="navbar">
-         <VBox.margin>
-            <Insets top="12.0" />
-         </VBox.margin></VBox>
-      <Label styleClass="menu-label" text="CÀI ĐẶT">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin></Label>
-      <VBox fx:id="adminNavBar" prefHeight="296.0" prefWidth="224.0" spacing="5.0" styleClass="navbar">
-         <VBox.margin>
-            <Insets top="12.0" />
-         </VBox.margin></VBox>
-      <MFXFontIcon />
-      <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" spacing="10.0">
-         <children>
-            <MFXFontIcon description="fas-right-from-bracket" onMouseClicked="#signOut" size="30.0">
-               <color>
-                  <Color red="0.45098039507865906" green="0.45098039507865906" blue="0.45098039507865906" />
-               </color>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></MFXFontIcon>
-            <Label fx:id="signOutLabel" onMouseClicked="#signOut" styleClass="signOutlabel" text="Đăng xuất" />
-         </children>
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-      </HBox>
-      <padding>
-         <Insets left="12.0" right="12.0" />
-      </padding>
-      <effect>
-         <DropShadow blurType="ONE_PASS_BOX" height="2.97" radius="1.7850000000000001" spread="0.07" width="6.17" />
-      </effect>
-    </VBox>
-   <VBox layoutX="254.0" layoutY="53.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
-      <children>
-         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="1025.0">
-            <padding>
-               <Insets left="12.0" right="12.0" />
-            </padding>
+        <VBox fx:id="staffNavBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="124.0" prefWidth="226.0" spacing="5.0" styleClass="navbar">
+            <VBox.margin>
+                <Insets top="12.0" />
+            </VBox.margin>
+        </VBox>
+        <Label styleClass="menu-label" text="CÀI ĐẶT">
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </Label>
+        <VBox fx:id="adminNavBar" prefHeight="296.0" prefWidth="224.0" spacing="5.0" styleClass="navbar">
+            <VBox.margin>
+                <Insets top="12.0" />
+            </VBox.margin>
+        </VBox>
+        <MFXFontIcon />
+        <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" spacing="10.0">
             <children>
-               <HBox alignment="CENTER_RIGHT" prefHeight="105.0" prefWidth="993.0" styleClass="userNav">
-                  <children>
-                     <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
-                        <children>
-                           <Label styleClass="nameLabel" text="Khai Hoan" />
-                           <Label text="Admin" />
-                        </children>
-                     </VBox>
-                     <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                        <HBox.margin>
-                           <Insets left="6.0" />
-                        </HBox.margin>
-                        <image>
-                           <Image url="@../logo.png" />
-                        </image>
-                     </ImageView>
-                  </children>
-                  <padding>
-                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                  </padding>
-               </HBox>
+                <MFXFontIcon fx:id="signOutIcon" description="fas-right-from-bracket" onMouseClicked="#signOut" size="30.0" styleClass="signOutIcon">
+                    <color>
+                        <Color red="0.45098039507865906" green="0.45098039507865906" blue="0.45098039507865906" />
+                    </color>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </MFXFontIcon>
+                <Label fx:id="signOutLabel" onMouseClicked="#signOut" styleClass="signOutLabel" text="Đăng xuất" />
             </children>
-         </VBox>
-          <StackPane fx:id="contentPane" prefHeight="667.0" prefWidth="1029.0">
-    </StackPane>
-      </children>
-   </VBox>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+        </HBox>
+        <padding>
+            <Insets left="12.0" right="12.0" />
+        </padding>
+        <effect>
+            <DropShadow blurType="ONE_PASS_BOX" height="2.97" radius="1.7850000000000001" spread="0.07" width="6.17" />
+        </effect>
+    </VBox>
+    <VBox layoutX="254.0" layoutY="53.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
+        <children>
+            <VBox alignment="CENTER" prefHeight="54.0" prefWidth="1025.0">
+                <padding>
+                    <Insets left="12.0" right="12.0" />
+                </padding>
+                <children>
+                    <HBox alignment="CENTER_RIGHT" prefHeight="105.0" prefWidth="993.0" styleClass="userNav">
+                        <children>
+                            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                                <children>
+                                    <Label styleClass="nameLabel" text="Khai Hoan" />
+                                    <Label text="Admin" />
+                                </children>
+                            </VBox>
+                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                <HBox.margin>
+                                    <Insets left="6.0" />
+                                </HBox.margin>
+                                <image>
+                                    <Image url="@../logo.png" />
+                                </image>
+                            </ImageView>
+                        </children>
+                        <padding>
+                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                        </padding>
+                    </HBox>
+                </children>
+            </VBox>
+            <VBox>
+                <children>
+                    <StackPane fx:id="contentPane" prefHeight="667.0" prefWidth="1029.0">
+                    </StackPane>
+                </children>
+                <padding>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                </padding>
+            </VBox>
+        </children>
+    </VBox>
 </AnchorPane>
