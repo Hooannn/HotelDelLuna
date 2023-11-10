@@ -13,14 +13,14 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FloorServices {
+public class FloorsService {
     private final Parser parser = new Parser();
     Connection dbConnection = Connection.shared;
     MongoCollection<Document> floorCollection = dbConnection.getDatabase().getCollection("floors");
 
     public List<Floor> getFloors() {
         List<Document> documents = new ArrayList<>();
-        floorCollection.find().into(documents);
+        floorCollection.find().sort(new Document("num", 1)).into(documents);
         return parser.fromDocuments(documents, Floor.class);
     }
 

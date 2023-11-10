@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomServices {
+public class RoomsService {
     private final Parser parser = new Parser();
     Connection dbConnection = Connection.shared;
     MongoCollection<Document> roomCollection = dbConnection.getDatabase().getCollection("rooms");

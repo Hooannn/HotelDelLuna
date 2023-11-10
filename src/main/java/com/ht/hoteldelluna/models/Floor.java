@@ -29,9 +29,6 @@ public class Floor {
 
     @Override
     public String toString() {
-        return "Floor{" +
-                "_id=" + _id +
-                ", num=" + num +
-                '}';
+        return "Tầng " + num;
     }
 }
