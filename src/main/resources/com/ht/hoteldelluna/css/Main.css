@@ -17,6 +17,7 @@
 .rootPane .close-icon {
 	-mfx-color: -mfx-red;
 	-fx-opacity: 0.5;
+	-fx-cursor: hand;
 }
 
 .rootPane .close-icon:hover {
@@ -26,6 +27,7 @@
 .rootPane .minimize-icon {
 	-mfx-color: #ffbf37;
 	-fx-opacity: 0.5;
+	-fx-cursor: hand;
 }
 
 .rootPane .minimize-icon:hover {
@@ -35,6 +37,7 @@
 .rootPane .always-on-top-icon {
 	-mfx-color: -mfx-purple;
 	-fx-opacity: 0.5;
+	-fx-cursor: hand;
 }
 
 .rootPane .always-on-top-icon:hover {
@@ -117,7 +120,7 @@
 }
 
 /**************************************************
- * Main Content
+ * User Navigation
 **************************************************/
 .rootPane .userNav {
     -fx-background-color: white;
@@ -135,4 +138,59 @@
 .rootPane .userNav .roleLabel {
     -fx-font-size: 13;
     -fx-text-fill: #9B9999;
+}
+
+/**************************************************
+ * Content Pane
+**************************************************/
+.contentPane {
+	-primary-color: #23A6F0;
+}
+
+.contentPane .heading {
+	-fx-padding: 4 0;
+	-fx-font-size: 20;
+	-fx-font-family: 'Roboto Bold'
+}
+
+.contentPane .contentWrapper {
+	-fx-padding: 25 40;
+	-fx-border-radius: 12;
+	-fx-border-color: rgba(0,0,0,0.1);
+	-fx-border-width: 1;
+}
+
+.contentPane .mfx-combo-box {
+	-mfx-purple: -primary-color;
+	-fx-text-fill: -primary-color;
+}
+
+.contentPane .mfx-combo-box .caret .mfx-font-icon {
+	-mfx-color: -primary-color;
+	-fx-cursor: hand;
+}
+
+.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:hover {
+	-fx-background-color: rgba(35,166,240,0.4);
+	-fx-cursor: hand;
+}
+
+.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:selected {
+	-fx-background-color: -primary-color;
+}
+
+.contentPane .addNewBtn {
+	-fx-padding: 15 40;
+	-fx-start-margin: 4px;
+	-fx-end-margin: 4px;
+	-fx-background-color: -primary-color;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+	-fx-font-size: 14;
+	-fx-font-family: "Roboto Bold";
+	-fx-cursor: hand;
+}
+
+.contentPane .addNewBtn:hover {
+	-fx-background-color: rgba(35,166,240,0.7);
 }
