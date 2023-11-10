@@ -18,4 +18,12 @@ public class RoomType {
     public String getName() {
         return this.name;
     }
+
+    @Override
+    public String toString() {
+        return "RoomType{" +
+                "_id=" + _id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

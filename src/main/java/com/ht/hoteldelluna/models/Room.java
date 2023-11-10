@@ -20,6 +20,12 @@ public class Room {
         this.status = status;
     }
 
+    public Room(String name, double overnightPrice, RoomStatus status) {
+        this.name = name;
+        this.overnightPrice = overnightPrice;
+        this.status = status;
+    }
+
     public ObjectId getId() {
         return this._id;
     }
@@ -42,6 +48,18 @@ public class Room {
 
     public RoomStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "_id=" + _id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", floor=" + floor +
+                ", overnightPrice=" + overnightPrice +
+                ", status=" + status +
+                '}';
     }
 }
 
