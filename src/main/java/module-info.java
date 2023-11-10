@@ -37,4 +37,5 @@ module com.ht.hoteldelluna {
     opens com.ht.hoteldelluna.controllers.auth;
     
     exports com.ht.hoteldelluna;
+    exports com.ht.hoteldelluna.enums;
 }

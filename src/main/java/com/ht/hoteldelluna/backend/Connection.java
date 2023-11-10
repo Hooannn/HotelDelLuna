@@ -41,8 +41,17 @@ public class Connection {
     private void bootstrapIndexes() {
         // Create all indexes here
         MongoCollection<Document> floorCollection = getDatabase().getCollection("floors");
+        MongoCollection<Document> userCollection = getDatabase().getCollection("users");
+        MongoCollection<Document> roomTypeCollection = getDatabase().getCollection("room_types");
+        MongoCollection<Document> roomCollection = getDatabase().getCollection("room_types");
         // Make field 'num' in 'floors' unique
         floorCollection.createIndex(Indexes.ascending("num"), new IndexOptions().unique(true));
+        // Make field 'username' in 'users' unique
+        userCollection.createIndex(Indexes.ascending("username"), new IndexOptions().unique(true));
+        // Make field 'name' in 'room_types' unique
+        roomTypeCollection.createIndex(Indexes.ascending("name"), new IndexOptions().unique(true));
+        // Make field 'name' in 'rooms' unique
+        roomCollection.createIndex(Indexes.ascending("name"), new IndexOptions().unique(true));
     }
 
     public MongoClient getClient() {
