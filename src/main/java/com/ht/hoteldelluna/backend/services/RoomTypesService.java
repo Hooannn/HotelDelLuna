@@ -13,7 +13,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomTypeServices {
+public class RoomTypesService {
     private final Parser parser = new Parser();
     Connection dbConnection = Connection.shared;
     MongoCollection<Document> roomTypeCollection = dbConnection.getDatabase().getCollection("room_types");

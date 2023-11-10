@@ -13,7 +13,7 @@ import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import org.bson.Document;
 public class Connection {
-    public static Connection shared = new Connection();
+    public final static Connection shared = new Connection();
     private MongoClient client;
     private MongoDatabase database;
     private final String connectionString = "mongodb+srv://hoanthui123:hoandaica123@default.evhwqpv.mongodb.net/?retryWrites=true&w=majority";
@@ -25,7 +25,7 @@ public class Connection {
             .serverApi(serverApi)
             .build();
 
-    public Connection() {
+    private Connection() {
         try {
             client = MongoClients.create(settings);
             database = client.getDatabase("Default");
@@ -43,7 +43,7 @@ public class Connection {
         MongoCollection<Document> floorCollection = getDatabase().getCollection("floors");
         MongoCollection<Document> userCollection = getDatabase().getCollection("users");
         MongoCollection<Document> roomTypeCollection = getDatabase().getCollection("room_types");
-        MongoCollection<Document> roomCollection = getDatabase().getCollection("room_types");
+        MongoCollection<Document> roomCollection = getDatabase().getCollection("rooms");
         // Make field 'num' in 'floors' unique
         floorCollection.createIndex(Indexes.ascending("num"), new IndexOptions().unique(true));
         // Make field 'username' in 'users' unique
