@@ -132,6 +132,7 @@ public class MainController implements Initializable {
 
         loader.addView(MFXLoaderBean.of("CASHIER_MANAGER", loadURL("fxml/main/CashierManager.fxml"))
                 .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân","staff"))
+                .setControllerFactory(c -> new CashierManagerController(this.stage))
                 .get());
 
         loader.addView(MFXLoaderBean.of("ROOM_SETTING", loadURL("fxml/main/RoomSetting.fxml"))

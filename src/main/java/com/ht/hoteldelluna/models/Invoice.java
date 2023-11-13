@@ -44,4 +44,15 @@ public class Invoice {
     public Room getRoom() {
         return this.room;
     }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "checkInTime=" + checkInTime +
+                ", checkOutTime=" + checkOutTime +
+                ", total=" + total +
+                ", customerName='" + customerName + '\'' +
+                ", room=" + room +
+                '}';
+    }
 }
