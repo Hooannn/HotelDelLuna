@@ -48,6 +48,13 @@ public class ReservationsService {
         return parser.fromDocument(doc, Reservation.class);
     }
 
+    public UpdateResult checkout(String reservationId, String roomId) {
+        RoomsService roomsService = new RoomsService();
+        UpdateResult res = reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("status", ReservationStatus.CLOSED)));
+        roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
+        return res;
+    }
+
     public UpdateResult closeReservation(String reservationId, String roomId) {
         RoomsService roomsService = new RoomsService();
         UpdateResult res = reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("status", ReservationStatus.CLOSED)));

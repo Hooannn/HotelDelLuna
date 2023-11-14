@@ -78,6 +78,11 @@ public class CheckInFormController implements Initializable {
     }
 
     public Reservation getReservation() {
+        if (reservation != null) {
+            reservation.setNote(noteTextArea.getText());
+            reservation.setCheckOutTime(checkOutDateTimeTextField.getLocalDateTime().toString());
+            return reservation;
+        }
         return new Reservation(
                 checkInDateTimeTextField.getLocalDateTime().toString(),
                 null,

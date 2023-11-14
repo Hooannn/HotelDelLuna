@@ -35,8 +35,9 @@ public class InvoicesService {
         return parser.fromDocument(doc, Invoice.class);
     }
 
-    public InsertOneResult addInvoice(Invoice invoice) {
+    public InsertOneResult addInvoice(Invoice invoice, String roomId) {
         Document document = parser.toDocument(invoice);
+        document.put("room", new ObjectId(roomId));
         return invoiceCollection.insertOne(document);
     }
 
@@ -46,9 +47,9 @@ public class InvoicesService {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            invoices.add(new Invoice(dateFormat.parse("2023-11-01"), new Date(), 400000, "Ha Gia Huy 1", null));
-            invoices.add(new Invoice(dateFormat.parse("2023-11-05"), new Date(), 300000, "Ha Gia Huy 2", null));
-            invoices.add(new Invoice(dateFormat.parse("2023-11-11"), new Date(), 200000, "Ha Gia Huy 3", null));
+            invoices.add(new Invoice(dateFormat.parse("2023-11-01").toString(), new Date().toString(), 400000, "Ha Gia Huy 1", null));
+            invoices.add(new Invoice(dateFormat.parse("2023-11-05").toString(), new Date().toString(), 300000, "Ha Gia Huy 2", null));
+            invoices.add(new Invoice(dateFormat.parse("2023-11-11").toString(), new Date().toString(), 200000, "Ha Gia Huy 3", null));
         } catch (ParseException e) {
             e.printStackTrace();
         }
