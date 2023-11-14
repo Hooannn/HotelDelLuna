@@ -56,7 +56,7 @@
       <Region VBox.vgrow="ALWAYS" />
         <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" spacing="10.0">
             <children>
-                <MFXFontIcon fx:id="signOutIcon" description="fas-right-from-bracket" onMouseClicked="#signOut" size="30.0" styleClass="signOutIcon">
+                <MFXFontIcon fx:id="signOutIcon" description="fas-right-from-bracket" onMouseClicked="#showSignOutDialog" size="30.0" styleClass="signOutIcon">
                     <color>
                         <Color red="0.45098039507865906" green="0.45098039507865906" blue="0.45098039507865906" />
                     </color>
@@ -64,7 +64,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </MFXFontIcon>
-                <Label fx:id="signOutLabel" onMouseClicked="#signOut" styleClass="signOutLabel" text="Đăng xuất" />
+                <Label fx:id="signOutLabel" onMouseClicked="#showSignOutDialog" styleClass="signOutLabel" text="Đăng xuất" />
             </children>
             <cursor>
                 <Cursor fx:constant="DEFAULT" />
