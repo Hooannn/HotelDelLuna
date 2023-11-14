@@ -1,9 +1,11 @@
 package com.ht.hoteldelluna.controllers.main.RoomManager;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.backend.services.ReservationsService;
-import com.ht.hoteldelluna.enums.ReservationStatus;
+import com.ht.hoteldelluna.backend.services.RoomsService;
 import com.ht.hoteldelluna.enums.RoomStatus;
+import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
 import com.mongodb.client.result.InsertOneResult;
@@ -28,6 +30,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -143,8 +147,12 @@ public class RoomCardController implements Initializable {
     }
 
     private void cleanRoom() {
-        if (reservation == null) return;
-        reservationsService.closeReservation(reservation.getId().toString(), reservation.getRoom().getId().toString());
+        RoomsService roomsService = new RoomsService();
+        if (reservation == null) {
+            roomsService.updateRoomStatus(room.getId().toString(), RoomStatus.AVAILABLE);
+        } else {
+            reservationsService.closeReservation(reservation.getId().toString(), reservation.getRoom().getId().toString());
+        }
         delegate.onCleaned(room);
     }
 
@@ -185,11 +193,29 @@ public class RoomCardController implements Initializable {
         dialogContent.clearActions();
         dialogContent.addActions(
                 Map.entry(checkOutButton, event -> {
-                    //CheckInFormController checkInFormController = loader.getController();
-                    //Reservation reservation = checkInFormController.getReservation();
-
+                    if (reservation == null) {
+                        dialog.close();
+                        return;
+                    }
+                    InvoicesService invoicesService = new InvoicesService();
+                    CheckInFormController checkInFormController = loader.getController();
+                    Reservation reservation = checkInFormController.getReservation();
+                    reservationsService.checkout(reservation.getId().toString(), reservation.getRoom().getId().toString());
+                    LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
+                    LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
+                    Duration duration = Duration.between(checkInTime, checkOutTime);
+                    long seconds = duration.getSeconds();
+                    double total = seconds * 100; //TODO: Calculate the true total
+                    invoicesService.addInvoice(
+                            new Invoice(
+                                    reservation.getCheckInTime(),
+                                    reservation.getCheckOutTime(),
+                                    total,
+                                    reservation.getCustomerName()),
+                            room.getId().toString()
+                    );
                     dialog.close();
-                    //delegate.onCheckedOut(room);
+                    delegate.onCheckedOut(room);
                 }),
                 Map.entry(updateButton, event -> {
                     CheckInFormController checkInFormController = loader.getController();
