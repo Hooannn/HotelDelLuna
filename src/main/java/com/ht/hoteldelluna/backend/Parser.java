@@ -1,14 +1,16 @@
 package com.ht.hoteldelluna.backend;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ht.hoteldelluna.models.Floor;
+import com.google.gson.*;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class Parser {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(ObjectId.class, new ObjectIdDeserializer())
+            .create();
     public Parser() {}
 
     public <T> List<T> fromDocuments(List<Document> documents, Class<T> classOfT) {

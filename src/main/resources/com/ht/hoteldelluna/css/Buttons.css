@@ -47,6 +47,13 @@
 	-fx-text-fill: -mfx-purple;
 }
 
+.text-button {
+	-fx-background-color: #F5F5F5;
+	-fx-border-color: #F5F5F5;
+	-fx-border-radius: 3;
+	-fx-text-fill: #737373;
+}
+
 .outline-button:hover,
 .outline-button:focused {
 	-fx-background-color: -mfx-purple;

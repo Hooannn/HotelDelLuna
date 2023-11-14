@@ -2,8 +2,10 @@ package com.ht.hoteldelluna.controllers.main.RoomManager;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.FloorsService;
+import com.ht.hoteldelluna.backend.services.ReservationsService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
 import com.ht.hoteldelluna.models.Floor;
+import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
@@ -18,16 +20,19 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RoomManagerController implements Initializable {
+public class RoomManagerController implements Initializable, RoomCardControllerDelegate {
     @FXML
     private FlowPane roomFlowPane;
     @FXML
     private MFXComboBox<Floor> floorsSelection;
     private final RoomsService roomsService = new RoomsService();
     private final FloorsService floorsService = new FloorsService();
-
+    private final ReservationsService reservationsService = new ReservationsService();
     private List<Room> rooms;
+    private List<Reservation> reservations;
     private List<Floor> floors;
+
+    private final Stage stage;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupFloorsSelection();
@@ -36,6 +41,8 @@ public class RoomManagerController implements Initializable {
     public RoomManagerController(Stage stage) {
         floors = floorsService.getFloors();
         rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        this.stage = stage;
     }
 
     private void setupFloorsSelection() {
@@ -48,13 +55,74 @@ public class RoomManagerController implements Initializable {
         roomFlowPane.getChildren().clear();
         List<Room> renderRooms = rooms.stream().filter(room -> room.getFloor().getNum() == floor).toList();
         renderRooms.forEach(room -> {
-            FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/RoomCard.fxml"));
-            loader.setControllerFactory(c -> new RoomCardController(room));
+            FXMLLoader loader;
+            switch (room.getStatus()) {
+                case OCCUPIED -> {
+                    loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/OccupiedRoomCard.fxml"));
+                }
+                case MAINTENANCE -> {
+                    loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/MaintenanceRoomCard.fxml"));
+                }
+                default -> {
+                    loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/AvailableRoomCard.fxml"));
+                }
+            }
+            Reservation reservation = reservations
+                    .stream()
+                    .filter(r -> r.getRoom() != null && r.getRoom().getId().toString().equals(room.getId().toString()))
+                    .findFirst()
+                    .orElse(null);
+
+            loader.setControllerFactory(c -> new RoomCardController(stage, room, reservation, this));
             try {
                 roomFlowPane.getChildren().add(loader.load());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public String toString() {
+        return "RoomManagerController{" +
+                "rooms=" + rooms +
+                ", reservations=" + reservations +
+                ", floors=" + floors +
+                '}';
+    }
+
+    @Override
+    public void onCheckedIn(Room room) {
+        rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+    }
+
+    @Override
+    public void onCheckedOut(Room room) {
+        rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+    }
+
+    @Override
+    public void onCleaned(Room room) {
+        rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+    }
+
+    @Override
+    public void onCancelled(Room room) {
+        rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+    }
+
+    @Override
+    public void onUpdated(Room room) {
+        rooms = roomsService.getRooms();
+        reservations = reservationsService.getOpeningReservations();
+        setupRoomCards(floorsSelection.getSelectedItem().getNum());
     }
 }
