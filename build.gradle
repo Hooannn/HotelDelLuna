@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver-sync:4.10.2'
     implementation 'org.mongodb:bson:4.3.1'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation group: 'org.jfxtras', name: 'jfxtras-controls', version: '17-r1'
 }
 
 javafx {

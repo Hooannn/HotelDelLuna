@@ -1,6 +1,7 @@
 package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
@@ -19,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -38,9 +40,16 @@ import static com.ht.hoteldelluna.MFXResourcesLoader.loadURL;
 
 public class MainController implements Initializable {
     private final Stage stage;
+    private final AppState appState = AppState.shared;
     private double xOffset;
     private double yOffset;
     private final ToggleGroup toggleGroup;
+
+    @FXML
+    private Label authUserRoleLabel;
+
+    @FXML
+    private Label authUserNameLabel;
 
     @FXML
     private HBox windowHeader;
@@ -74,6 +83,7 @@ public class MainController implements Initializable {
         signOutBtn.getScene().getWindow().hide();
 
         try {
+            appState.setAuthUser(null);
             Stage authStage = new Stage();
             FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/Authentication.fxml"));
             loader.setControllerFactory(c -> new AuthController(authStage));
@@ -119,6 +129,9 @@ public class MainController implements Initializable {
         windowHeader.setOnMouseReleased(event -> {
             stage.setOpacity(1.0);
         });
+
+        authUserNameLabel.setText(appState.getAuthUser().getFullName());
+        authUserRoleLabel.setText(appState.getAuthUser().getRole().name());
 
         initializeLoader();
     }

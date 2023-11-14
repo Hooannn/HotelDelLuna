@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="root" prefHeight="149.0" prefWidth="235.0" style="-fx-border-color: rgba(0,0,0,0.1); -fx-border-width: 1; -fx-border-radius: 12;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomManager.RoomCardController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="149.0" prefWidth="235.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="roomNameLabel" style="-fx-font-size: 14; -fx-font-family: 'Roboto Medium';" text="Label" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="rightHeaderContainer" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="12.0" right="12.0" top="8.0" />
+               </padding>
+            </HBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+                     <children>
+                        <Label text="Check-in" />
+                        <Label fx:id="checkInDateTimeLabel" text="Label" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="235.0" VBox.vgrow="NEVER">
+                     <children>
+                        <Label fx:id="roomTypeLabel" style="-fx-text-fill: #23A6F0; -fx-background-color: rgba(35, 166, 240, 0.2); -fx-border-radius: 12; -fx-background-radius: 6; -fx-font-family: 'Roboto Medium'; -fx-font-size: 13;" text="Label">
+                           <padding>
+                              <Insets bottom="6.0" left="18.0" right="18.0" top="6.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <HBox>
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="TOP_CENTER" text="Thời gian" />
+                              <Label fx:id="timeCounterLabel" text="Label" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Tổng tiền" />
+                              <Label fx:id="totalCounterLabel" text="Label" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

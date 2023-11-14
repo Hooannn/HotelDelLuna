@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomManager.CheckInFormController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Người tạo" />
+                              <MFXTextField fx:id="authUserNameTextField" editable="false" floatMode="BORDER" prefHeight="38.0" prefWidth="304.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Phòng" />
+                              <MFXTextField fx:id="roomNameTextField" editable="false" floatMode="BORDER" prefHeight="38.0" prefWidth="329.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Loại phòng" />
+                              <MFXTextField fx:id="roomTypeTextField" editable="false" floatMode="BORDER" prefHeight="38.0" prefWidth="328.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Số khách" />
+                              <MFXTextField fx:id="totalCustomersTextField" floatMode="BORDER" prefHeight="38.0" prefWidth="313.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Tổng cộng" />
+                              <MFXTextField fx:id="totalTextField" editable="false" floatMode="BORDER" prefHeight="38.0" prefWidth="309.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Ngày giờ đến" />
+                              <LocalDateTimeTextField fx:id="checkInDateTimeTextField" prefHeight="37.0" prefWidth="231.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Ngày giờ đi" />
+                              <LocalDateTimeTextField fx:id="checkOutDateTimeTextField" prefHeight="43.0" prefWidth="294.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Tên khách" />
+                              <MFXTextField fx:id="customerNameTextField" floatMode="BORDER" prefHeight="38.0" prefWidth="328.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Ghi chú" />
+                              <TextArea fx:id="noteTextArea" prefHeight="95.0" prefWidth="282.0" style="-fx-border-radius: 12;" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="12.0" top="12.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

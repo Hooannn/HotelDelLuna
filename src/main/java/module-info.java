@@ -28,8 +28,11 @@ module com.ht.hoteldelluna {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.media;
+    requires jfxtras.controls;
+    requires jfxtras.common;
+    requires jfxtras.fxml;
     requires com.google.gson;
-  
+
     opens com.ht.hoteldelluna;
     opens com.ht.hoteldelluna.models;
     opens com.ht.hoteldelluna.controllers.main;
