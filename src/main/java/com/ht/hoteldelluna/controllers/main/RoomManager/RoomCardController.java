@@ -185,6 +185,8 @@ public class RoomCardController implements Initializable {
         loader.setControllerFactory(c -> new CheckInFormController(room, reservation));
         dialogContent.setHeaderText("Check-in");
         dialogContent.clearActions();
+        dialogContent.setContent(null);
+        dialogContent.setContentText(null);
         dialogContent.addActions(
                 Map.entry(updateButton, event -> {
                     try {
@@ -216,6 +218,8 @@ public class RoomCardController implements Initializable {
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/CheckInForm.fxml"));
         loader.setControllerFactory(c -> new CheckInFormController(room, reservation));
         dialogContent.setHeaderText("Check-out");
+        dialogContent.setContent(null);
+        dialogContent.setContentText(null);
         dialogContent.clearActions();
         dialogContent.addActions(
                 Map.entry(checkOutButton, event -> {
@@ -270,10 +274,12 @@ public class RoomCardController implements Initializable {
 
     private void showCancelReservationConfirmation() {
         dialogContent.clearActions();
+        Label label = new Label();
+        label.setText("Bạn có chắc muốn huỷ đặt phòng hiện tại?");
+        dialogContent.setContent(label);
         MFXFontIcon warnIcon = new MFXFontIcon("fas-circle-exclamation", 18);
         dialogContent.setHeaderIcon(warnIcon);
         dialogContent.setHeaderText("Xác nhận huỷ");
-        dialogContent.setContentText("Bạn có chắc muốn huỷ đặt phòng hiện tại?");
         dialogContent.getStyleClass().add("mfx-info-dialog");
         dialogContent.addActions(
                 Map.entry(new MFXButton("Có"), event -> {

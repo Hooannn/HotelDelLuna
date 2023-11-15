@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXProgressSpinner?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="667.0" prefWidth="1029.0" styleClass="contentPane" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController">
    <children>
@@ -24,11 +27,37 @@
                      <children>
                         <MFXComboBox fx:id="floorsSelection" floatMode="ABOVE" prefHeight="13.0" prefWidth="124.0" promptText="Chọn tầng" />
                         <Separator prefWidth="200.0" />
-                        <MFXScrollPane fitToHeight="true" fitToWidth="true" prefHeight="560.0" prefWidth="1003.0" VBox.vgrow="ALWAYS">
-                           <content>
-                              <FlowPane fx:id="roomFlowPane" hgap="12.0" prefHeight="560.0" prefWidth="1003.0" vgap="12.0" />
-                           </content>
-                        </MFXScrollPane>
+                        <Pane VBox.vgrow="ALWAYS">
+                           <children>
+                              <MFXScrollPane fitToHeight="true" fitToWidth="true" prefHeight="538.0" prefWidth="1003.0">
+                                 <content>
+                                    <FlowPane fx:id="roomFlowPane" hgap="12.0" prefHeight="538.0" prefWidth="1003.0" vgap="12.0" />
+                                 </content>
+                              </MFXScrollPane>
+                              <StackPane fx:id="loadingPane" visible="false" prefHeight="538.0" prefWidth="1003.0" style="-fx-background-color: rgba(1,1,1,0.1); -fx-background-radius: 12;">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <MFXProgressSpinner>
+                                             <color1>
+                                                <Color red="0.13725490868091583" green="0.6509804129600525" blue="0.9411764740943909" />
+                                             </color1>
+                                             <color2>
+                                                <Color red="0.13725490868091583" green="0.6509804129600525" blue="0.9411764740943909" />
+                                             </color2>
+                                             <color3>
+                                                <Color red="0.13725490868091583" green="0.6509804129600525" blue="0.9411764740943909" />
+                                             </color3>
+                                             <color4>
+                                                <Color red="0.13725490868091583" green="0.6509804129600525" blue="0.9411764740943909" />
+                                             </color4>
+                                          </MFXProgressSpinner>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </Pane>
                      </children>
                   </VBox>
                </children>
