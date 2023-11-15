@@ -54,7 +54,7 @@ public class RoomCardController implements Initializable {
     private Label roomTypeLabel;
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
-    private RoomCardControllerDelegate delegate;
+    private final RoomCardControllerDelegate delegate;
     private final Stage stage;
     private final Room room;
     private final Reservation reservation;
