@@ -35,7 +35,7 @@
 }
 
 .rootPane .always-on-top-icon {
-	-mfx-color: -mfx-purple;
+	-mfx-color: #7a0ed9;
 	-fx-opacity: 0.5;
 	-fx-cursor: hand;
 }
@@ -154,29 +154,10 @@
 }
 
 .contentPane .contentWrapper {
-	-fx-padding: 25 40;
+	-fx-padding: 12;
 	-fx-border-radius: 12;
 	-fx-border-color: rgba(0,0,0,0.1);
 	-fx-border-width: 1;
-}
-
-.contentPane .mfx-combo-box {
-	-mfx-purple: -primary-color;
-	-fx-text-fill: -primary-color;
-}
-
-.contentPane .mfx-combo-box .caret .mfx-font-icon {
-	-mfx-color: -primary-color;
-	-fx-cursor: hand;
-}
-
-.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:hover {
-	-fx-background-color: rgba(35,166,240,0.4);
-	-fx-cursor: hand;
-}
-
-.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:selected {
-	-fx-background-color: -primary-color;
 }
 
 .contentPane .addNewBtn {
@@ -193,4 +174,49 @@
 
 .contentPane .addNewBtn:hover {
 	-fx-background-color: rgba(35,166,240,0.7);
+}
+
+.contentPane .sortByLabel {
+	-fx-text-fill: #9B9999;
+	-fx-font-family: "Roboto Medium";
+	-fx-font-size: 14;
+}
+
+.contentPane .viewModeIcon {
+	-fx-padding: 10;
+	-fx-border-radius: 4;
+	-fx-background-radius: 4;
+	-fx-cursor: hand;
+	-fx-opacity: 0.7;
+}
+
+.contentPane .viewModeIcon.active,
+.contentPane .viewModeIcon:hover {
+	-fx-background-color: #E9E9E9;
+}
+
+/**************************************************
+ * Override Default ComboBox CSS
+**************************************************/
+.contentPane .mfx-combo-box {
+	-fx-border-radius: 3;
+}
+
+.contentPane .mfx-combo-box:focus-within {
+	-mfx-purple: -primary-color;
+	-fx-text-fill: -primary-color;
+}
+
+.contentPane .mfx-combo-box:focus-within .caret .mfx-font-icon {
+	-mfx-color: -primary-color;
+	-fx-cursor: hand;
+}
+
+.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:hover {
+	-fx-background-color: rgba(35,166,240,0.4);
+	-fx-cursor: hand;
+}
+
+.contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:selected {
+	-fx-background-color: -primary-color;
 }

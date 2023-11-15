@@ -1,19 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import jfxtras.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="contentPane" stylesheets="@../../css/Main.css"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ht.hoteldelluna.controllers.main.CashierManagerController">
+<AnchorPane prefHeight="667.0" prefWidth="1029.0" styleClass="contentPane" stylesheets="@../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.CashierManagerController">
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" spacing="12.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Thu ngân"/>
-                <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="contentWrapper"
-                            stylesheets="@../../css/Main.css" VBox.vgrow="ALWAYS"/>
+                <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Thu ngân" />
+            <VBox prefHeight="341.0" prefWidth="600.0" spacing="12.0" styleClass="contentWrapper" stylesheets="@../../css/Main.css" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="15.0">
+                     <children>
+                        <Label styleClass="sortByLabel" stylesheets="@../../css/Main.css" text="Sắp xếp theo:" />
+                        <MFXComboBox fx:id="roomsSelection" floatMode="ABOVE" prefHeight="32.0" prefWidth="124.0" promptText="Phòng">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </MFXComboBox>
+                        <MFXComboBox fx:id="checkInTimeSelection" floatMode="ABOVE" layoutX="243.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Thời Gian Thuê Phòng">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </MFXComboBox>
+                        <MFXComboBox fx:id="checkOutTimeSelection" floatMode="ABOVE" layoutX="110.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Thời Gian Trả Phòng">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </MFXComboBox>
+                        <MFXComboBox fx:id="totalSelection" floatMode="ABOVE" layoutX="110.0" layoutY="10.0" prefHeight="32.0" prefWidth="124.0" promptText="Tổng Tiền">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </MFXComboBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <HBox fx:id="tableViewMode" alignment="CENTER" stylesheets="@../../css/Main.css">
+                                 <children>
+                                    <MFXFontIcon description="fas-border-all" size="18.0" />
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="viewModeIcon" />
+                                    <String fx:value="active" />
+                                 </styleClass>
+                              </HBox>
+                              <HBox fx:id="listViewMode" alignment="CENTER" styleClass="viewModeIcon" stylesheets="@../../css/Main.css">
+                                 <children>
+                                       <MFXFontIcon description="fas-list" size="18.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <MFXScrollPane fitToHeight="true" fitToWidth="true" prefHeight="560.0" prefWidth="1003.0" VBox.vgrow="ALWAYS">
+                     <content>
+                        <FlowPane fx:id="roomFlowPane" hgap="12.0" prefHeight="560.0" prefWidth="1003.0" vgap="12.0" />
+                     </content>
+                  </MFXScrollPane>
+               </children>
+            </VBox>
             </children>
         </VBox>
     </children>
