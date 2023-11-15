@@ -8,7 +8,6 @@ import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
-import com.mongodb.client.result.InsertOneResult;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXContextMenu;
 import io.github.palexdev.materialfx.controls.MFXContextMenuItem;
@@ -17,10 +16,12 @@ import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.enums.ScrimPriority;
+import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.scene.control.Label;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -63,6 +65,26 @@ public class RoomCardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roomNameLabel.setText(room.getName());
         roomTypeLabel.setText(room.getType().getName());
+        if (reservation != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd HH:mm");
+            LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
+            LocalDateTime timeAfter = null;
+            if (reservation.getCheckOutTime() != null) {
+                LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
+                timeAfter = checkOutTime;
+                checkOutDateTimeLabel.setText(checkOutTime.format(formatter));
+            }
+            if (timeAfter == null) {
+                timeAfter = LocalDateTime.now();
+            }
+            checkInDateTimeLabel.setText(checkInTime.format(formatter));
+            Duration duration = Duration.between(checkInTime, timeAfter);
+            long totalMinutes = duration.toMinutes();
+            timeCounterLabel.setText(String.valueOf(totalMinutes) + "p");
+            long totalSeconds = duration.toSeconds();
+            totalCounterLabel.setText(String.valueOf(totalSeconds * 10) + "đ");
+
+        }
         setupContextButton();
         setupDialog();
     }
@@ -87,7 +109,7 @@ public class RoomCardController implements Initializable {
         checkInItem.setOnAction(event -> showCheckInDialog());
         checkOutItem.setOnAction(event -> showCheckOutDialog());
         cleanRoomItem.setOnAction(event -> cleanRoom());
-        cancelRoomItem.setOnAction(event -> cancelReservation());
+        cancelRoomItem.setOnAction(event -> showCancelReservationConfirmation());
         contextMenu.getItems().addAll(checkInItem, checkOutItem, cleanRoomItem, cancelRoomItem);
 
         iconWrapper.setOnMouseClicked(event -> {
@@ -165,15 +187,19 @@ public class RoomCardController implements Initializable {
         dialogContent.clearActions();
         dialogContent.addActions(
                 Map.entry(updateButton, event -> {
-                    CheckInFormController checkInFormController = loader.getController();
-                    Reservation reservation = checkInFormController.getReservation();
-                    InsertOneResult result = reservationsService.addReservation(reservation, room.getId().toString());
-                    dialog.close();
-                    delegate.onCheckedIn(room);
+                    try {
+                        CheckInFormController checkInFormController = loader.getController();
+                        Reservation reservation = checkInFormController.getReservation();
+                        reservationsService.addReservation(reservation, room.getId().toString());
+                        dialog.close();
+                        delegate.onCheckedIn(room);
+                    } catch (Exception e) {
+                        showErrorAlert(e.getMessage() == null ? e.getLocalizedMessage() : e.getMessage());
+                    }
                 }),
                 Map.entry(exitButton, event -> dialog.close())
         );
-
+        dialogContent.getStyleClass().add("mfx-info-dialog");
         try {
             dialogContent.setContent(loader.load());
         } catch (IOException e) {
@@ -197,25 +223,29 @@ public class RoomCardController implements Initializable {
                         dialog.close();
                         return;
                     }
-                    InvoicesService invoicesService = new InvoicesService();
-                    CheckInFormController checkInFormController = loader.getController();
-                    Reservation reservation = checkInFormController.getReservation();
-                    reservationsService.checkout(reservation.getId().toString(), reservation.getRoom().getId().toString());
-                    LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
-                    LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
-                    Duration duration = Duration.between(checkInTime, checkOutTime);
-                    long seconds = duration.getSeconds();
-                    double total = seconds * 100; //TODO: Calculate the true total
-                    invoicesService.addInvoice(
-                            new Invoice(
-                                    reservation.getCheckInTime(),
-                                    reservation.getCheckOutTime(),
-                                    total,
-                                    reservation.getCustomerName()),
-                            room.getId().toString()
-                    );
-                    dialog.close();
-                    delegate.onCheckedOut(room);
+                    try {
+                        InvoicesService invoicesService = new InvoicesService();
+                        CheckInFormController checkInFormController = loader.getController();
+                        Reservation reservation = checkInFormController.getReservation();
+                        reservationsService.checkout(reservation.getId().toString(), room.getId().toString());
+                        LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
+                        LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
+                        Duration duration = Duration.between(checkInTime, checkOutTime);
+                        long seconds = duration.getSeconds();
+                        double total = seconds * 100; //TODO: Calculate the true total
+                        invoicesService.addInvoice(
+                                new Invoice(
+                                        reservation.getCheckInTime(),
+                                        reservation.getCheckOutTime(),
+                                        total,
+                                        reservation.getCustomerName()),
+                                room.getId().toString()
+                        );
+                        dialog.close();
+                        delegate.onCheckedOut(room);
+                    } catch (Exception e) {
+                        showErrorAlert(e.getMessage() == null ? e.getLocalizedMessage() : e.getMessage());
+                    }
                 }),
                 Map.entry(updateButton, event -> {
                     CheckInFormController checkInFormController = loader.getController();
@@ -228,7 +258,7 @@ public class RoomCardController implements Initializable {
                 }),
                 Map.entry(exitButton, event -> dialog.close())
         );
-
+        dialogContent.getStyleClass().add("mfx-info-dialog");
         try {
             dialogContent.setContent(loader.load());
         } catch (IOException e) {
@@ -236,6 +266,32 @@ public class RoomCardController implements Initializable {
         }
 
         dialog.showDialog();
+    }
+
+    private void showCancelReservationConfirmation() {
+        dialogContent.clearActions();
+        MFXFontIcon warnIcon = new MFXFontIcon("fas-circle-exclamation", 18);
+        dialogContent.setHeaderIcon(warnIcon);
+        dialogContent.setHeaderText("Xác nhận huỷ");
+        dialogContent.setContentText("Bạn có chắc muốn huỷ đặt phòng hiện tại?");
+        dialogContent.getStyleClass().add("mfx-info-dialog");
+        dialogContent.addActions(
+                Map.entry(new MFXButton("Có"), event -> {
+                    cancelReservation();
+                    dialog.close();
+                }),
+                Map.entry(new MFXButton("Không"), event -> dialog.close())
+        );
+        dialog.showDialog();
+    }
+
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Có lỗi xảy ra");
+        alert.setHeaderText(null); // No header text
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @Override
