@@ -8,7 +8,9 @@ import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,13 +37,22 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
     private final Stage stage;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setupFloorsSelection();
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                floors = floorsService.getFloors();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                return null;
+            }
+        };
+        task.setOnSucceeded(event -> {
+            setupFloorsSelection();
+        });
+        new Thread(task).start();
     }
 
     public RoomManagerController(Stage stage) {
-        floors = floorsService.getFloors();
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
         this.stage = stage;
     }
 
@@ -91,38 +102,95 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 '}';
     }
 
+    private void startLoading() {
+        Platform.runLater(() -> {
+            roomFlowPane.setDisable(true);
+        });
+    }
+
+    private void stopLoading() {
+        Platform.runLater(() -> {
+            roomFlowPane.setDisable(false);
+        });
+    }
+
     @Override
     public void onCheckedIn(Room room) {
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
-        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        new Thread(task).start();
     }
 
     @Override
     public void onCheckedOut(Room room) {
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
-        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        new Thread(task).start();
     }
 
     @Override
     public void onCleaned(Room room) {
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
-        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        new Thread(task).start();
     }
 
     @Override
     public void onCancelled(Room room) {
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
-        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        new Thread(task).start();
     }
 
     @Override
     public void onUpdated(Room room) {
-        rooms = roomsService.getRooms();
-        reservations = reservationsService.getOpeningReservations();
-        setupRoomCards(floorsSelection.getSelectedItem().getNum());
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        new Thread(task).start();
     }
 }
