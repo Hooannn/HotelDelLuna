@@ -12,6 +12,7 @@ import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +51,9 @@ public class ReservationsService {
 
     public UpdateResult checkout(String reservationId, String roomId) {
         RoomsService roomsService = new RoomsService();
-        UpdateResult res = reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("status", ReservationStatus.CLOSED)));
+        reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("checkOutTime", LocalDateTime.now().toString())));
         roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
-        return res;
+        return roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
     }
 
     public UpdateResult closeReservation(String reservationId, String roomId) {

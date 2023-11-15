@@ -5,7 +5,6 @@ import com.ht.hoteldelluna.enums.ReservationStatus;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
-import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -77,7 +76,8 @@ public class CheckInFormController implements Initializable {
                 '}';
     }
 
-    public Reservation getReservation() {
+    public Reservation getReservation() throws Exception {
+        validate();
         if (reservation != null) {
             reservation.setNote(noteTextArea.getText());
             reservation.setCheckOutTime(checkOutDateTimeTextField.getLocalDateTime().toString());
@@ -92,7 +92,34 @@ public class CheckInFormController implements Initializable {
                 ReservationStatus.OPENING);
     }
 
+    private void validate() throws Exception {
+        if (reservation != null) {
+            LocalDateTime checkInTime = checkInDateTimeTextField.getLocalDateTime();
+            LocalDateTime checkOutTime = checkOutDateTimeTextField.getLocalDateTime();
+            if (checkOutTime == null) throw new Exception("Vui lòng nhập giờ check-out");
+            if (checkOutTime.isBefore(checkInTime)) throw new Exception("Giờ check-out không được sớm hơn giờ check-in");
+        } else {
+            LocalDateTime checkInTime = checkInDateTimeTextField.getLocalDateTime();
+            String totalCustomers = totalCustomersTextField.getText();
+            String customerName = customerNameTextField.getText();
+            if (checkInTime == null) throw new Exception("Vui lòng nhập giờ check-in");
+            if (totalCustomers.isEmpty()) throw new Exception("Vui lòng nhập số lượng khách");
+            if (!isNumeric(totalCustomers)) throw new Exception("Số lượng khách chỉ được nhập số");
+            if (Integer.parseInt(totalCustomers) <= 0) throw new Exception("Số lượng khách phải lớn hơn 0");
+            if (customerName.isEmpty()) throw new Exception("Vui lòng nhập tên khách hàng");
+        }
+    }
+
     public String getNote() {
         return noteTextArea.getText();
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
