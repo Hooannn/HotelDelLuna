@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class RoomManagerController implements Initializable, RoomCardControllerDelegate {
+    @FXML
+    private StackPane loadingPane;
     @FXML
     private FlowPane roomFlowPane;
     @FXML
@@ -40,9 +43,11 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
         Task<Void> task = new Task<>() {
             @Override
             public Void call() {
+                startLoading();
                 floors = floorsService.getFloors();
                 rooms = roomsService.getRooms();
                 reservations = reservationsService.getOpeningReservations();
+                stopLoading();
                 return null;
             }
         };
@@ -105,12 +110,14 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
     private void startLoading() {
         Platform.runLater(() -> {
             roomFlowPane.setDisable(true);
+            loadingPane.setVisible(true);
         });
     }
 
     private void stopLoading() {
         Platform.runLater(() -> {
             roomFlowPane.setDisable(false);
+            loadingPane.setVisible(false);
         });
     }
 
