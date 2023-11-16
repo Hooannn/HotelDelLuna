@@ -50,16 +50,7 @@ public class RoomSettingController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupPaginated();
         roomPopularity.getItems().addAll("từ cao đến thấp", "từ thấp đến cao");
-        btnNewCreate.setOnAction(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/NewRoomForm.fxml"));
-                loader.setControllerFactory(c -> new NewRoomForm());
-                MFXDialog dialog = new MFXDialog(loader.load());
-                dialog.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
 
     }
 
