@@ -5,9 +5,11 @@ import com.ht.hoteldelluna.backend.Parser;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Room;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -44,6 +46,10 @@ public class RoomsService {
 
     public DeleteResult deleteRoom(String roomId) {
         return roomCollection.deleteOne(new Document("_id", new ObjectId(roomId)));
+    }
+
+    public UpdateResult updateRoomStatus(String roomId, RoomStatus status) {
+        return roomCollection.updateOne(new Document("_id", new ObjectId(roomId)), new Document("$set", new Document("status", status)));
     }
 
     public InsertManyResult addMockRooms() {

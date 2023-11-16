@@ -1,7 +1,10 @@
 package com.ht.hoteldelluna.controllers.auth;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.controllers.main.MainController;
+import com.ht.hoteldelluna.enums.UserRole;
+import com.ht.hoteldelluna.models.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
@@ -32,6 +35,8 @@ import java.util.ResourceBundle;
 
 public class AuthController implements Initializable {
     private final Stage stage;
+
+    private final AppState appState = AppState.shared;
     private double xOffset;
     private double yOffset;
     private final ToggleGroup toggleGroup;
@@ -64,6 +69,7 @@ public class AuthController implements Initializable {
         authLoginBtn.getScene().getWindow().hide();
 
         try {
+            appState.setAuthUser(new User("Khai Hoan", "hoanthui", "123456", UserRole.ADMIN));
             Stage mainStage = new Stage();
             FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/Main.fxml"));
             loader.setControllerFactory(c -> new MainController(mainStage));

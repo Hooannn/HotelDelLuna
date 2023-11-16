@@ -6,14 +6,22 @@ import java.util.Date;
 
 public class Invoice {
     private ObjectId _id;
-    private Date checkInTime;
-    private Date checkOutTime;
+    private String checkInTime;
+    private String checkOutTime;
     private double total;
     private String customerName;
     private Room room; // reference to Room
 
     public Invoice() {}
-    public Invoice(Date checkInTime, Date checkOutTime, double total, String customerName, Room room) {
+
+    public Invoice(String checkInTime, String checkOutTime, double total, String customerName) {
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.total = total;
+        this.customerName = customerName;
+    }
+
+    public Invoice(String checkInTime, String checkOutTime, double total, String customerName, Room room) {
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.total = total;
@@ -25,11 +33,11 @@ public class Invoice {
         return this._id;
     }
 
-    public Date getCheckInTime() {
+    public String getCheckInTime() {
         return this.checkInTime;
     }
 
-    public Date getCheckOutTime() {
+    public String getCheckOutTime() {
         return this.checkOutTime;
     }
 
@@ -43,5 +51,16 @@ public class Invoice {
 
     public Room getRoom() {
         return this.room;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "checkInTime=" + checkInTime +
+                ", checkOutTime=" + checkOutTime +
+                ", total=" + total +
+                ", customerName='" + customerName + '\'' +
+                ", room=" + room +
+                '}';
     }
 }
