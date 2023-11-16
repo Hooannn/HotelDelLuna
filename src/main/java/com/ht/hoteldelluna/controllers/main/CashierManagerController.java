@@ -1,3 +1,4 @@
+
 package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.backend.services.InvoicesService;
@@ -24,3 +25,4 @@ public class CashierManagerController implements Initializable {
 
     }
 }
+
