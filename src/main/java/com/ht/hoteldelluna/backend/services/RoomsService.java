@@ -25,6 +25,7 @@ public class RoomsService {
         List<Document> documents = new ArrayList<>();
         roomCollection.find().into(documents);
         documents.forEach(this::populateRoomDocument);
+        System.out.println(documents);
         return parser.fromDocuments(documents, Room.class);
     }
     public Room getRoomById(String roomId) {
