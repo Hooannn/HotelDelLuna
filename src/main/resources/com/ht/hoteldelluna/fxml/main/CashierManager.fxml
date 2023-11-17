@@ -62,7 +62,7 @@
                      </children>
                   </HBox>
                   <Separator prefWidth="200.0" />
-                  <MFXPaginatedTableView fx:id="invoicesTable" prefWidth="1000.0" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
+                  <MFXPaginatedTableView fx:id="invoicesTable" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             </children>

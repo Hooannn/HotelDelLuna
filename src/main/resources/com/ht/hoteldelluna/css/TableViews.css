@@ -1,0 +1,9 @@
+.mfx-table-column {
+    -fx-font-family: "Roboto Medium";
+    -fx-border-color: #f6f6f6;
+}
+
+.mfx-table-view .columns-container {
+    -fx-background-color: #f6f6f6;
+    -fx-background-radius: 5 5 0 0;
+}
