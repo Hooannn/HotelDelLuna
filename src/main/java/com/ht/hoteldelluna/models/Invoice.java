@@ -12,7 +12,8 @@ public class Invoice {
     private String customerName;
     private Room room; // reference to Room
 
-    public Invoice() {}
+    public Invoice() {
+    }
 
     public Invoice(String checkInTime, String checkOutTime, double total, String customerName) {
         this.checkInTime = checkInTime;
@@ -51,6 +52,10 @@ public class Invoice {
 
     public Room getRoom() {
         return this.room;
+    }
+
+    public String getRoomId() {
+        return this.room.getId().toString();
     }
 
     @Override
