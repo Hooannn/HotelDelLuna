@@ -107,25 +107,29 @@ public class CashierManagerController implements Initializable {
     }
 
     private void setupTable() {
+        MFXTableColumn<Invoice> idxColumn = new MFXTableColumn<>("#", false);
+        idxColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(_invoice -> invoices.indexOf(_invoice) + 1));
+
         MFXTableColumn<Invoice> nameColumn = new MFXTableColumn<>("Tên Khách Hàng", false, Comparator.comparing(Invoice::getCustomerName));
         MFXTableColumn<Invoice> roomIdColumn = new MFXTableColumn<>("Mã Phòng", false, Comparator.comparing(Invoice::getRoomId));
         checkInTimeColumn = new MFXTableColumn<>("Thời Gian Thuê Phòng", false, Comparator.comparing(Invoice::getCheckInTime));
         checkOutTimeColumn = new MFXTableColumn<>("Thời Gian Trả Phòng", false, Comparator.comparing(Invoice::getCheckOutTime));
         totalColumn = new MFXTableColumn<>("Tổng Tiền", false, Comparator.comparing(Invoice::getTotal));
 
-        nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Invoice::getCustomerName));
-        roomIdColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Invoice::getRoomName));
-        checkInTimeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Invoice::getFormattedCheckInTime));
-        checkOutTimeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Invoice::getFormattedCheckOutTime));
-        totalColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Invoice::getTotal));
+        nameColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getCustomerName));
+        roomIdColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getRoomName));
+        checkInTimeColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getFormattedCheckInTime));
+        checkOutTimeColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getFormattedCheckOutTime));
+        totalColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getTotal));
 
-        nameColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.20));
-        roomIdColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.17));
-        checkInTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.23));
-        checkOutTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.23));
-        totalColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.17));
+        idxColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.10));
+        nameColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.18));
+        roomIdColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.15));
+        checkInTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.21));
+        checkOutTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.21));
+        totalColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.15));
 
-        invoicesTable.getTableColumns().addAll(nameColumn, roomIdColumn, checkInTimeColumn, checkOutTimeColumn, totalColumn);
+        invoicesTable.getTableColumns().addAll(idxColumn, nameColumn, roomIdColumn, checkInTimeColumn, checkOutTimeColumn, totalColumn);
         invoicesTable.setRowsPerPage(10);
         invoicesTable.setPagesToShow(5);
         invoicesTable.setItems(FXCollections.observableArrayList(invoices));
