@@ -87,7 +87,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void showSignOutDialog() {
-        MFXFontIcon warnIcon = new MFXFontIcon("fas-circle-exclamation", 18);
+        MFXFontIcon warnIcon = new MFXFontIcon("fas-circle-info", 18);
         dialogContent.setHeaderIcon(warnIcon);
         dialogContent.setHeaderText("Xác nhận đăng xuất");
         dialogContent.setContentText("Bạn có chắc muốn đăng xuất không?");

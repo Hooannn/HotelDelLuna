@@ -51,7 +51,7 @@ public class CashierManagerController implements Initializable {
     private final InvoicesService invoicesService = new InvoicesService();
     private final Stage stage;
 
-    private final StringConverter<SortState> converter = new StringConverter<SortState>() {
+    public static final StringConverter<SortState> converter = new StringConverter<SortState>() {
         @Override
         public String toString(SortState state) {
             if (state != null) {
@@ -107,7 +107,7 @@ public class CashierManagerController implements Initializable {
     }
 
     private void setupTable() {
-        MFXTableColumn<Invoice> idxColumn = new MFXTableColumn<>("#", false);
+        MFXTableColumn<Invoice> idxColumn = new MFXTableColumn<>("STT", false);
         idxColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(_invoice -> invoices.indexOf(_invoice) + 1));
 
         MFXTableColumn<Invoice> nameColumn = new MFXTableColumn<>("Tên Khách Hàng", false, Comparator.comparing(Invoice::getCustomerName));

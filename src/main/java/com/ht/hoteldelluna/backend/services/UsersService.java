@@ -15,7 +15,7 @@ public class UsersService {
 
     public User getUserByUsername(String username) throws Exception {
         Document doc = userCollection.find(new Document("username",username)).first();
-       if (doc == null) throw new Exception("Tài khoản không tồn tại!");
+        if (doc == null) throw new Exception("Tài khoản không tồn tại");
         return parser.fromDocument(doc, User.class);
     }
 }
