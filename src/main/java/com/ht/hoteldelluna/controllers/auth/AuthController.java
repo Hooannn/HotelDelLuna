@@ -66,10 +66,26 @@ public class AuthController implements Initializable {
     private void login() {
         System.out.println("login success!");
 
-        authLoginBtn.getScene().getWindow().hide();
+        // Lấy các giá trị user nhập vào
+        // cứ lấy giá trị fake test trước
+        String username = "letrungnguyen";
+        String password = "123456";
+
+        // Gọi userService để lấy user đó từ databse
+        // vi dụ: User user = userService.loginUser(username, password);
+
+        // Kiểm tra
+        // Nếu sai pass thì (tạm thời): System.out "sai pass"
+        // Thưc tiễn: mở 1 hộp thoại thông báo pass bị sai
+
+        // Cập nhật user hiện tại
 
         try {
+            // Cập nhật user hiện tại
             appState.setAuthUser(new User("Khai Hoan", "hoanthui", "123456", UserRole.ADMIN));
+            authLoginBtn.getScene().getWindow().hide();
+
+            // Logic vào trang chủ khi đăng nhập thành công
             Stage mainStage = new Stage();
             FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/Main.fxml"));
             loader.setControllerFactory(c -> new MainController(mainStage));
