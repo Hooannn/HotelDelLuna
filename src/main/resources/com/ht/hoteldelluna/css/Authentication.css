@@ -44,3 +44,28 @@
 .rootPane .always-on-top-icon:always-on-top {
     -fx-opacity: 1.0;
 }
+
+/**************************************************
+ * Content
+**************************************************/
+.loginLabel {
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 30;
+}
+
+.mfx-button.loginBtn {
+    -fx-background-color:  #23A6F0;
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto Bold";
+    -fx-cursor: hand;
+    -fx-font-size: 14;
+}
+
+.mfx-button.loginBtn:hover {
+    -fx-background-color: rgba(35,166,240,0.7);
+}
+
+.banner {
+    -fx-border-radius: 12 0 0 12;
+}
+

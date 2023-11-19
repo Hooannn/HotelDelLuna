@@ -14,29 +14,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="560.0" prefWidth="800.0" styleClass="rootPane" stylesheets="@../css/Authentication.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.auth.AuthController">
-    <HBox fx:id="windowHeader" alignment="CENTER_RIGHT" layoutY="6.0" prefHeight="50.0" prefWidth="1281.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <padding>
-            <Insets right="10.0" />
-        </padding>
-        <MFXFontIcon fx:id="alwaysOnTopIcon" description="fas-circle" size="15.0" styleClass="always-on-top-icon" />
-        <MFXFontIcon fx:id="minimizeIcon" description="fas-circle" size="15.0" styleClass="minimize-icon" />
-        <MFXFontIcon fx:id="closeIcon" description="fas-circle" size="15.0" styleClass="close-icon" />
-    </HBox>
-    <StackPane fx:id="contentPane" layoutX="254.28571428571428" layoutY="53.142857142857146" prefHeight="498.0" prefWidth="535.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="52.0">
+<AnchorPane fx:id="rootPane" prefHeight="450.0" prefWidth="880.0" styleClass="rootPane" stylesheets="@../css/Authentication.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.auth.AuthController">
+    <StackPane fx:id="contentPane" layoutX="254.28571428571428" layoutY="53.142857142857146" prefHeight="498.0" prefWidth="535.0" style="-fx-background-color: white; -fx-background-radius: 12;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
          <HBox alignment="CENTER_LEFT">
             <children>
-               <ImageView fitHeight="379.0" fitWidth="476.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="banner" fitHeight="451.0" fitWidth="446.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@../Logo_text.png" />
+                     <Image url="@../login-banner.png" />
                   </image>
                </ImageView>
-               <VBox alignment="TOP_CENTER" prefHeight="494.0" prefWidth="397.0" spacing="4.0">
+               <VBox alignment="TOP_CENTER" prefHeight="558.0" prefWidth="447.0" spacing="4.0">
                   <children>
                      <VBox alignment="CENTER" prefHeight="154.0" prefWidth="396.0">
                         <children>
-                           <Label alignment="CENTER" text="ĐĂNG NHẬP">
+                           <Label alignment="CENTER" styleClass="loginLabel" stylesheets="@../css/Authentication.css" text="ĐĂNG NHẬP">
                               <font>
                                  <Font size="18.0" />
                               </font>
@@ -55,11 +47,14 @@
                         </font>
                      </Label>
                      <MFXPasswordField fx:id="passwordTextField" floatMode="ABOVE" onKeyPressed="#onKeyPressed" prefHeight="50.0" prefWidth="283.0" promptText="Nhập mật khẩu!" />
-                     <Label fx:id="lblMessage" text="Label" />
-                        <MFXButton fx:id="authLoginBtn" onAction="#login" prefHeight="50.0" prefWidth="283.0" style="-fx-background-color: #23A6F0; -fx-text-fill: white;" text="Đăng nhập" textFill="WHITE">
+<!--                     <Label fx:id="lblMessage" text="Label" />-->
+                        <MFXButton fx:id="authLoginBtn" onAction="#login" prefHeight="50.0" prefWidth="283.0" styleClass="loginBtn" stylesheets="@../css/Authentication.css" text="Đăng nhập" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
                         </MFXButton>
                   </children>
                </VBox>
@@ -67,4 +62,12 @@
          </HBox>
         </children>
     </StackPane>
+    <HBox fx:id="windowHeader" alignment="CENTER_RIGHT" layoutY="6.0" prefHeight="50.0" prefWidth="1281.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets right="10.0" />
+        </padding>
+        <MFXFontIcon fx:id="alwaysOnTopIcon" description="fas-circle" size="15.0" styleClass="always-on-top-icon" />
+        <MFXFontIcon fx:id="minimizeIcon" description="fas-circle" size="15.0" styleClass="minimize-icon" />
+        <MFXFontIcon fx:id="closeIcon" description="fas-circle" size="15.0" styleClass="close-icon" />
+    </HBox>
 </AnchorPane>
