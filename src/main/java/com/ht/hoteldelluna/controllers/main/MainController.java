@@ -4,6 +4,7 @@ import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
+import com.ht.hoteldelluna.enums.UserRole;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXIconWrapper;
 import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
@@ -45,6 +46,9 @@ import static com.ht.hoteldelluna.MFXResourcesLoader.loadURL;
 public class MainController implements Initializable {
     private final Stage stage;
     private final AppState appState = AppState.shared;
+
+    @FXML
+    private Label adminSettingLabel;
     private double xOffset;
     private double yOffset;
     private final ToggleGroup toggleGroup;
@@ -175,8 +179,17 @@ public class MainController implements Initializable {
                     .toList();
             List<ToggleButton> staffNodes = nodes.stream().filter(n -> n.getUserData().equals("staff")).toList();
             List<ToggleButton> adminNodes = nodes.stream().filter(n -> n.getUserData().equals("admin")).toList();
+
             staffNavBar.getChildren().setAll(staffNodes);
-            adminNavBar.getChildren().setAll(adminNodes);
+            if (appState.getAuthUser().getRole() == UserRole.ADMIN) {
+                adminNavBar.setVisible(true);
+                adminSettingLabel.setVisible(true);
+                adminNavBar.getChildren().setAll(adminNodes);
+            } else {
+                adminNavBar.setVisible(false);
+                adminSettingLabel.setVisible(false);
+                adminNavBar.getChildren().clear();
+            }
         });
         loader.start();
     }
