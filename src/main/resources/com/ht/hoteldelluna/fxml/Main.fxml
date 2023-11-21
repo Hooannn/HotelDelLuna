@@ -43,7 +43,7 @@
                 <Insets top="12.0" />
             </VBox.margin>
         </VBox>
-        <Label styleClass="menu-label" text="CÀI ĐẶT">
+        <Label fx:id="adminSettingLabel" styleClass="menu-label" text="CÀI ĐẶT">
             <VBox.margin>
                 <Insets />
             </VBox.margin>
