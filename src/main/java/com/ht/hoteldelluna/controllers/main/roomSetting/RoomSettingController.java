@@ -17,6 +17,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -27,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
+import io.github.palexdev.materialfx.controls.MFXButton;
 
 public class RoomSettingController implements Initializable {
     @FXML
@@ -34,7 +38,7 @@ public class RoomSettingController implements Initializable {
     @FXML
     private MFXComboBox roomSeller;
     @FXML
-    private MFXPaginatedTableView roomTable;
+    private MFXPaginatedTableView<Room> roomTable;
 
     @FXML
     private MFXButton btnNewCreate;
@@ -50,16 +54,21 @@ public class RoomSettingController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupPaginated();
         roomPopularity.getItems().addAll("từ cao đến thấp", "từ thấp đến cao");
-//        btnNewCreate.setOnAction(event -> {
-//            try {
-//                FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/NewRoomForm.fxml"));
-//                loader.setControllerFactory(c -> new NewRoomForm());
-//                MFXDialog dialog = new MFXDialog(loader.load());
-//                dialog.show();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        btnNewCreate.setOnAction(event -> {try {
+            FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/newRoomForm.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root,413, 190);
+            stage.setTitle("Tạo phòng mới");
+            stage.setScene(scene);
+            stage.show();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        });
+
     }
 
     private void fetchDocuments() {
