@@ -2,6 +2,8 @@ package com.ht.hoteldelluna.models;
 
 import org.bson.types.ObjectId;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Invoice {
@@ -12,7 +14,8 @@ public class Invoice {
     private String customerName;
     private Room room; // reference to Room
 
-    public Invoice() {}
+    public Invoice() {
+    }
 
     public Invoice(String checkInTime, String checkOutTime, double total, String customerName) {
         this.checkInTime = checkInTime;
@@ -53,6 +56,24 @@ public class Invoice {
         return this.room;
     }
 
+    public String getRoomId() {
+        return this.room.getId().toString();
+    }
+
+    public String getFormattedCheckInTime() {
+        LocalDateTime dateTime = LocalDateTime.parse(this.checkInTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        return dateTime.format(newFormat);
+    }
+    public String getFormattedCheckOutTime() {
+        LocalDateTime dateTime = LocalDateTime.parse(this.checkOutTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        return dateTime.format(newFormat);
+    }
+
+    public String getRoomName() {
+        return this.room.getName();
+    }
     @Override
     public String toString() {
         return "Invoice{" +
