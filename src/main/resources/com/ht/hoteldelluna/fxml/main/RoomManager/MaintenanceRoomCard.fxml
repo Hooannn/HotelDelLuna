@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" prefHeight="149.0" prefWidth="235.0" style="-fx-border-color: rgba(0,0,0,0.1); -fx-border-width: 1; -fx-border-radius: 12; -fx-background-color: rgba(231, 64, 64, 0.1);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomManager.RoomCardController">
+<AnchorPane fx:id="root" prefHeight="149.0" prefWidth="235.0" style="-fx-border-color: rgba(0,0,0,0.1); -fx-border-width: 1; -fx-border-radius: 12; -fx-background-color: rgba(231, 64, 64, 0.1); -fx-background-radius: 12;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomManager.RoomCardController">
    <children>
       <VBox alignment="CENTER" prefHeight="149.0" prefWidth="235.0">
          <children>

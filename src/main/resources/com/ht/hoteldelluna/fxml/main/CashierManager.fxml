@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXPaginatedTableView?>
 <?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import jfxtras.scene.layout.HBox?>
@@ -26,11 +25,6 @@
                   <HBox alignment="CENTER_LEFT" spacing="15.0">
                      <children>
                         <Label styleClass="sortByLabel" stylesheets="@../../css/Main.css" text="Sắp xếp theo:" />
-                        <MFXComboBox fx:id="roomsSelection" floatMode="ABOVE" prefHeight="32.0" prefWidth="124.0" promptText="Phòng">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </MFXComboBox>
                         <MFXComboBox fx:id="checkInTimeSelection" floatMode="ABOVE" layoutX="243.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Thời Gian Thuê Phòng">
                            <opaqueInsets>
                               <Insets />
@@ -68,11 +62,7 @@
                      </children>
                   </HBox>
                   <Separator prefWidth="200.0" />
-                  <MFXScrollPane fitToHeight="true" fitToWidth="true" prefHeight="560.0" prefWidth="1003.0" VBox.vgrow="ALWAYS">
-                     <content>
-                        <FlowPane fx:id="roomFlowPane" hgap="12.0" prefHeight="560.0" prefWidth="1003.0" vgap="12.0" />
-                     </content>
-                  </MFXScrollPane>
+                  <MFXPaginatedTableView fx:id="invoicesTable" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             </children>
