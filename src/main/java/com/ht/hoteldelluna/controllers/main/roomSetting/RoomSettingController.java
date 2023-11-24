@@ -14,6 +14,7 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.utils.others.observables.When;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,25 +55,18 @@ public class RoomSettingController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupPaginated();
         roomPopularity.getItems().addAll("từ cao đến thấp", "từ thấp đến cao");
-        btnNewCreate.setOnAction(event -> {try {
-            FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/newRoomForm.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root,413, 190);
-            stage.setTitle("Tạo phòng mới");
-            stage.setScene(scene);
-            stage.show();
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        });
+    }
+    @FXML
+    public void checkForm(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/newRoomForm.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,600, 600);
+        stage.setTitle("Tạo phòng mới");
+        stage.setScene(scene);
+        stage.show();
 
     }
-
     private void fetchDocuments() {
     this.sampleDocuments = FXCollections.observableList(rooms);
 }
@@ -86,7 +80,7 @@ public class RoomSettingController implements Initializable {
 //                ", status=" + status +
 //                '}';
 //    }
-    private void setupPaginated() {
+    public void setupPaginated() {
         MFXTableColumn<Room> idColumn = new MFXTableColumn<>("ID", false, Comparator.comparing(Room::getId));
         MFXTableColumn<Room> nameColumn = new MFXTableColumn<>("Name", false,
                 Comparator.comparing(Room::getName));
@@ -110,8 +104,5 @@ public class RoomSettingController implements Initializable {
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
-
-
-
 
 }

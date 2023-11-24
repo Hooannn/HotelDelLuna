@@ -36,7 +36,11 @@ public class RoomsService {
         populateRoomDocument(doc);
         return parser.fromDocument(doc, Room.class);
     }
-
+    // Write bool function to check nameofRoom in Room database has been existed or not
+    public boolean checkNameofRoom(String name) {
+        Document doc = roomCollection.find(new Document("name", name)).first();
+        return doc != null;
+    }
     public InsertOneResult addRoom(Room room, String roomTypeId, String floorId) {
         Document document = parser.toDocument(room);
         document.put("floor", new ObjectId(floorId));

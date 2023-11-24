@@ -29,6 +29,11 @@ public class RoomTypesService {
         assert doc != null;
         return parser.fromDocument(doc, RoomType.class);
     }
+    public RoomType getRoomTypeByName(String name) {
+        Document doc = roomTypeCollection.find(new Document("name", name)).first();
+        assert doc != null;
+        return parser.fromDocument(doc, RoomType.class);
+    }
 
     public InsertOneResult addRoomType(RoomType roomType) {
         Document document = parser.toDocument(roomType);
