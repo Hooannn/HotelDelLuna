@@ -29,7 +29,11 @@ public class FloorsService {
         assert doc != null;
         return parser.fromDocument(doc, Floor.class);
     }
-
+    public Floor getFloorByNum(int num) {
+        Document doc = floorCollection.find(new Document("num", num)).first();
+        assert doc != null;
+        return parser.fromDocument(doc, Floor.class);
+    }
     public InsertOneResult addFloor(Floor floor) {
         Document document = parser.toDocument(floor);
         return floorCollection.insertOne(document);
