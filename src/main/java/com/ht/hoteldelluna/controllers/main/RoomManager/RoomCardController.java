@@ -83,7 +83,6 @@ public class RoomCardController implements Initializable {
             timeCounterLabel.setText(String.valueOf(totalMinutes) + "p");
             long totalSeconds = duration.toSeconds();
             totalCounterLabel.setText(String.valueOf(totalSeconds * 10) + "đ");
-
         }
         setupContextButton();
         setupDialog();

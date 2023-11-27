@@ -5,7 +5,6 @@ import com.ht.hoteldelluna.backend.Parser;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Room;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.client.result.InsertOneResult;
@@ -13,8 +12,8 @@ import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.print.Doc;
+import java.util.*;
 
 public class RoomsService {
     private final Parser parser = new Parser();
@@ -25,15 +24,18 @@ public class RoomsService {
 
     public List<Room> getRooms() {
         List<Document> documents = new ArrayList<>();
+        Map<String, Document> floorCaches = new HashMap<>();
+        Map<String, Document> roomTypeCaches = new HashMap<>();
         roomCollection.find().into(documents);
-        documents.forEach(this::populateRoomDocument);
-        System.out.println(documents);
+        documents.forEach(document -> {
+            this.populateRoomDocument(document, floorCaches, roomTypeCaches);
+        });
         return parser.fromDocuments(documents, Room.class);
     }
     public Room getRoomById(String roomId) {
         Document doc = roomCollection.find(new Document("_id", new ObjectId(roomId))).first();
         assert doc != null;
-        populateRoomDocument(doc);
+        populateRoomDocument(doc, null, null);
         return parser.fromDocument(doc, Room.class);
     }
     // Write bool function to check nameofRoom in Room database has been existed or not
@@ -112,11 +114,31 @@ public class RoomsService {
         return roomCollection.insertMany(documents);
     }
 
-    private void populateRoomDocument(Document document) {
+    private void populateRoomDocument(Document document, Map<String, Document> floorCaches, Map<String, Document> roomTypeCaches) {
         ObjectId floorId = document.getObjectId("floor");
         ObjectId roomTypeId = document.getObjectId("type");
-        Document floor = floorCollection.find(new Document("_id", floorId)).first();
-        Document roomType = roomTypeCollection.find(new Document("_id", roomTypeId)).first();
+        Document floor;
+        Document roomType;
+        if (floorCaches == null) {
+            floor = floorCollection.find(new Document("_id", floorId)).first();
+        } else {
+            if (floorCaches.get(floorId.toString()) != null) {
+                floor = floorCaches.get(floorId.toString());
+            } else {
+                floor = floorCollection.find(new Document("_id", floorId)).first();
+                floorCaches.put(floorId.toString(), floor);
+            }
+        }
+        if (roomTypeCaches == null) {
+            roomType = roomTypeCollection.find(new Document("_id", roomTypeId)).first();
+        } else {
+            if (roomTypeCaches.get(roomTypeId.toString()) != null) {
+                roomType = roomTypeCaches.get(roomTypeId.toString());
+            } else {
+                roomType = roomTypeCollection.find(new Document("_id", roomTypeId)).first();
+                roomTypeCaches.put(roomTypeId.toString(), roomType);
+            }
+        }
         document.put("floor", floor);
         document.put("type", roomType);
     }

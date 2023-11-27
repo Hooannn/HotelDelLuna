@@ -143,6 +143,11 @@ public class MainController implements Initializable {
                 .setControllerFactory(c -> new RoomManagerController(this.stage))
                 .setDefaultRoot(true).get());
 
+        loader.addView(MFXLoaderBean.of("DASHBOARD", loadURL("fxml/main/Dashboard.fxml"))
+                .setBeanToNodeMapper(() -> createToggle("fas-chart-line", "Báo cáo", "staff"))
+                .setControllerFactory(c -> new DashboardController(this.stage))
+                .get());
+
         loader.addView(MFXLoaderBean.of("CASHIER_MANAGER", loadURL("fxml/main/CashierManager.fxml"))
                 .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân", "staff"))
                 .setControllerFactory(c -> new CashierManagerController(this.stage))
