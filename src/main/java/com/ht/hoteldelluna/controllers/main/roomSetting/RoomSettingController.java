@@ -5,6 +5,9 @@ import com.ht.hoteldelluna.backend.services.RoomsService;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +18,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -33,7 +39,6 @@ public class RoomSettingController implements Initializable {
     private MFXComboBox roomSeller;
     @FXML
     private MFXPaginatedTableView<Room> roomTable;
-
     @FXML
     private MFXButton btnNewCreate;
     ObservableList<Room> sampleDocuments;
@@ -178,5 +183,6 @@ public class RoomSettingController implements Initializable {
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
+
 
 }
