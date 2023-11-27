@@ -1,64 +1,97 @@
 package com.ht.hoteldelluna.backend;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.Indexes;
-import org.bson.Document;
+import javax.swing.plaf.nimbus.State;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 public class Connection {
-    public final static Connection shared = new Connection();
-    private MongoClient client;
-    private MongoDatabase database;
-    private final String connectionString = "mongodb+srv://hoanthui123:hoandaica123@default.evhwqpv.mongodb.net/?retryWrites=true&w=majority";
-    ServerApi serverApi = ServerApi.builder()
-            .version(ServerApiVersion.V1)
-            .build();
-    MongoClientSettings settings = MongoClientSettings.builder()
-            .applyConnectionString(new ConnectionString(connectionString))
-            .serverApi(serverApi)
-            .build();
-
+    public static Connection shared = new Connection();
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/default"; // Replace this to your local properties
+    static final String USER = "hoanthui"; // Replace this to your local properties
+    static final String PASSWORD = "123456"; // Replace this to your local properties
+    private java.sql.Connection connection;
+    public java.sql.Connection getConnection() {
+        return connection;
+    }
     private Connection() {
         try {
-            client = MongoClients.create(settings);
-            database = client.getDatabase("Default");
-            database.runCommand(new Document("ping", 1));
-            System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
 
-            bootstrapIndexes();
-        } catch (MongoException e) {
+            System.out.println("Connected to MySQL successfully!");
+            createTablesIfNotExists();
+            System.out.println("Created the tables!");
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void bootstrapIndexes() {
-        // Create all indexes here
-        MongoCollection<Document> floorCollection = getDatabase().getCollection("floors");
-        MongoCollection<Document> userCollection = getDatabase().getCollection("users");
-        MongoCollection<Document> roomTypeCollection = getDatabase().getCollection("room_types");
-        MongoCollection<Document> roomCollection = getDatabase().getCollection("rooms");
-        // Make field 'num' in 'floors' unique
-        floorCollection.createIndex(Indexes.ascending("num"), new IndexOptions().unique(true));
-        // Make field 'username' in 'users' unique
-        userCollection.createIndex(Indexes.ascending("username"), new IndexOptions().unique(true));
-        // Make field 'name' in 'room_types' unique
-        roomTypeCollection.createIndex(Indexes.ascending("name"), new IndexOptions().unique(true));
-        // Make field 'name' in 'rooms' unique
-        roomCollection.createIndex(Indexes.ascending("name"), new IndexOptions().unique(true));
-    }
+    private void createTablesIfNotExists() {
+        try (Statement statement = connection.createStatement()) {
+            // Create User table
+            String createUserTableSQL = "CREATE TABLE IF NOT EXISTS users (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "fullName VARCHAR(255)," +
+                    "username VARCHAR(255) UNIQUE," +
+                    "password VARCHAR(255)," +
+                    "role ENUM('ADMIN', 'STAFF', 'MANAGER', 'GUEST')" +
+                    ")";
+            statement.executeUpdate(createUserTableSQL);
 
-    public MongoClient getClient() {
-        return client;
-    }
+            // Create RoomType table
+            String createRoomTypeTableSQL = "CREATE TABLE IF NOT EXISTS room_types (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "name VARCHAR(255) UNIQUE," +
+                    "pricePerHour DECIMAL(10, 2)" +
+                    ")";
+            statement.executeUpdate(createRoomTypeTableSQL);
 
-    public MongoDatabase getDatabase() {
-        return database;
+            // Create Floor table
+            String createFloorTableSQL = "CREATE TABLE IF NOT EXISTS floors (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "num INT UNIQUE" +
+                    ")";
+            statement.executeUpdate(createFloorTableSQL);
+
+            // Create Room table
+            String createRoomTableSQL = "CREATE TABLE IF NOT EXISTS rooms (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "name VARCHAR(255) UNIQUE," +
+                    "type INT," +
+                    "floor INT," +
+                    "status ENUM('AVAILABLE', 'OCCUPIED', 'MAINTENANCE')," +
+                    "FOREIGN KEY (type) REFERENCES room_types(id)," +
+                    "FOREIGN KEY (floor) REFERENCES floors(id)" +
+                    ")";
+            statement.executeUpdate(createRoomTableSQL);
+
+            // Create Invoice table
+            String createInvoiceTableSQL = "CREATE TABLE IF NOT EXISTS invoices (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "checkInTime VARCHAR(255)," +
+                    "checkOutTime VARCHAR(255)," +
+                    "total DECIMAL(10, 2)," +
+                    "customerName VARCHAR(255)," +
+                    "room INT," +
+                    "FOREIGN KEY (room) REFERENCES rooms(id)" +
+                    ")";
+            statement.executeUpdate(createInvoiceTableSQL);
+
+            // Create Reservation table
+            String createReservationTableSQL = "CREATE TABLE IF NOT EXISTS reservations (" +
+                    "id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "checkInTime VARCHAR(255)," +
+                    "checkOutTime VARCHAR(255)," +
+                    "customerName VARCHAR(255)," +
+                    "note VARCHAR(255)," +
+                    "customerCount INT," +
+                    "status ENUM('OPENING', 'CLOSED')," +
+                    "room INT," +
+                    "FOREIGN KEY (room) REFERENCES rooms(id)" +
+                    ")";
+            statement.executeUpdate(createReservationTableSQL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

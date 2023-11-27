@@ -12,7 +12,9 @@ import javafx.scene.control.TextArea;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CheckInFormController implements Initializable {
@@ -59,6 +61,21 @@ public class CheckInFormController implements Initializable {
             customerNameTextField.setText(reservation.getCustomerName());
             noteTextArea.setText(reservation.getNote());
         }
+
+        if (reservation != null) {
+            LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
+            LocalDateTime timeAfter = null;
+            if (reservation.getCheckOutTime() != null) {
+                timeAfter = LocalDateTime.parse(reservation.getCheckOutTime());
+            }
+            if (timeAfter == null) {
+                timeAfter = LocalDateTime.now();
+            }
+            Duration duration = Duration.between(checkInTime, timeAfter);
+            long totalSeconds = duration.toSeconds();
+            double price = totalSeconds * 10;
+            totalTextField.setText(String.valueOf(price));
+        }
     }
 
     @Override
@@ -84,6 +101,7 @@ public class CheckInFormController implements Initializable {
             return reservation;
         }
         return new Reservation(
+                999,
                 checkInDateTimeTextField.getLocalDateTime().toString(),
                 null,
                 customerNameTextField.getText(),

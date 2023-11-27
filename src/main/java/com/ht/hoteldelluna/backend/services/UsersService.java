@@ -1,21 +1,30 @@
 package com.ht.hoteldelluna.backend.services;
 
 import com.ht.hoteldelluna.backend.Connection;
-import com.ht.hoteldelluna.backend.Parser;
-import com.ht.hoteldelluna.models.Floor;
+import com.ht.hoteldelluna.enums.UserRole;
 import com.ht.hoteldelluna.models.User;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-import org.bson.types.ObjectId;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UsersService {
-    private final Parser parser = new Parser();
-    Connection dbConnection = Connection.shared;
-    MongoCollection<Document> userCollection = dbConnection.getDatabase().getCollection("users");
-
+    java.sql.Connection dbConnection = Connection.shared.getConnection();
     public User getUserByUsername(String username) throws Exception {
-        Document doc = userCollection.find(new Document("username",username)).first();
-        if (doc == null) throw new Exception("Tài khoản không tồn tại");
-        return parser.fromDocument(doc, User.class);
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String fullName = resultSet.getString("fullName");
+                    String storedUsername = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String role = resultSet.getString("role");
+
+                    return new User(id, fullName, storedUsername, password, UserRole.valueOf(role));
+                }
+            }
+        }
+        throw new Exception("Tài khoản không tồn tại");
     }
 }

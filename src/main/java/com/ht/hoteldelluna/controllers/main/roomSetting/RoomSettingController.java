@@ -5,9 +5,7 @@ import com.ht.hoteldelluna.backend.services.RoomsService;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,12 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -147,8 +139,6 @@ public class RoomSettingController implements Initializable {
                 Comparator.comparing(room -> room.getType().getName()));
         MFXTableColumn<Room> floorColumn = new MFXTableColumn<>("Floor", false,
                 Comparator.comparing(room -> room.getFloor().getNum()));
-        MFXTableColumn<Room> overnightPriceColumn = new MFXTableColumn<>("Giá qua đêm", false,
-                Comparator.comparing(Room::getOvernightPrice));
         MFXTableColumn<Room> statusColumn = new MFXTableColumn<>("Trạng thái", false,
                 Comparator.comparing(Room::getStatus));
         MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", false, null);
@@ -158,13 +148,13 @@ public class RoomSettingController implements Initializable {
         nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getName));
         typeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getType().getName()));
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
-        overnightPriceColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getOvernightPrice));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
         actionColumn.setRowCellFactory(device -> {
             return new MFXTableRowCell<>(room -> {
                 MFXButton editButton = new MFXButton("Sửa");
                 MFXButton deleteButton = new MFXButton("Xóa");
                 Label label = new Label("Test Node");
+
 
                 HBox hbox = new HBox(5);
                 hbox.setAlignment(Pos.CENTER);
@@ -180,6 +170,9 @@ public class RoomSettingController implements Initializable {
     }
     private void repaginate() {
         refresh_data() ;
+
+        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, statusColumn);
+
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
