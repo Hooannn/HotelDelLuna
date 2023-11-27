@@ -14,7 +14,9 @@ import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReservationsService {
     private final Parser parser = new Parser();
@@ -25,27 +27,31 @@ public class ReservationsService {
     public List<Reservation> getReservations() {
         List<Document> documents = new ArrayList<>();
         reservationCollection.find().into(documents);
-        documents.forEach(this::populateReservationDocument);
+        Map<String, Document> caches = new HashMap<>();
+        documents.forEach(document -> {
+            this.populateReservationDocument(document, caches);
+        });
         return parser.fromDocuments(documents, Reservation.class);
     }
 
     public List<Reservation> getOpeningReservations() {
         List<Document> documents = new ArrayList<>();
         reservationCollection.find(new Document("status", ReservationStatus.OPENING)).into(documents);
-        documents.forEach(this::populateReservationDocument);
+        Map<String, Document> caches = new HashMap<>();
+        documents.forEach(document -> populateReservationDocument(document, caches));
         return parser.fromDocuments(documents, Reservation.class);
     }
     public Reservation getReservationById(String reservationId) {
         Document doc = reservationCollection.find(new Document("_id", new ObjectId(reservationId))).first();
         assert doc != null;
-        populateReservationDocument(doc);
+        populateReservationDocument(doc, null);
         return parser.fromDocument(doc, Reservation.class);
     }
 
     public Reservation getReservationRoomId(String roomId) {
         Document doc = reservationCollection.find(new Document("room", new ObjectId(roomId))).first();
         assert doc != null;
-        populateReservationDocument(doc);
+        populateReservationDocument(doc, null);
         return parser.fromDocument(doc, Reservation.class);
     }
 
@@ -79,9 +85,19 @@ public class ReservationsService {
         return reservationCollection.deleteOne(new Document("_id", new ObjectId(reservationId)));
     }
 
-    private void populateReservationDocument(Document document) {
+    private void populateReservationDocument(Document document, Map<String, Document> caches) {
         ObjectId roomId = document.getObjectId("room");
-        Document room = roomCollection.find(new Document("_id", roomId)).first();
+        Document room;
+        if (caches == null) {
+            room = roomCollection.find(new Document("_id", roomId)).first();
+        } else {
+            if (caches.get(roomId.toString()) != null) {
+                room = caches.get(roomId.toString());
+            } else {
+                room = roomCollection.find(new Document("_id", roomId)).first();
+                caches.put(roomId.toString(), room);
+            }
+        }
         document.put("room", room);
     }
 }

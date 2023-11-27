@@ -10,9 +10,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.text.ParseException;
 
 public class InvoicesService {
@@ -24,14 +22,17 @@ public class InvoicesService {
     public List<Invoice> getInvoices() {
         List<Document> documents = new ArrayList<>();
         invoiceCollection.find().sort(new Document("checkOutTime", -1)).into(documents);
-        documents.forEach(this::populateRoomDocument);
+        Map<String, Document> caches = new HashMap<>();
+        documents.forEach(document -> {
+            this.populateRoomDocument(document, caches);
+        });
         return parser.fromDocuments(documents, Invoice.class);
     }
 
     public Invoice getInvoiceById(String invoiceId) {
         Document doc = invoiceCollection.find(new Document("_id", new ObjectId(invoiceId))).first();
         assert doc != null;
-        populateRoomDocument(doc);
+        populateRoomDocument(doc, null);
         return parser.fromDocument(doc, Invoice.class);
     }
 
@@ -61,9 +62,19 @@ public class InvoicesService {
         return invoiceCollection.insertMany(documents);
     }
 
-    private void populateRoomDocument(Document document) {
+    private void populateRoomDocument(Document document, Map<String, Document> caches) {
         ObjectId roomId = document.getObjectId("room");
-        Document room = roomCollection.find(new Document("_id", roomId)).first();
+        Document room;
+        if (caches == null) {
+            room = roomCollection.find(new Document("_id", roomId)).first();
+        } else {
+            if (caches.get(roomId.toString()) != null) {
+                room = caches.get(roomId.toString());
+            } else {
+                room = roomCollection.find(new Document("_id", roomId)).first();
+                caches.put(roomId.toString(), room);
+            }
+        }
         document.put("room", room);
     }
 }
