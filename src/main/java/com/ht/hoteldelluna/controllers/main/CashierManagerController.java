@@ -3,7 +3,6 @@ package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.models.Invoice;
-import com.ht.hoteldelluna.models.Text;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;

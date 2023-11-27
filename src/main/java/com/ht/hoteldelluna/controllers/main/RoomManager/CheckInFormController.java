@@ -101,6 +101,7 @@ public class CheckInFormController implements Initializable {
             return reservation;
         }
         return new Reservation(
+                999,
                 checkInDateTimeTextField.getLocalDateTime().toString(),
                 null,
                 customerNameTextField.getText(),

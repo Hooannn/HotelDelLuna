@@ -1,103 +1,236 @@
 package com.ht.hoteldelluna.backend.services;
 
 import com.ht.hoteldelluna.backend.Connection;
-import com.ht.hoteldelluna.backend.Parser;
 import com.ht.hoteldelluna.enums.ReservationStatus;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Reservation;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertOneResult;
-import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
-import org.bson.types.ObjectId;
+import com.ht.hoteldelluna.models.Room;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ReservationsService {
-    private final Parser parser = new Parser();
-    Connection dbConnection = Connection.shared;
-    MongoCollection<Document> roomCollection = dbConnection.getDatabase().getCollection("rooms");
-    MongoCollection<Document> reservationCollection = dbConnection.getDatabase().getCollection("reservations");
+    java.sql.Connection dbConnection = Connection.shared.getConnection();
 
     public List<Reservation> getReservations() {
-        List<Document> documents = new ArrayList<>();
-        reservationCollection.find().into(documents);
-        Map<String, Document> caches = new HashMap<>();
-        documents.forEach(document -> {
-            this.populateReservationDocument(document, caches);
-        });
-        return parser.fromDocuments(documents, Reservation.class);
+        List<Reservation> reservations = new ArrayList<>();
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status, rooms.status AS room_status " +
+                "FROM reservations " +
+                "JOIN rooms ON reservations.room = rooms.id";
+        try (Statement statement = dbConnection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Reservation reservation = parseReservationResultSet(resultSet);
+                reservations.add(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
     }
 
     public List<Reservation> getOpeningReservations() {
-        List<Document> documents = new ArrayList<>();
-        reservationCollection.find(new Document("status", ReservationStatus.OPENING)).into(documents);
-        Map<String, Document> caches = new HashMap<>();
-        documents.forEach(document -> populateReservationDocument(document, caches));
-        return parser.fromDocuments(documents, Reservation.class);
+        List<Reservation> openingReservations = new ArrayList<>();
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status " +
+                "FROM reservations " +
+                "JOIN rooms ON reservations.room = rooms.id " +
+                "WHERE reservations.status = 'OPENING'";
+        try (Statement statement = dbConnection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                Reservation reservation = parseReservationResultSet(resultSet);
+                openingReservations.add(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(openingReservations);
+        return openingReservations;
     }
+
     public Reservation getReservationById(String reservationId) {
-        Document doc = reservationCollection.find(new Document("_id", new ObjectId(reservationId))).first();
-        assert doc != null;
-        populateReservationDocument(doc, null);
-        return parser.fromDocument(doc, Reservation.class);
+        Reservation reservation = null;
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status " +
+                "FROM reservations " +
+                "JOIN rooms ON reservations.room = rooms.id " +
+                "WHERE reservations.id = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, reservationId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    reservation = parseReservationResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservation;
     }
 
-    public Reservation getReservationRoomId(String roomId) {
-        Document doc = reservationCollection.find(new Document("room", new ObjectId(roomId))).first();
-        assert doc != null;
-        populateReservationDocument(doc, null);
-        return parser.fromDocument(doc, Reservation.class);
+    public Reservation getReservationByRoomId(String roomId) {
+        Reservation reservation = null;
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status " +
+                "FROM reservations " +
+                "JOIN rooms ON reservations.room = rooms.id " +
+                "WHERE reservations.room = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, roomId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    reservation = parseReservationResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservation;
     }
 
-    public UpdateResult checkout(String reservationId, String roomId) {
+    public boolean checkout(String reservationId, String roomId) {
         RoomsService roomsService = new RoomsService();
-        reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("checkOutTime", LocalDateTime.now().toString())));
-        roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
-        return roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
-    }
+        try {
+            dbConnection.setAutoCommit(false);
 
-    public UpdateResult closeReservation(String reservationId, String roomId) {
-        RoomsService roomsService = new RoomsService();
-        UpdateResult res = reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("status", ReservationStatus.CLOSED)));
-        roomsService.updateRoomStatus(roomId, RoomStatus.AVAILABLE);
-        return res;
-    }
+            String updateReservationQuery = "UPDATE reservations SET checkOutTime = ? WHERE id = ?";
+            try (PreparedStatement preparedStatement = dbConnection.prepareStatement(updateReservationQuery)) {
+                preparedStatement.setString(1, LocalDateTime.now().toString());
+                preparedStatement.setString(2, reservationId);
+                preparedStatement.executeUpdate();
+            }
 
-    public UpdateResult updateNote(String reservationId, String updatedNote) {
-        return reservationCollection.updateOne(new Document("_id", new ObjectId(reservationId)), new Document("$set", new Document("note", updatedNote)));
-    }
+            roomsService.updateRoomStatus(roomId, RoomStatus.MAINTENANCE);
+            dbConnection.commit();
 
-    public InsertOneResult addReservation(Reservation reservation, String roomId) {
-        RoomsService roomsService = new RoomsService();
-        Document document = parser.toDocument(reservation);
-        document.put("room", new ObjectId(roomId));
-        roomsService.updateRoomStatus(roomId, RoomStatus.OCCUPIED);
-        return reservationCollection.insertOne(document);
-    }
-
-    public DeleteResult deleteReservation(String reservationId) {
-        return reservationCollection.deleteOne(new Document("_id", new ObjectId(reservationId)));
-    }
-
-    private void populateReservationDocument(Document document, Map<String, Document> caches) {
-        ObjectId roomId = document.getObjectId("room");
-        Document room;
-        if (caches == null) {
-            room = roomCollection.find(new Document("_id", roomId)).first();
-        } else {
-            if (caches.get(roomId.toString()) != null) {
-                room = caches.get(roomId.toString());
-            } else {
-                room = roomCollection.find(new Document("_id", roomId)).first();
-                caches.put(roomId.toString(), room);
+            return true;
+        } catch (SQLException e) {
+            try {
+                dbConnection.rollback();
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                dbConnection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-        document.put("room", room);
+    }
+
+    public boolean closeReservation(String reservationId, String roomId) {
+        RoomsService roomsService = new RoomsService();
+        try {
+            dbConnection.setAutoCommit(false);
+
+            String updateReservationQuery = "UPDATE reservations SET status = 'CLOSED' WHERE id = ?";
+            try (PreparedStatement preparedStatement = dbConnection.prepareStatement(updateReservationQuery)) {
+                preparedStatement.setString(1, reservationId);
+                preparedStatement.executeUpdate();
+            }
+
+            roomsService.updateRoomStatus(roomId, RoomStatus.AVAILABLE);
+            dbConnection.commit();
+
+            return true;
+        } catch (SQLException e) {
+            try {
+                dbConnection.rollback();
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                dbConnection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean updateNote(String reservationId, String updatedNote) {
+        String query = "UPDATE reservations SET note = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, updatedNote);
+            preparedStatement.setString(2, reservationId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addReservation(Reservation reservation, String roomId) {
+        RoomsService roomsService = new RoomsService();
+        try {
+            dbConnection.setAutoCommit(false);
+
+            String insertReservationQuery = "INSERT INTO reservations (checkInTime, status, room, customerName, note, customerCount) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = dbConnection.prepareStatement(insertReservationQuery, Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, reservation.getCheckInTime());
+                preparedStatement.setString(2, reservation.getStatus().toString());
+                preparedStatement.setString(3, roomId);
+                preparedStatement.setString(4, reservation.getCustomerName());
+                preparedStatement.setString(5, reservation.getNote());
+                preparedStatement.setString(6, String.valueOf(reservation.getCustomerCount()));
+                preparedStatement.executeUpdate();
+            }
+
+            roomsService.updateRoomStatus(roomId, RoomStatus.OCCUPIED);
+            dbConnection.commit();
+
+            return true;
+        } catch (SQLException e) {
+            try {
+                dbConnection.rollback();
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                dbConnection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean deleteReservation(String reservationId) {
+        String query = "DELETE FROM reservations WHERE id = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, reservationId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private Reservation parseReservationResultSet(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String checkInTime = resultSet.getString("checkInTime");
+        String checkOutTime = resultSet.getString("checkOutTime");
+        String statusString = resultSet.getString("status");
+        ReservationStatus status = ReservationStatus.valueOf(statusString);
+        String note = resultSet.getString("note");
+        String customerName = resultSet.getString("customerName");
+        int customerCount = resultSet.getInt("customerCount");
+        int roomId = resultSet.getInt("room");
+        String roomName = resultSet.getString("room_name");
+        String roomStatus = resultSet.getString("room_status");
+        Room room = new Room(roomId, roomName, RoomStatus.valueOf(roomStatus));
+        return new Reservation(id, checkInTime, checkOutTime, customerName, customerCount, note, status, room);
     }
 }

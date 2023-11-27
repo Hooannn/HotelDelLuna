@@ -98,7 +98,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
             }
             Reservation reservation = reservations
                     .stream()
-                    .filter(r -> r.getRoom() != null && r.getRoom().getId().toString().equals(room.getId().toString()))
+                    .filter(r -> r.getRoom() != null && r.getRoom().getId() == room.getId())
                     .findFirst()
                     .orElse(null);
 

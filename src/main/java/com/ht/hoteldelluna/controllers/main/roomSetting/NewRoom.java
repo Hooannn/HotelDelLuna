@@ -90,12 +90,9 @@ public class NewRoom {
         int intValue = Integer.parseInt(floorText);
         FloorsService floorsService = new FloorsService();
         Floor floorNumber = floorsService.getFloorByNum(intValue);
-        Double overnightPrice = 0.0;
 
-// public Room(String name, RoomType type, Floor floor, double overnightPrice, RoomStatus status)
-
-        Room room = new Room(name, roomType, floorNumber, overnightPrice, RoomStatus.AVAILABLE);
-        roomsService.addRoom(room, roomType.getId().toString(), floorNumber.getId().toString());
+        Room room = new Room(name, roomType, floorNumber, RoomStatus.AVAILABLE);
+        roomsService.addRoom(room, String.valueOf(roomType.getId()), String.valueOf(floorNumber.getId()));
         Stage stage = (Stage) nameOfRoom.getScene().getWindow();
         stage.close();
 

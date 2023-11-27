@@ -1,28 +1,52 @@
 package com.ht.hoteldelluna.models;
 
 
-import org.bson.types.ObjectId;
-
 public class RoomType {
-    private ObjectId _id;
+    private int id;
     private String name;
+    private double pricePerHour;
 
     public RoomType() {}
-    public RoomType(String name) {
+
+    public RoomType(int id, String name) {
+        this.id = id;
         this.name = name;
     }
-    public ObjectId getId() {
-        return this._id;
+
+    public RoomType(int id, String name, double pricePerHour) {
+        this.id = id;
+        this.name = name;
+        this.pricePerHour = pricePerHour;
+    }
+
+    public double getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public void setPricePerHour(double pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
-        return this.name;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "RoomType{" +
-                "_id=" + _id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
     }
