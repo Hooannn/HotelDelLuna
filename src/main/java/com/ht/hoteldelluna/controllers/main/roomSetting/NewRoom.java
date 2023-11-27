@@ -98,7 +98,6 @@ public class NewRoom {
         roomsService.addRoom(room, roomType.getId().toString(), floorNumber.getId().toString());
         Stage stage = (Stage) nameOfRoom.getScene().getWindow();
         stage.close();
-
     }
     public void checkCancel (ActionEvent event) {
         Stage stage = (Stage) nameOfRoom.getScene().getWindow();

@@ -1,32 +1,25 @@
 package com.ht.hoteldelluna.controllers.main.roomSetting;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
-import com.ht.hoteldelluna.backend.Connection;
-import com.ht.hoteldelluna.backend.Parser;
 import com.ht.hoteldelluna.backend.services.RoomsService;
-import com.ht.hoteldelluna.controllers.main.RoomManager.RoomCardController;
 import com.ht.hoteldelluna.models.Room;
-import com.ht.hoteldelluna.models.RoomType;
-import com.ht.hoteldelluna.models.Text;
-import com.mongodb.client.MongoCollection;
 import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import io.github.palexdev.materialfx.utils.others.observables.When;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.net.URL;
@@ -49,7 +42,10 @@ public class RoomSettingController implements Initializable {
     private final RoomsService roomsService = new RoomsService();
 
     public RoomSettingController() {
-        rooms = roomsService.getRooms();
+        this.rooms = roomsService.getRooms();
+    }
+    private void refresh_data() {
+        this.rooms = roomsService.getRooms();
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,12 +60,70 @@ public class RoomSettingController implements Initializable {
         Scene scene = new Scene(root,600, 600);
         stage.setTitle("Tạo phòng mới");
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
+        try {
+            if (!stage.isShowing()) {
+                repaginate();
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
+    //update data from table. When i click on one line in record of data in table, it will show data in form
+    @FXML
+
     private void fetchDocuments() {
     this.sampleDocuments = FXCollections.observableList(rooms);
 }
+    @FXML
+    private void updateRoom(ActionEvent event) throws IOException {
+        Room room = roomTable.getSelectionModel().getSelectedValue();
+        if (room == null) {
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/updateRoomForm.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,600, 600);
+        stage.setTitle("Sửa thông tin phòng");
+        stage.setScene(scene);
+        stage.showAndWait();
+        try {
+            if (!stage.isShowing()) {
+                repaginate();
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    private void deleteRoom(ActionEvent event) throws IOException {
+        Room room = roomTable.getSelectionModel().getSelectedValue();
+        if (room == null) {
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/deleteRoomForm.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,600, 600);
+        stage.setTitle("Xóa phòng");
+        stage.setScene(scene);
+        stage.showAndWait();
+        try {
+            if (!stage.isShowing()) {
+                repaginate();
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    // Update room
 //    public String toString() {
 //        return "Room{" +
 //                "_id=" + _id +
@@ -92,6 +146,8 @@ public class RoomSettingController implements Initializable {
                 Comparator.comparing(Room::getOvernightPrice));
         MFXTableColumn<Room> statusColumn = new MFXTableColumn<>("Trạng thái", false,
                 Comparator.comparing(Room::getStatus));
+        MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", false, null);
+
 
         idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getId));
         nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getName));
@@ -99,8 +155,26 @@ public class RoomSettingController implements Initializable {
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
         overnightPriceColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getOvernightPrice));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
+        actionColumn.setRowCellFactory(device -> {
+            return new MFXTableRowCell<>(room -> {
+                MFXButton editButton = new MFXButton("Sửa");
+                MFXButton deleteButton = new MFXButton("Xóa");
+                Label label = new Label("Test Node");
 
-        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, overnightPriceColumn, statusColumn);
+                HBox hbox = new HBox(5);
+                hbox.setAlignment(Pos.CENTER);
+                hbox.getChildren().addAll(editButton, deleteButton, label);
+
+                return hbox;
+            });
+        });
+
+        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, overnightPriceColumn, statusColumn, actionColumn);
+        fetchDocuments();
+        roomTable.setItems(sampleDocuments);
+    }
+    private void repaginate() {
+        refresh_data() ;
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
