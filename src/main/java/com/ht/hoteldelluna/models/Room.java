@@ -1,33 +1,38 @@
 package com.ht.hoteldelluna.models;
 
 import com.ht.hoteldelluna.enums.RoomStatus;
-import org.bson.types.ObjectId;
 
 public class Room {
-    private ObjectId _id;
+    private int id;
     private String name;
-    private RoomType type; // reference to RoomType
-    private Floor floor; // reference to Floor
-    private double overnightPrice;
+    private RoomType type;
+    private Floor floor;
     private RoomStatus status;
 
     public Room() {}
-    public Room(String name, RoomType type, Floor floor, double overnightPrice, RoomStatus status) {
+    public Room(String name, RoomType type, Floor floor, RoomStatus status) {
         this.name = name;
         this.type = type;
         this.floor = floor;
-        this.overnightPrice = overnightPrice;
         this.status = status;
     }
 
-    public Room(String name, double overnightPrice, RoomStatus status) {
+    public Room(int id, String name, RoomStatus status) {
+        this.id = id;
         this.name = name;
-        this.overnightPrice = overnightPrice;
         this.status = status;
     }
 
-    public ObjectId getId() {
-        return this._id;
+    public Room(String name, RoomStatus status) {
+        this.name = name;
+        this.status = status;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,22 +47,25 @@ public class Room {
         return this.floor;
     }
 
-    public double getOvernightPrice() {
-        return this.overnightPrice;
-    }
-
     public RoomStatus getStatus() {
         return status;
+    }
+
+    public void setType(RoomType type) {
+        this.type = type;
+    }
+
+    public void setFloor(Floor floor) {
+        this.floor = floor;
     }
 
     @Override
     public String toString() {
         return "Room{" +
-                "_id=" + _id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", floor=" + floor +
-                ", overnightPrice=" + overnightPrice +
                 ", status=" + status +
                 '}';
     }

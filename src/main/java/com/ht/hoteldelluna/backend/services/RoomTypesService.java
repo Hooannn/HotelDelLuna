@@ -1,55 +1,108 @@
 package com.ht.hoteldelluna.backend.services;
 
 import com.ht.hoteldelluna.backend.Connection;
-import com.ht.hoteldelluna.backend.Parser;
 import com.ht.hoteldelluna.models.RoomType;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertManyResult;
-import com.mongodb.client.result.InsertOneResult;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomTypesService {
-    private final Parser parser = new Parser();
-    Connection dbConnection = Connection.shared;
-    MongoCollection<Document> roomTypeCollection = dbConnection.getDatabase().getCollection("room_types");
+    java.sql.Connection dbConnection = Connection.shared.getConnection();
 
     public List<RoomType> getRoomTypes() {
-        List<Document> documents = new ArrayList<>();
-        roomTypeCollection.find().into(documents);
-        return parser.fromDocuments(documents, RoomType.class);
+        List<RoomType> roomTypes = new ArrayList<>();
+        try (Statement statement = dbConnection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM room_types");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double pricePerHour = resultSet.getDouble("pricePerHour");
+                roomTypes.add(new RoomType(id, name, pricePerHour));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roomTypes;
     }
 
     public RoomType getRoomTypeById(String roomTypeId) {
-        Document doc = roomTypeCollection.find(new Document("_id", new ObjectId(roomTypeId))).first();
-        assert doc != null;
-        return parser.fromDocument(doc, RoomType.class);
+        RoomType roomType = null;
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM room_types WHERE id = ?")) {
+            preparedStatement.setString(1, roomTypeId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    double pricePerHour = resultSet.getDouble("pricePerHour");
+                    roomType = new RoomType(id, name, pricePerHour);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roomType;
     }
+
     public RoomType getRoomTypeByName(String name) {
-        Document doc = roomTypeCollection.find(new Document("name", name)).first();
-        assert doc != null;
-        return parser.fromDocument(doc, RoomType.class);
+        RoomType roomType = null;
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM room_types WHERE name = ?")) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String rname = resultSet.getString("name");
+                    double pricePerHour = resultSet.getDouble("pricePerHour");
+                    roomType = new RoomType(id, rname, pricePerHour);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roomType;
     }
 
-    public InsertOneResult addRoomType(RoomType roomType) {
-        Document document = parser.toDocument(roomType);
-        return roomTypeCollection.insertOne(document);
+    public boolean addRoomType(RoomType roomType) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO room_types (name, pricePerHour) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, roomType.getName());
+            preparedStatement.setDouble(1, roomType.getPricePerHour());
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public DeleteResult deleteRoomType(String roomTypeId) {
-        return roomTypeCollection.deleteOne(new Document("_id", new ObjectId(roomTypeId)));
+    public boolean deleteRoomType(String roomTypeId) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM room_types WHERE id = ?")) {
+            preparedStatement.setString(1, roomTypeId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public InsertManyResult addMockRoomTypes() {
-        List<RoomType> roomTypes = new ArrayList<>();
-        roomTypes.add(new RoomType("VIP"));
-        roomTypes.add(new RoomType("Thường"));
-        roomTypes.add(new RoomType("Super Vip"));
-        List<Document> documents = parser.toDocuments(roomTypes);
-        return roomTypeCollection.insertMany(documents);
+    public boolean addMockRoomTypes() {
+        try (Statement statement = dbConnection.createStatement()) {
+            statement.addBatch("INSERT INTO room_types (name, pricePerHour) VALUES ('VIP', '50000')");
+            statement.addBatch("INSERT INTO room_types (name, pricePerHour) VALUES ('Thường', '50000')");
+            statement.addBatch("INSERT INTO room_types (name, pricePerHour) VALUES ('Super Vip', '50000')");
+            int[] results = statement.executeBatch();
+            for (int result : results) {
+                if (result <= 0) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -1,32 +1,38 @@
 package com.ht.hoteldelluna.models;
 
 import com.ht.hoteldelluna.enums.ReservationStatus;
-import org.bson.types.ObjectId;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Reservation {
-    private ObjectId _id;
+    private int id;
     private Room room;
     private String checkInTime;
     private String checkOutTime;
     private String customerName;
-
     private String note;
     private ReservationStatus status;
     private int customerCount;
 
     public Reservation() {}
 
-    public Reservation(String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status) {
+    public Reservation(int id, String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status) {
+        this.id = id;
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.customerName = customerName;
         this.note = note;
         this.status = status;
         this.customerCount = customerCount;
+    }
+
+    public Reservation(int id, String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status, Room room) {
+        this.id = id;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.customerName = customerName;
+        this.note = note;
+        this.status = status;
+        this.customerCount = customerCount;
+        this.room = room;
     }
 
     public void setNote(String note) {
@@ -37,14 +43,13 @@ public class Reservation {
         return note;
     }
 
-    public ObjectId getId() {
-        return _id;
+    public int getId() {
+        return id;
     }
 
-    public void setId(ObjectId _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
-
     public String getCheckOutTime() {
         return checkOutTime;
     }
@@ -96,7 +101,7 @@ public class Reservation {
     @Override
     public String toString() {
         return "Reservation{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", room=" + room +
                 ", checkInTime=" + checkInTime +
                 ", checkOutTime=" + checkOutTime +

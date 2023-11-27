@@ -22,6 +22,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class RoomManagerController implements Initializable, RoomCardControllerDelegate {
     @FXML
@@ -36,7 +41,6 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
     private List<Room> rooms;
     private List<Reservation> reservations;
     private List<Floor> floors;
-
     private final Stage stage;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,15 +56,24 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
             }
         };
         task.setOnSucceeded(event -> {
+            setupInterval();
             setupFloorsSelection();
         });
         new Thread(task).start();
     }
-
     public RoomManagerController(Stage stage) {
         this.stage = stage;
     }
-
+    private void setupInterval() {
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                Platform.runLater(() -> {
+                    setupRoomCards(floorsSelection.getSelectedItem().getNum());
+                });
+            }
+        }, 60000, 60000);
+    }
     private void setupFloorsSelection() {
         floorsSelection.setItems(FXCollections.observableList(floors));
         floorsSelection.valueProperty().addListener((observable, oldValue, newValue) -> setupRoomCards(newValue.getNum()));
@@ -85,7 +98,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
             }
             Reservation reservation = reservations
                     .stream()
-                    .filter(r -> r.getRoom() != null && r.getRoom().getId().toString().equals(room.getId().toString()))
+                    .filter(r -> r.getRoom() != null && r.getRoom().getId() == room.getId())
                     .findFirst()
                     .orElse(null);
 
