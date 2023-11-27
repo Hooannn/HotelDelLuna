@@ -163,16 +163,16 @@ public class RoomCardController implements Initializable {
 
     private void cancelReservation() {
         if (reservation == null) return;
-        reservationsService.closeReservation(reservation.getId().toString(), reservation.getRoom().getId().toString());
+        reservationsService.closeReservation(String.valueOf(reservation.getId()), String.valueOf(reservation.getRoom().getId()));
         delegate.onCancelled(room);
     }
 
     private void cleanRoom() {
         RoomsService roomsService = new RoomsService();
         if (reservation == null) {
-            roomsService.updateRoomStatus(room.getId().toString(), RoomStatus.AVAILABLE);
+            roomsService.updateRoomStatus(String.valueOf(room.getId()), RoomStatus.AVAILABLE);
         } else {
-            reservationsService.closeReservation(reservation.getId().toString(), reservation.getRoom().getId().toString());
+            reservationsService.closeReservation(String.valueOf(reservation.getId()), String.valueOf(reservation.getRoom().getId()));
         }
         delegate.onCleaned(room);
     }
@@ -191,7 +191,7 @@ public class RoomCardController implements Initializable {
                     try {
                         CheckInFormController checkInFormController = loader.getController();
                         Reservation reservation = checkInFormController.getReservation();
-                        reservationsService.addReservation(reservation, room.getId().toString());
+                        reservationsService.addReservation(reservation, String.valueOf(room.getId()));
                         dialog.close();
                         delegate.onCheckedIn(room);
                     } catch (Exception e) {
@@ -230,7 +230,7 @@ public class RoomCardController implements Initializable {
                         InvoicesService invoicesService = new InvoicesService();
                         CheckInFormController checkInFormController = loader.getController();
                         Reservation reservation = checkInFormController.getReservation();
-                        reservationsService.checkout(reservation.getId().toString(), room.getId().toString());
+                        reservationsService.checkout(String.valueOf(reservation.getId()), String.valueOf(room.getId()));
                         LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
                         LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
                         Duration duration = Duration.between(checkInTime, checkOutTime);
@@ -242,7 +242,7 @@ public class RoomCardController implements Initializable {
                                         reservation.getCheckOutTime(),
                                         total,
                                         reservation.getCustomerName()),
-                                room.getId().toString()
+                                String.valueOf(room.getId())
                         );
                         dialog.close();
                         delegate.onCheckedOut(room);
@@ -254,7 +254,7 @@ public class RoomCardController implements Initializable {
                     CheckInFormController checkInFormController = loader.getController();
                     String updatedNote = checkInFormController.getNote();
                     if (!reservation.getNote().equals(updatedNote)) {
-                        reservationsService.updateNote(reservation.getId().toString(), updatedNote);
+                        reservationsService.updateNote(String.valueOf(reservation.getId()), updatedNote);
                         delegate.onUpdated(room);
                     }
                     dialog.close();

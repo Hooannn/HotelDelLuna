@@ -1,13 +1,12 @@
 package com.ht.hoteldelluna.models;
 
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Invoice {
-    private ObjectId _id;
+    private int id;
     private String checkInTime;
     private String checkOutTime;
     private double total;
@@ -24,7 +23,8 @@ public class Invoice {
         this.customerName = customerName;
     }
 
-    public Invoice(String checkInTime, String checkOutTime, double total, String customerName, Room room) {
+    public Invoice(int id, String checkInTime, String checkOutTime, double total, String customerName, Room room) {
+        this.id = id;
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.total = total;
@@ -32,10 +32,9 @@ public class Invoice {
         this.room = room;
     }
 
-    public ObjectId getId() {
-        return this._id;
+    public int getId() {
+        return id;
     }
-
     public String getCheckInTime() {
         return this.checkInTime;
     }
@@ -56,8 +55,8 @@ public class Invoice {
         return this.room;
     }
 
-    public String getRoomId() {
-        return this.room.getId().toString();
+    public int getRoomId() {
+        return this.room.getId();
     }
 
     public String getFormattedCheckInTime() {

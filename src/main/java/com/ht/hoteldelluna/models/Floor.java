@@ -1,30 +1,30 @@
 package com.ht.hoteldelluna.models;
 
-import org.bson.types.ObjectId;
-
 public class Floor {
-    private ObjectId _id;
+    private int id;
     private int num;
 
-    public Floor() {}
-    public Floor(int num) {
+    public Floor() {};
+
+    public Floor(int id, int num) {
+        this.id = id;
         this.num = num;
     }
 
-    public void setId(ObjectId id) {
-        this._id = id;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getNum() {
+        return num;
     }
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public ObjectId getId() {
-        return this._id;
-    }
-
-    public int getNum() {
-        return this.num;
     }
 
     @Override
