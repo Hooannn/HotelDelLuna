@@ -51,20 +51,19 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="64.0" prefWidth="294.0" spacing="4.0" VBox.vgrow="SOMETIMES">
                            <children>
                               <Label text="Ngày giờ đến" />
-                              <LocalDateTimeTextField fx:id="checkInDateTimeTextField" prefHeight="43.0"
-                                                      prefWidth="294.0" promptText="Chọn ngày giờ check-in"/>
+                              <LocalDateTimeTextField fx:id="checkInDateTimeTextField" promptText="Chọn ngày giờ check-in" />
                            </children>
                         </VBox>
-                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="65.0" prefWidth="294.0" spacing="4.0" VBox.vgrow="SOMETIMES">
                            <children>
                               <Label text="Ngày giờ đi" />
-                              <LocalDateTimeTextField fx:id="checkOutDateTimeTextField" prefHeight="43.0" prefWidth="294.0" promptText="Chọn ngày giờ check-out" />
+                              <LocalDateTimeTextField fx:id="checkOutDateTimeTextField" promptText="Chọn ngày giờ check-out" />
                            </children>
                         </VBox>
-                        <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="82.0" prefWidth="294.0" spacing="4.0" VBox.vgrow="NEVER">
                            <children>
                               <Label text="Tên khách" />
                               <MFXTextField fx:id="customerNameTextField" floatMode="BORDER" prefHeight="38.0" prefWidth="328.0" promptText="Nhập họ tên khách" VBox.vgrow="ALWAYS" />
@@ -73,7 +72,7 @@
                         <VBox prefHeight="56.0" prefWidth="300.0" spacing="4.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Label text="Ghi chú" />
-                              <TextArea fx:id="noteTextArea" prefHeight="95.0" prefWidth="282.0" promptText="Thêm ghi chú (không bắt buộc)" style="-fx-border-radius: 12;" />
+                              <TextArea fx:id="noteTextArea" prefHeight="95.0" prefWidth="282.0" promptText="Thêm ghi chú (không bắt buộc)" style="-fx-border-radius: 12;" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>

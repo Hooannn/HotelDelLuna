@@ -1,10 +1,12 @@
 package com.ht.hoteldelluna.controllers.main.RoomManager;
 
 import com.ht.hoteldelluna.backend.AppState;
+import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.enums.ReservationStatus;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
+import com.ht.hoteldelluna.utils.Helper;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,6 +41,7 @@ public class CheckInFormController implements Initializable {
     private final Room room;
     private final Reservation reservation;
     private final AppState appState = AppState.shared;
+    private final InvoicesService invoicesService = new InvoicesService();
     public CheckInFormController(Room room, Reservation reservation) {
         this.room = room;
         this.reservation = reservation;
@@ -72,9 +75,10 @@ public class CheckInFormController implements Initializable {
                 timeAfter = LocalDateTime.now();
             }
             Duration duration = Duration.between(checkInTime, timeAfter);
-            long totalSeconds = duration.toSeconds();
-            double price = totalSeconds * 10;
-            totalTextField.setText(String.valueOf(price));
+            double hours = (double) duration.toSeconds() / 3600;
+            double total = invoicesService.calculateTotalPrice(hours, room.getType().getPricePerHour());
+            String displayTotal = Helper.formatCurrency(total);
+            totalTextField.setText(displayTotal);
         }
     }
 

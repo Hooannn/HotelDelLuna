@@ -49,7 +49,6 @@ public class ReservationsService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(openingReservations);
         return openingReservations;
     }
 
@@ -91,14 +90,14 @@ public class ReservationsService {
         return reservation;
     }
 
-    public boolean checkout(String reservationId, String roomId) {
+    public boolean checkout(String reservationId, String roomId, String checkOutTime) {
         RoomsService roomsService = new RoomsService();
         try {
             dbConnection.setAutoCommit(false);
 
             String updateReservationQuery = "UPDATE reservations SET checkOutTime = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = dbConnection.prepareStatement(updateReservationQuery)) {
-                preparedStatement.setString(1, LocalDateTime.now().toString());
+                preparedStatement.setString(1, checkOutTime == null ? LocalDateTime.now().toString() : checkOutTime);
                 preparedStatement.setString(2, reservationId);
                 preparedStatement.executeUpdate();
             }

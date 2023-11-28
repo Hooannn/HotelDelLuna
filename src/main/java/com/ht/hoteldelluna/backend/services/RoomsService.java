@@ -18,7 +18,7 @@ public class RoomsService {
 
     public List<Room> getRooms() {
         List<Room> rooms = new ArrayList<>();
-        String query = "SELECT rooms.*, floors.num AS floor_num, room_types.name AS type_name " +
+        String query = "SELECT rooms.*, floors.num AS floor_num, room_types.name AS type_name, room_types.pricePerHour AS type_price_per_hour " +
                 "FROM rooms " +
                 "JOIN floors ON rooms.floor = floors.id " +
                 "JOIN room_types ON rooms.type = room_types.id";
@@ -37,7 +37,7 @@ public class RoomsService {
     // Mark: Doing
     public Room getRoomById(String roomId) {
         Room room = null;
-        String query = "SELECT rooms.*, floors.num AS floor_num, room_types.name AS type_name " +
+        String query = "SELECT rooms.*, floors.num AS floor_num, room_types.name AS type_name, room_types.pricePerHour AS type_price_per_hour " +
                 "FROM rooms " +
                 "JOIN floors ON rooms.floor = floors.id " +
                 "JOIN room_types ON rooms.type = room_types.id " +
@@ -119,10 +119,11 @@ public class RoomsService {
         int typeid = resultSet.getInt("type");
         String typeName = resultSet.getString("type_name");
         int floorNum = resultSet.getInt("floor_num");
+        double pricePerHour = resultSet.getDouble("type_price_per_hour");
 
         Room room = new Room(id, name, status);
         room.setFloor(new Floor(floorId, floorNum));
-        room.setType(new RoomType(typeid, typeName));
+        room.setType(new RoomType(typeid, typeName, pricePerHour));
 
         return room;
     }

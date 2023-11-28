@@ -8,6 +8,7 @@ import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
+import com.ht.hoteldelluna.utils.Helper;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXContextMenu;
 import io.github.palexdev.materialfx.controls.MFXContextMenuItem;
@@ -61,6 +62,7 @@ public class RoomCardController implements Initializable {
     private final Room room;
     private final Reservation reservation;
     private final ReservationsService reservationsService = new ReservationsService();
+    private final InvoicesService invoicesService = new InvoicesService();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roomNameLabel.setText(room.getName());
@@ -81,8 +83,10 @@ public class RoomCardController implements Initializable {
             Duration duration = Duration.between(checkInTime, timeAfter);
             long totalMinutes = duration.toMinutes();
             timeCounterLabel.setText(String.valueOf(totalMinutes) + "p");
-            long totalSeconds = duration.toSeconds();
-            totalCounterLabel.setText(String.valueOf(totalSeconds * 10) + "đ");
+            double hours = (double) duration.toSeconds() / 3600;
+            double total = invoicesService.calculateTotalPrice(hours, room.getType().getPricePerHour());
+            String displayTotal = Helper.formatCurrency(total);
+            totalCounterLabel.setText(displayTotal);
         }
         setupContextButton();
         setupDialog();
@@ -230,12 +234,12 @@ public class RoomCardController implements Initializable {
                         InvoicesService invoicesService = new InvoicesService();
                         CheckInFormController checkInFormController = loader.getController();
                         Reservation reservation = checkInFormController.getReservation();
-                        reservationsService.checkout(String.valueOf(reservation.getId()), String.valueOf(room.getId()));
+                        reservationsService.checkout(String.valueOf(reservation.getId()), String.valueOf(room.getId()), reservation.getCheckOutTime());
                         LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
                         LocalDateTime checkOutTime = LocalDateTime.parse(reservation.getCheckOutTime());
                         Duration duration = Duration.between(checkInTime, checkOutTime);
-                        long seconds = duration.getSeconds();
-                        double total = seconds * 100; //TODO: Calculate the true total
+                        double hours = (double) duration.toSeconds() / 3600;
+                        double total = invoicesService.calculateTotalPrice(hours, room.getType().getPricePerHour());
                         invoicesService.addInvoice(
                                 new Invoice(
                                         reservation.getCheckInTime(),

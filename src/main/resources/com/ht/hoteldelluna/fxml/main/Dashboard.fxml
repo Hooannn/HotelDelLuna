@@ -1,10 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ht.hoteldelluna.controllers.main.DashboardController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="667.0" prefWidth="1029.0" styleClass="contentPane" stylesheets="@../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.DashboardController">
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Báo cáo" />
+                        <Region HBox.hgrow="ALWAYS" />
+                  <MFXComboBox fx:id="timeSelection" floatMode="ABOVE" prefHeight="41.0" prefWidth="124.0" promptText="Chọn mốc thời gian" />
+                    </children>
+                </HBox>
+            <MFXScrollPane hbarPolicy="NEVER" styleClass="contentWrapper" stylesheets="@../../css/Main.css" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox prefHeight="695.0" prefWidth="1029.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="118.0" prefWidth="1029.0">
+                           <children>
+                              <Pane prefHeight="47.0" prefWidth="187.0" style="-fx-border-radius: 12; -fx-border-color: rgba(0,0,0,0.1);">
+                                 <children>
+                                    <HBox prefHeight="94.0" prefWidth="183.0" spacing="8.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="78.0" prefWidth="38.0" HBox.hgrow="NEVER">
+                                             <children>
+                                                <Pane prefHeight="38.0" prefWidth="35.0" style="-fx-background-radius: 8; -fx-background-color: rgb(249, 206, 206);" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="38.0" prefWidth="38.0">
+                                                         <children>
+                                                            <MFXFontIcon description="fas-arrow-up">
+                                                               <color>
+                                                                  <Color red="0.7236841917037964" green="0.08711013942956924" blue="0.08711013942956924" />
+                                                               </color>
+                                                            </MFXFontIcon>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="0">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Doanh thu" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                              <Region prefHeight="94.0" prefWidth="16.0" />
+                              <Pane prefHeight="47.0" prefWidth="187.0" style="-fx-border-radius: 12; -fx-border-color: rgba(0,0,0,0.1);">
+                                 <children>
+                                    <HBox prefHeight="94.0" prefWidth="183.0" spacing="8.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="78.0" prefWidth="38.0" HBox.hgrow="NEVER">
+                                             <children>
+                                                <Pane prefHeight="38.0" prefWidth="35.0" style="-fx-background-radius: 8; -fx-background-color: rgb(249, 206, 206);" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="38.0" prefWidth="38.0">
+                                                         <children>
+                                                            <MFXFontIcon description="fas-arrow-up">
+                                                               <color>
+                                                                  <Color red="0.7236841917037964" green="0.08711013942956924" blue="0.08711013942956924" />
+                                                               </color>
+                                                            </MFXFontIcon>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="0">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Tg thuê trung bình" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                              <Region prefHeight="94.0" prefWidth="16.0" />
+                              <Pane prefHeight="47.0" prefWidth="187.0" style="-fx-border-radius: 12; -fx-border-color: rgba(0,0,0,0.1);">
+                                 <children>
+                                    <HBox prefHeight="94.0" prefWidth="183.0" spacing="8.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="78.0" prefWidth="38.0" HBox.hgrow="NEVER">
+                                             <children>
+                                                <Pane prefHeight="38.0" prefWidth="35.0" style="-fx-background-radius: 8; -fx-background-color: rgb(249, 206, 206);" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="38.0" prefWidth="38.0">
+                                                         <children>
+                                                            <MFXFontIcon description="fas-arrow-up">
+                                                               <color>
+                                                                  <Color red="0.7236841917037964" green="0.08711013942956924" blue="0.08711013942956924" />
+                                                               </color>
+                                                            </MFXFontIcon>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="0">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Tổng giờ thuê" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                              <Region prefHeight="94.0" prefWidth="16.0" />
+                              <Pane prefHeight="47.0" prefWidth="187.0" style="-fx-border-radius: 12; -fx-border-color: rgba(0,0,0,0.1);">
+                                 <children>
+                                    <HBox prefHeight="94.0" prefWidth="183.0" spacing="8.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="78.0" prefWidth="38.0" HBox.hgrow="NEVER">
+                                             <children>
+                                                <Pane prefHeight="38.0" prefWidth="35.0" style="-fx-background-radius: 8; -fx-background-color: rgb(249, 206, 206);" VBox.vgrow="NEVER">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="38.0" prefWidth="38.0">
+                                                         <children>
+                                                            <MFXFontIcon description="fas-arrow-up">
+                                                               <color>
+                                                                  <Color red="0.7236841917037964" green="0.08711013942956924" blue="0.08711013942956924" />
+                                                               </color>
+                                                            </MFXFontIcon>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label text="0">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Tổng lượt thuê" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <BarChart fx:id="revenueBarChart" prefHeight="502.0" prefWidth="511.0" title="Doanh thu" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                              <PieChart fx:id="popularRoomTypePieChart" title="Loại phòng phổ biến" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets right="8.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </MFXScrollPane>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

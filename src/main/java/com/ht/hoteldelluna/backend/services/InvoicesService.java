@@ -66,6 +66,13 @@ public class InvoicesService {
         }
     }
 
+    public double calculateTotalPrice(double hours, double pricePerHour) {
+        if (hours >= 24) {
+            return hours * pricePerHour * 90/100;
+        }
+        return hours * pricePerHour;
+    }
+
     private Invoice parseInvoiceResultSet(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String checkInTime = resultSet.getString("checkInTime");
