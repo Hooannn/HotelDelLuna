@@ -19,6 +19,11 @@ public class RoomType {
         this.pricePerHour = pricePerHour;
     }
 
+    public RoomType(String name, double pricePerHour) {
+        this.name = name;
+        this.pricePerHour = pricePerHour;
+    }
+
     public double getPricePerHour() {
         return pricePerHour;
     }
@@ -45,6 +50,6 @@ public class RoomType {
 
     @Override
     public String toString() {
-        return "Phòng" + name;
+        return "Phòng " + name;
     }
 }

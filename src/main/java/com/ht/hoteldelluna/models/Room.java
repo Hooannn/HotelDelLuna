@@ -28,6 +28,14 @@ public class Room {
         this.status = status;
     }
 
+    public Room(int id, String name, RoomType type, Floor floor, RoomStatus status) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.floor = floor;
+        this.status = status;
+    }
+
     public int getId() {
         return this.id;
     }

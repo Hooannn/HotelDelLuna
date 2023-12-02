@@ -11,6 +11,10 @@ public class Floor {
         this.num = num;
     }
 
+    public Floor(int num) {
+        this.num = num;
+    }
+
     public int getId() {
         return id;
     }

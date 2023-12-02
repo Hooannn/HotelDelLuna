@@ -1,9 +1,32 @@
 .mfx-table-column {
     -fx-font-family: "Roboto Medium";
     -fx-border-color: #f6f6f6;
+    -fx-start-margin: 100;
 }
 
 .mfx-table-view .columns-container {
     -fx-background-color: #f6f6f6;
     -fx-background-radius: 5 5 0 0;
+}
+
+.table-view-record-btn,
+.table-view-record-btn:focused {
+    -fx-text-fill: white;
+    -fx-background-color: #007bff;
+    -fx-font-family: "Roboto Medium";
+    -fx-cursor: hand;
+}
+
+.table-modify-record-btn,
+.table-modify-record-btn:focused {
+    -fx-background-color: #ffc107;
+    -fx-font-family: "Roboto Medium";
+    -fx-cursor: hand;
+}
+
+.table-delete-record-btn,
+.table-delete-record-btn:focused {
+    -fx-background-color: #dc3545;
+    -fx-font-family: "Roboto Medium";
+    -fx-cursor: hand;
 }
