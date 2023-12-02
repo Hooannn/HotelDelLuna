@@ -41,7 +41,6 @@ public class UpdateRoomForm implements Initializable {
     private Room room;
     public UpdateRoomForm(Room room) {
         // Initialize your form (if needed) e.g., populate ComboBox items
-        System.out.println("Constructor values - ID: "+ room.toString() );
         this.room = room;
 
 
@@ -70,7 +69,6 @@ public class UpdateRoomForm implements Initializable {
     private void updateRoom(javafx.event.ActionEvent event) throws Exception {
 
         if ( floor.getSelectedItem() == null || type.getSelectedItem() == null) {
-            System.out.println("No update");
             return;
         }
         else {

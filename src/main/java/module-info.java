@@ -40,4 +40,5 @@ module com.ht.hoteldelluna {
     exports com.ht.hoteldelluna.enums;
     opens com.ht.hoteldelluna.controllers.main.RoomManager;
     opens com.ht.hoteldelluna.controllers.main.roomSetting;
+    opens com.ht.hoteldelluna.controllers.main.floorSetting;
 }
