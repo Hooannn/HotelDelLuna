@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 public class Connection {
     public static Connection shared = new Connection();
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/default"; // Replace this to your local properties
-    static final String USER = "hoanthui"; // Replace this to your local properties
+    static final String JDBC_URL = "jdbc:mysql://localhost:3306/hoanthui"; // Replace this to your local properties
+    static final String USER = "namkuner"; // Replace this to your local properties
     static final String PASSWORD = "123456"; // Replace this to your local properties
     private java.sql.Connection connection;
     public java.sql.Connection getConnection() {

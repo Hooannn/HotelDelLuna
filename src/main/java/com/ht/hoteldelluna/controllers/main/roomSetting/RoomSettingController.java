@@ -15,6 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
+import javafx.scene.control.*;
+
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,7 +37,8 @@ public class RoomSettingController implements Initializable {
     @FXML
     private MFXButton btnNewCreate;
     ObservableList<Room> sampleDocuments;
-
+    @FXML MFXButton editButton;
+    @FXML MFXButton deleteButton;
     private List<Room> rooms ;
     private final RoomsService roomsService = new RoomsService();
 
@@ -46,7 +50,10 @@ public class RoomSettingController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        editButton.setDisable(true);
+        deleteButton.setDisable(true);
         setupPaginated();
+
         roomPopularity.getItems().addAll("từ cao đến thấp", "từ thấp đến cao");
     }
     @FXML
@@ -76,18 +83,21 @@ public class RoomSettingController implements Initializable {
     this.sampleDocuments = FXCollections.observableList(rooms);
 }
     @FXML
-    private void updateRoom(ActionEvent event) throws IOException {
-        Room room = roomTable.getSelectionModel().getSelectedValue();
-        if (room == null) {
+    private void updateRoom(ActionEvent event, Room selection) throws IOException {
+        if (selection == null) {
             return;
         }
-        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/updateRoomForm.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/updateRoomForm.fxml"));
+        UpdateRoomForm updateRoomForm = new UpdateRoomForm(selection);
+        loader.setControllerFactory(r -> updateRoomForm);
         Parent root = loader.load();
         Stage stage = new Stage();
         Scene scene = new Scene(root,600, 600);
         stage.setTitle("Sửa thông tin phòng");
         stage.setScene(scene);
         stage.showAndWait();
+
         try {
             if (!stage.isShowing()) {
                 repaginate();
@@ -98,20 +108,36 @@ public class RoomSettingController implements Initializable {
             System.out.println(e);
         }
     }
+    public void showTypeEmptyNotification() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Type Empty");
+        alert.setHeaderText(null);
+        alert.setContentText("Please choose type.");
+        alert.showAndWait();
+    }
     private void deleteRoom(ActionEvent event) throws IOException {
         Room room = roomTable.getSelectionModel().getSelectedValue();
         if (room == null) {
             return;
         }
-        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/deleteRoomForm.fxml"));
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        Scene scene = new Scene(root,600, 600);
-        stage.setTitle("Xóa phòng");
-        stage.setScene(scene);
-        stage.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Xóa Phòng");
+        alert.setHeaderText(null);
+        alert.setContentText("Bạn chắc chắn muốn xóa phòng : "+ room.getName());
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonType.CANCEL.getButtonData());
+        alert.getButtonTypes().setAll(buttonTypeCancel, ButtonType.OK);
+        alert.showAndWait();
+        if (alert.getResult().getText().equals("OK")) {
+            roomsService.deleteRoom(String.valueOf(room.getId()));
+            alert.close();
+            repaginate();
+        }
+        if (alert.getResult().getText().equals("Cancel")) {
+            alert.close();
+        }
+
         try {
-            if (!stage.isShowing()) {
+            if (!alert.isShowing()) {
                 repaginate();
             }
 
@@ -141,7 +167,6 @@ public class RoomSettingController implements Initializable {
                 Comparator.comparing(room -> room.getFloor().getNum()));
         MFXTableColumn<Room> statusColumn = new MFXTableColumn<>("Trạng thái", false,
                 Comparator.comparing(Room::getStatus));
-        MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", false, null);
 
 
         idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getId));
@@ -149,33 +174,48 @@ public class RoomSettingController implements Initializable {
         typeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getType().getName()));
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
-        actionColumn.setRowCellFactory(device -> {
-            return new MFXTableRowCell<>(room -> {
-                MFXButton editButton = new MFXButton("Sửa");
-                MFXButton deleteButton = new MFXButton("Xóa");
-                Label label = new Label("Test Node");
 
 
-                HBox hbox = new HBox(5);
-                hbox.setAlignment(Pos.CENTER);
-                hbox.getChildren().addAll(editButton, deleteButton, label);
+        roomTable.getSelectionModel().selectionProperty().addListener((observable, oldValue, newValue) -> {
+            Room selectedRoom = roomTable.getSelectionModel().getSelectedValue();
+            System.out.println("Selected room: " + selectedRoom);
+            if (selectedRoom != null) {
+                // Thực hiện các hành động tương ứng với dòng được chọn
+                System.out.println("Clicked in row: " + selectedRoom.getName());
 
-                return hbox;
-            });
+                // Enable/disable buttons và thêm các hành động khác ở đây
+                editButton.setDisable(false);
+                deleteButton.setDisable(false);
+
+                editButton.setOnAction(e -> {
+                    try {
+                        updateRoom(e, selectedRoom);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                });
+
+                deleteButton.setOnAction(e -> {
+                    try {
+                        deleteRoom(e);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                });
+            } else {
+                // Không có dòng nào được chọn
+                editButton.setDisable(true);
+                deleteButton.setDisable(true);
+            }
+
         });
-
-        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, overnightPriceColumn, statusColumn, actionColumn);
+        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, statusColumn);
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
     private void repaginate() {
         refresh_data() ;
-
-        roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, statusColumn);
-
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
     }
-
-
 }

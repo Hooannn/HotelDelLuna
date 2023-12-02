@@ -45,9 +45,6 @@ public class RoomType {
 
     @Override
     public String toString() {
-        return "RoomType{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Phòng" + name;
     }
 }
