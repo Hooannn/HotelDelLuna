@@ -5,6 +5,7 @@ import com.ht.hoteldelluna.backend.services.RoomsService;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,9 +17,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
 
 import javafx.stage.Stage;
 
@@ -176,6 +174,7 @@ public class RoomSettingController implements Initializable {
         typeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getType().getName()));
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
+
 
         roomTable.getSelectionModel().selectionProperty().addListener((observable, oldValue, newValue) -> {
             Room selectedRoom = roomTable.getSelectionModel().getSelectedValue();
