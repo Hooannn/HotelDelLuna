@@ -72,7 +72,6 @@ public class AuthController implements Initializable {
     @FXML
     private MFXButton authLoginBtn;
 
-
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
     private  User user = null;
