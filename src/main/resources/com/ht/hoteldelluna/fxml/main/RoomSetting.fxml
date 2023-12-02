@@ -28,4 +28,6 @@
       </children>
    </VBox>
    <MFXTextField alignment="TOP_CENTER" graphicTextGap="0.0" layoutX="47.0" layoutY="28.0" prefHeight="49.0" prefWidth="106.0" text="Thiết lập bảng" />
+   <MFXButton fx:id="editButton" layoutX="300.0" layoutY="27.0" text="Edit" />
+   <MFXButton fx:id="deleteButton" layoutX="363.0" layoutY="27.0" text="Delete" />
 </AnchorPane>

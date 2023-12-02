@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.fxml.main.RoomManager.UpdateRoomForm">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.roomSetting.UpdateRoomForm">
    <children>
       <MFXTextField fx:id="name" layoutX="125.0" layoutY="72.0" prefHeight="49.0" prefWidth="118.0" />
       <MFXComboBox fx:id="floor" layoutX="125.0" layoutY="180.0" />

@@ -110,6 +110,20 @@ public class RoomsService {
             return false;
         }
     }
+    public  boolean updateRoom(String roomId, String name, String roomTypeId, String floorId) {
+        String query = "UPDATE rooms SET name = ?, type = ?, floor = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, roomTypeId);
+            preparedStatement.setString(3, floorId);
+            preparedStatement.setString(4, roomId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     private Room parseRoomResultSet(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
