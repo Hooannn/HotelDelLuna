@@ -13,6 +13,10 @@ public class RoomType {
         this.name = name;
     }
 
+    public RoomType(String name) {
+        this.name = name;
+    }
+
     public RoomType(int id, String name, double pricePerHour) {
         this.id = id;
         this.name = name;
