@@ -7,14 +7,37 @@ import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.models.Room;
 import com.ht.hoteldelluna.models.RoomType;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class InvoicesService {
     java.sql.Connection dbConnection = Connection.shared.getConnection();
+
+    public List<Invoice> getInvoicesByDateRange(LocalDateTime startTime, LocalDateTime endTime) {
+        List<Invoice> invoices = new ArrayList<>();
+        String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status AS room_status, room_types.name AS room_type " +
+                "FROM invoices " +
+                "JOIN rooms ON invoices.room = rooms.id " +
+                "JOIN room_types ON rooms.type = room_types.id " +
+                "WHERE STR_TO_DATE(invoices.checkInTime, '%Y-%m-%dT%H:%i:%s') >= STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s') " +
+                "AND STR_TO_DATE(invoices.checkInTime, '%Y-%m-%dT%H:%i:%s') <= STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s') " +
+                "ORDER BY invoices.checkOutTime DESC";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            preparedStatement.setString(1, startTime.toString());
+            preparedStatement.setString(2, endTime.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Invoice invoice = parseInvoiceWithRoomTypeResultSet(resultSet);
+                invoices.add(invoice);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return invoices;
+    }
     public List<Invoice> getInvoices() {
         List<Invoice> invoices = new ArrayList<>();
         String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status AS room_status " +
@@ -122,6 +145,24 @@ public class InvoicesService {
                 type,
                 floor,
                 RoomStatus.valueOf(resultSet.getString("status"))
+        );
+
+        return new Invoice(id, checkInTime, checkOutTime, total, customerName, room);
+    }
+
+    private Invoice parseInvoiceWithRoomTypeResultSet(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String checkInTime = resultSet.getString("checkInTime");
+        String checkOutTime = resultSet.getString("checkOutTime");
+        double total = resultSet.getDouble("total");
+        String customerName = resultSet.getString("customerName");
+
+        RoomType type = new RoomType(resultSet.getString("room_type"));
+        Room room = new Room(resultSet.getInt("room"),
+                resultSet.getString("room_name"),
+                type,
+                null,
+                RoomStatus.valueOf(resultSet.getString("room_status"))
         );
 
         return new Invoice(id, checkInTime, checkOutTime, total, customerName, room);
