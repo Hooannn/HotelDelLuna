@@ -192,6 +192,14 @@ public class MainController implements Initializable {
             }
         });
 
+        if (appState.getAuthUser().getRole() == UserRole.ADMIN) {
+            adminNavBar.setVisible(true);
+            adminSettingLabel.setVisible(true);
+        } else {
+            adminNavBar.setVisible(false);
+            adminSettingLabel.setVisible(false);
+        }
+
         toggleGroup.selectToggle(roomManagerToggle);
     }
 

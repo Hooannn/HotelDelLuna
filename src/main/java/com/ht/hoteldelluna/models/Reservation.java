@@ -1,6 +1,11 @@
 package com.ht.hoteldelluna.models;
 
+import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.enums.ReservationStatus;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Reservation {
     private int id;
@@ -98,6 +103,16 @@ public class Reservation {
         this.customerCount = customerCount;
     }
 
+    public String getFormattedCheckInTime() {
+        LocalDateTime dateTime = LocalDateTime.parse(this.checkInTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        return dateTime.format(newFormat);
+    }
+    public String getFormattedCheckOutTime() {
+        LocalDateTime dateTime = LocalDateTime.parse(this.checkOutTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        return dateTime.format(newFormat);
+    }
     @Override
     public String toString() {
         return "Reservation{" +

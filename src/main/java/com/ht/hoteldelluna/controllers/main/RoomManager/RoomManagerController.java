@@ -45,22 +45,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
     private final Stage stage;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Task<Void> task = new Task<>() {
-            @Override
-            public Void call() {
-                startLoading();
-                floors = floorsService.getFloors();
-                rooms = roomsService.getRooms();
-                reservations = reservationsService.getOpeningReservations();
-                stopLoading();
-                return null;
-            }
-        };
-        task.setOnSucceeded(event -> {
-            setupInterval();
-            setupFloorsSelection();
-        });
-        new Thread(task).start();
+        setupInterval();
     }
     public RoomManagerController(Stage stage) {
         this.stage = stage;
@@ -70,20 +55,39 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
             @Override
             public void run(){
                 Platform.runLater(() -> {
-                    setupRoomCards(floorsSelection.getSelectedItem().getNum());
+                    if (floorsSelection.getSelectedItem() != null) {
+                        setupRoomCards(floorsSelection.getSelectedItem().getId());
+                    }
                 });
             }
         }, 60000, 60000);
     }
     private void setupFloorsSelection() {
+        Floor prevSelected = floorsSelection.getSelectedItem();
+        floorsSelection.getItems().clear();
         floorsSelection.setItems(FXCollections.observableList(floors));
-        floorsSelection.valueProperty().addListener((observable, oldValue, newValue) -> setupRoomCards(newValue.getNum()));
-        floorsSelection.selectFirst();
+        floorsSelection.valueProperty().addListener((observable, oldValue, newValue) -> setupRoomCards(newValue.getId()));
+
+        if (prevSelected == null) {
+            floorsSelection.selectFirst();
+        } else {
+            int prevId = prevSelected.getId();
+            Floor item = floorsSelection.getItems().stream().filter(i ->
+                i.getId() == prevId
+            ).findFirst().orElse(null);
+
+            if (item == null) {
+                floorsSelection.selectFirst();
+            } else {
+                floorsSelection.selectItem(item);
+            }
+        }
+
     }
 
-    private void setupRoomCards(int floor) {
+    private void setupRoomCards(int floorId) {
         roomFlowPane.getChildren().clear();
-        List<Room> renderRooms = rooms.stream().filter(room -> room.getFloor().getNum() == floor).toList();
+        List<Room> renderRooms = rooms.stream().filter(room -> room.getFloor().getId() == floorId).toList();
         renderRooms.forEach(room -> {
             FXMLLoader loader;
             switch (room.getStatus()) {
@@ -147,7 +151,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getId()));
         new Thread(task).start();
     }
 
@@ -163,7 +167,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getId()));
         new Thread(task).start();
     }
 
@@ -179,7 +183,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getId()));
         new Thread(task).start();
     }
 
@@ -195,7 +199,7 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getId()));
         new Thread(task).start();
     }
 
@@ -211,7 +215,26 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
                 return null;
             }
         };
-        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
+        task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getId()));
+        new Thread(task).start();
+    }
+
+    @Override
+    public void reload() {
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                startLoading();
+                floors = floorsService.getFloors();
+                rooms = roomsService.getRooms();
+                reservations = reservationsService.getOpeningReservations();
+                stopLoading();
+                return null;
+            }
+        };
+        task.setOnSucceeded(event -> {
+            setupFloorsSelection();
+        });
         new Thread(task).start();
     }
 
