@@ -182,9 +182,6 @@ public class CashierManagerController implements Initializable, Reloadable {
                     .setScrimOwner(true)
                     .get();
 
-            dialogContent.addActions(
-                    Map.entry(new MFXButton("Xác nhận"), event -> dialog.close())
-            );
             dialogContent.setMaxSize(stage.getMaxWidth(), stage.getMaxHeight());
             dialogContent.getStyleClass().add("mfx-info-dialog");
         });
@@ -205,7 +202,8 @@ public class CashierManagerController implements Initializable, Reloadable {
 
     @Override
     public void reload() {
-
+        invoices = invoicesService.getInvoices();
+        invoicesTable.setItems(FXCollections.observableArrayList(invoices));
     }
 }
 
