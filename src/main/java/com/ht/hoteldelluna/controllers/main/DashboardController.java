@@ -1,5 +1,6 @@
 package com.ht.hoteldelluna.controllers.main;
 
+import com.ht.hoteldelluna.controllers.Reloadable;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+public class DashboardController implements Initializable, Reloadable {
     @FXML
     private PieChart popularRoomTypePieChart;
     @FXML
@@ -60,5 +61,10 @@ public class DashboardController implements Initializable {
 
         // Add the data to the chart
         popularRoomTypePieChart.getData().addAll(slice1, slice2, slice3, slice4);
+    }
+
+    @Override
+    public void reload() {
+
     }
 }

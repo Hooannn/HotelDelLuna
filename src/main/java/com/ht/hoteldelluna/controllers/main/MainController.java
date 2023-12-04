@@ -3,6 +3,7 @@ package com.ht.hoteldelluna.controllers.main;
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.Tab;
 import com.ht.hoteldelluna.backend.AppState;
+import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
 import com.ht.hoteldelluna.enums.UserRole;
@@ -182,12 +183,22 @@ public class MainController implements Initializable {
                 Tab tab = tabs.stream().filter(t -> t.getToggle().equals(toggleButton)).findFirst().orElse(null);
                 if (tab != null) {
                     contentPane.getChildren().setAll((Node) tab.getLoader().getRoot());
+                    Reloadable controller = tab.getLoader().getController();
+                    controller.reload();
                 }
             } else {
                 ToggleButton toggleButton = (ToggleButton) oldValue;
                 toggleGroup.selectToggle(toggleButton);
             }
         });
+
+        if (appState.getAuthUser().getRole() == UserRole.ADMIN) {
+            adminNavBar.setVisible(true);
+            adminSettingLabel.setVisible(true);
+        } else {
+            adminNavBar.setVisible(false);
+            adminSettingLabel.setVisible(false);
+        }
 
         toggleGroup.selectToggle(roomManagerToggle);
     }
