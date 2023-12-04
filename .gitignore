@@ -7,9 +7,6 @@ local.properties
 /jniLibs/
 /resources/
 
-# Prevent overwriting the local sql auth
-src/main/java/com/ht/hoteldelluna/backend/Connection.java
-
 # Intellij project files
 *.ipr
 .idea/
