@@ -237,4 +237,9 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
         });
         new Thread(task).start();
     }
+
+    @Override
+    public void reload() {
+        System.out.println("Tab value changed to this");
+    }
 }
