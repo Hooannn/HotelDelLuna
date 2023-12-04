@@ -4,6 +4,7 @@ import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.FloorsService;
 import com.ht.hoteldelluna.backend.services.ReservationsService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
+import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
@@ -28,7 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class RoomManagerController implements Initializable, RoomCardControllerDelegate {
+public class RoomManagerController implements Initializable, RoomCardControllerDelegate, Reloadable {
     @FXML
     private StackPane loadingPane;
     @FXML
@@ -212,5 +213,10 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
         };
         task.setOnSucceeded(taskFinishEvent -> setupRoomCards(floorsSelection.getSelectedItem().getNum()));
         new Thread(task).start();
+    }
+
+    @Override
+    public void reload() {
+        System.out.println("Tab value changed to this");
     }
 }

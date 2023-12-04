@@ -3,6 +3,7 @@ package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.InvoicesService;
+import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.controllers.main.RoomManager.CheckInFormController;
 import com.ht.hoteldelluna.models.Invoice;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class CashierManagerController implements Initializable {
+public class CashierManagerController implements Initializable, Reloadable {
     @FXML
     private MFXComboBox<SortState> checkInTimeSelection;
 
@@ -200,6 +201,11 @@ public class CashierManagerController implements Initializable {
             e.printStackTrace();
         }
         dialog.showDialog();
+    }
+
+    @Override
+    public void reload() {
+
     }
 }
 

@@ -80,42 +80,42 @@
 	-fx-text-fill: #9B9999;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node {
-	-fx-background-color: transparent;
-	-fx-background-radius: 0;
-	-fx-border-style: hidden hidden hidden solid;
-	-fx-border-width: 3;
-	-fx-border-color: transparent;
-	-fx-border-radius: 0;
-	-fx-pref-height: 40;
-
-	-fx-font-family: 'Roboto Medium';
-	-fx-font-size: 13;
-	-fx-text-fill: #737373;
-	-fx-cursor: hand;
+.toggle-button .label {
+    -fx-font-family: 'Roboto Medium';
+    -fx-font-size: 13;
+    -fx-text-fill: #737373;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-ripple-generator {
-	-mfx-paused: true;
+.toggle-button:selected .label {
+    -fx-text-fill: #23A6F0;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-icon-wrapper .mfx-font-icon {
-	-mfx-color: #737373;
+.toggle-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-style: hidden hidden hidden solid;
+    -fx-border-width: 3;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-cursor: hand;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected {
-	-fx-background-color: white;
-	-fx-background-radius: 5;
-	-fx-text-fill: #23A6F0;
-	-fx-border-color: #23A6F0;
+.toggle-button .mfx-font-icon {
+    -mfx-color: #737373;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .selection-rectangle {
+.toggle-button:selected {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: #23A6F0;
+}
+
+.toggle-button:selected .selection-rectangle {
 	-fx-stroke: transparent;
 	-fx-fill: transparent;
 }
 
-.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .mfx-icon-wrapper .mfx-font-icon {
+.toggle-button:selected .mfx-font-icon {
 	-mfx-color: #23A6F0;
 }
 

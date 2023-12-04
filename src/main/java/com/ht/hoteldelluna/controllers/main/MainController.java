@@ -1,29 +1,26 @@
 package com.ht.hoteldelluna.controllers.main;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.Tab;
 import com.ht.hoteldelluna.backend.AppState;
+import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
 import com.ht.hoteldelluna.enums.UserRole;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXIconWrapper;
-import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.enums.ScrimPriority;
-import io.github.palexdev.materialfx.utils.ToggleButtonsUtil;
-import io.github.palexdev.materialfx.utils.others.loader.MFXLoader;
-import io.github.palexdev.materialfx.utils.others.loader.MFXLoaderBean;
 import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -36,16 +33,23 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static com.ht.hoteldelluna.MFXResourcesLoader.loadURL;
-
 public class MainController implements Initializable {
     private final Stage stage;
     private final AppState appState = AppState.shared;
+    public ToggleButton roomManagerToggle;
+    public ToggleButton dashboardToggle;
+    public ToggleButton cashierManagerToggle;
+    public ToggleButton roomSettingToggle;
+    public ToggleButton roomTypeSettingToggle;
+    public ToggleButton staffSettingToggle;
+    public ToggleButton floorSettingToggle;
 
     @FXML
     private Label adminSettingLabel;
@@ -102,7 +106,6 @@ public class MainController implements Initializable {
     public MainController(Stage stage) {
         this.stage = stage;
         this.toggleGroup = new ToggleGroup();
-        ToggleButtonsUtil.addAlwaysOneSelectedSupport(toggleGroup);
     }
 
     @Override
@@ -135,84 +138,61 @@ public class MainController implements Initializable {
         initializeLoader();
         setupDialog();
     }
-
     private void initializeLoader() {
-        MFXLoader loader = new MFXLoader();
-        loader.addView(MFXLoaderBean.of("ROOM_MANAGER", loadURL("fxml/main/RoomManager/RoomManager.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-house", "Sơ đồ phòng", "staff"))
-                .setControllerFactory(c -> new RoomManagerController(this.stage))
-                .setDefaultRoot(true).get());
+        List<Tab> tabs = new ArrayList<>();
+        ToggleButton[] toggles = { roomManagerToggle, dashboardToggle, cashierManagerToggle, roomSettingToggle, roomTypeSettingToggle, staffSettingToggle, floorSettingToggle };
+        for (ToggleButton toggle : toggles) {
+            toggle.setToggleGroup(toggleGroup);
+        }
 
-        loader.addView(MFXLoaderBean.of("DASHBOARD", loadURL("fxml/main/Dashboard.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-chart-line", "Báo cáo", "staff"))
-                .setControllerFactory(c -> new DashboardController(this.stage))
-                .get());
+        FXMLLoader rmloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/RoomManager.fxml"));
+        rmloader.setControllerFactory(c -> new RoomManagerController(this.stage));
+        tabs.add(new Tab(roomManagerToggle, rmloader));
 
-        loader.addView(MFXLoaderBean.of("CASHIER_MANAGER", loadURL("fxml/main/CashierManager.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-dollar-sign", "Thu ngân", "staff"))
-                .setControllerFactory(c -> new CashierManagerController(this.stage))
-                .get());
+        FXMLLoader dbloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/Dashboard.fxml"));
+        dbloader.setControllerFactory(c -> new DashboardController(this.stage));
+        tabs.add(new Tab(dashboardToggle, dbloader));
 
-        loader.addView(MFXLoaderBean.of("ROOM_SETTING", loadURL("fxml/main/RoomSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-bed", "Thiết lập phòng", "admin"))
-                .get());
+        FXMLLoader csloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/CashierManager.fxml"));
+        csloader.setControllerFactory(c -> new CashierManagerController(this.stage));
+        tabs.add(new Tab(cashierManagerToggle, csloader));
 
-        loader.addView(MFXLoaderBean.of("ROOM_TYPE_SETTING", loadURL("fxml/main/RoomTypeSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-list", "Thiết lập loại phòng", "admin"))
-                .get());
+        FXMLLoader rsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomSetting.fxml"));
+        tabs.add(new Tab(roomSettingToggle, rsloader));
 
-        loader.addView(MFXLoaderBean.of("STAFF_SETTING", loadURL("fxml/main/StaffSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Thiết lập nhân viên", "admin"))
-                .get());
+        FXMLLoader rtsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting.fxml"));
+        tabs.add(new Tab(roomTypeSettingToggle, rtsloader));
 
-        loader.addView(MFXLoaderBean.of("FLOOR_SETTING", loadURL("fxml/main/FloorSetting.fxml"))
-                .setBeanToNodeMapper(() -> createToggle("fas-wrench", "Thiết lập tầng", "admin"))
-                .get());
+        FXMLLoader ssloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/StaffSetting.fxml"));
+        tabs.add(new Tab(staffSettingToggle, ssloader));
 
+        FXMLLoader fsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/FloorSetting.fxml"));
+        tabs.add(new Tab(floorSettingToggle, fsloader));
 
-        loader.setOnLoadedAction(beans -> {
-            List<ToggleButton> nodes = beans.stream()
-                    .map(bean -> {
-                        ToggleButton toggle = (ToggleButton) bean.getBeanToNodeMapper().get();
-                        toggle.setOnAction(event -> contentPane.getChildren().setAll(bean.getRoot()));
-                        if (bean.isDefaultView()) {
-                            contentPane.getChildren().setAll(bean.getRoot());
-                            toggle.setSelected(true);
-                        }
-                        return toggle;
-                    })
-                    .toList();
-            List<ToggleButton> staffNodes = nodes.stream().filter(n -> n.getUserData().equals("staff")).toList();
-            List<ToggleButton> adminNodes = nodes.stream().filter(n -> n.getUserData().equals("admin")).toList();
+        for (Tab tab : tabs) {
+            try {
+                tab.getLoader().load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-            staffNavBar.getChildren().setAll(staffNodes);
-            if (appState.getAuthUser().getRole() == UserRole.ADMIN) {
-                adminNavBar.setVisible(true);
-                adminSettingLabel.setVisible(true);
-                adminNavBar.getChildren().setAll(adminNodes);
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ToggleButton toggleButton = (ToggleButton) newValue;
+                Tab tab = tabs.stream().filter(t -> t.getToggle().equals(toggleButton)).findFirst().orElse(null);
+                if (tab != null) {
+                    contentPane.getChildren().setAll((Node) tab.getLoader().getRoot());
+                    Reloadable controller = tab.getLoader().getController();
+                    controller.reload();
+                }
             } else {
-                adminNavBar.setVisible(false);
-                adminSettingLabel.setVisible(false);
-                adminNavBar.getChildren().clear();
+                ToggleButton toggleButton = (ToggleButton) oldValue;
+                toggleGroup.selectToggle(toggleButton);
             }
         });
-        loader.start();
-    }
 
-    private ToggleButton createToggle(String icon, String text, Object userData) {
-        return createToggle(icon, text, userData, 0);
-    }
-
-    private ToggleButton createToggle(String icon, String text, Object userData, double rotate) {
-        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 20, 24);
-        MFXRectangleToggleNode toggleNode = new MFXRectangleToggleNode(text, wrapper);
-        toggleNode.setAlignment(Pos.CENTER_LEFT);
-        toggleNode.setMaxWidth(Double.MAX_VALUE);
-        toggleNode.setToggleGroup(toggleGroup);
-        toggleNode.setUserData(userData);
-        if (rotate != 0)
-            wrapper.getIcon().setRotate(rotate);
-        return toggleNode;
+        toggleGroup.selectToggle(roomManagerToggle);
     }
 
     private void signOut() {
