@@ -10,23 +10,31 @@
 }
 
 .table-view-record-btn,
+.table-modify-record-btn,
+.table-delete-record-btn {
+    -fx-font-family: "Roboto Medium";
+    -fx-translate-y: -1.5;
+    -fx-cursor: hand;
+}
+
+.table-view-record-btn,
 .table-view-record-btn:focused {
     -fx-text-fill: white;
     -fx-background-color: #007bff;
-    -fx-font-family: "Roboto Medium";
-    -fx-cursor: hand;
 }
 
 .table-modify-record-btn,
 .table-modify-record-btn:focused {
     -fx-background-color: #ffc107;
-    -fx-font-family: "Roboto Medium";
-    -fx-cursor: hand;
 }
 
 .table-delete-record-btn,
 .table-delete-record-btn:focused {
     -fx-background-color: #dc3545;
-    -fx-font-family: "Roboto Medium";
-    -fx-cursor: hand;
+}
+
+.table-view-record-btn:hover,
+.table-modify-record-btn:hover,
+.table-delete-record-btn:hover {
+    -fx-opacity: 0.8;
 }

@@ -1,6 +1,7 @@
 package com.ht.hoteldelluna.models;
 
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -68,6 +69,13 @@ public class Invoice {
         LocalDateTime dateTime = LocalDateTime.parse(this.checkOutTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
         return dateTime.format(newFormat);
+    }
+
+    public String getFormattedTotal() {
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+        String formattedValue = decimalFormat.format(this.total);
+        formattedValue += "₫";
+        return formattedValue;
     }
 
     public String getRoomName() {
