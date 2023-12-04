@@ -2,6 +2,7 @@ package com.ht.hoteldelluna.controllers.main.roomSetting;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.RoomsService;
+import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.models.Room;
 import io.github.palexdev.materialfx.controls.*;
@@ -29,7 +30,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import io.github.palexdev.materialfx.controls.MFXButton;
 
-public class RoomSettingController implements Initializable {
+public class RoomSettingController implements Initializable, Reloadable {
     @FXML
     private MFXComboBox roomPopularity;
     @FXML
@@ -250,5 +251,10 @@ public class RoomSettingController implements Initializable {
         refresh_data() ;
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
+    }
+
+    @Override
+    public void reload() {
+
     }
 }
