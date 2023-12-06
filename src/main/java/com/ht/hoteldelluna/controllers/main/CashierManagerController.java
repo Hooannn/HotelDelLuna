@@ -4,7 +4,6 @@ package com.ht.hoteldelluna.controllers.main;
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.controllers.Reloadable;
-import com.ht.hoteldelluna.controllers.main.RoomManager.CheckInFormController;
 import com.ht.hoteldelluna.models.Invoice;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -19,7 +18,6 @@ import io.github.palexdev.materialfx.enums.SortState;
 import io.github.palexdev.materialfx.utils.others.observables.When;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,8 +32,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CashierManagerController implements Initializable, Reloadable {
     @FXML
@@ -124,14 +122,18 @@ public class CashierManagerController implements Initializable, Reloadable {
 
     private void setupTable() {
         MFXTableColumn<Invoice> idxColumn = new MFXTableColumn<>("STT", false);
-        idxColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(_invoice -> invoices.indexOf(_invoice) + 1));
+        idxColumn.setRowCellFactory(invoice ->  new MFXTableRowCell<>(_invoice -> invoices.indexOf(_invoice) + 1));
 
         MFXTableColumn<Invoice> actionColumn = new MFXTableColumn<>("Thao Tác", false);
         actionColumn.setRowCellFactory(invoice -> {
-            MFXTableRowCell cell = new MFXTableRowCell<>(_invoice -> "");
+            AtomicInteger id = new AtomicInteger();
+            MFXTableRowCell cell = new MFXTableRowCell<>(_invoice -> {
+                id.set(((Invoice) _invoice).getId());
+                return "";
+            });
             MFXButton viewBtn = new MFXButton("Xem");
             viewBtn.getStyleClass().add("table-view-record-btn");
-            viewBtn.setOnAction(e -> showInvoiceDetailDialog(invoice.getId()));
+            viewBtn.setOnAction(e -> showInvoiceDetailDialog(id.get()));
             cell.setAlignment(Pos.TOP_CENTER);
             cell.setGraphic(viewBtn);
             return cell;
@@ -147,7 +149,7 @@ public class CashierManagerController implements Initializable, Reloadable {
         roomIdColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getRoomName));
         checkInTimeColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getFormattedCheckInTime));
         checkOutTimeColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getFormattedCheckOutTime));
-        totalColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getTotal));
+        totalColumn.setRowCellFactory(invoice -> new MFXTableRowCell<>(Invoice::getFormattedTotal));
 
         idxColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.08));
         nameColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.18));
@@ -155,7 +157,7 @@ public class CashierManagerController implements Initializable, Reloadable {
         checkInTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.19));
         checkOutTimeColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.19));
         totalColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.13));
-        actionColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.10));
+        actionColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.1));
 
         invoicesTable.getTableColumns().addAll(idxColumn, nameColumn, roomIdColumn, checkInTimeColumn, checkOutTimeColumn, totalColumn, actionColumn);
         invoicesTable.setRowsPerPage(10);
