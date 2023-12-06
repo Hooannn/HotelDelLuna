@@ -159,21 +159,6 @@ public class AuthController implements Initializable {
         dialog.showAndWait();
     }
 
-    private ToggleButton createToggle(String icon, String text) {
-        return createToggle(icon, text, 0);
-    }
-
-    private ToggleButton createToggle(String icon, String text, double rotate) {
-        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
-        MFXRectangleToggleNode toggleNode = new MFXRectangleToggleNode(text, wrapper);
-        toggleNode.setAlignment(Pos.CENTER_LEFT);
-        toggleNode.setMaxWidth(Double.MAX_VALUE);
-        toggleNode.setToggleGroup(toggleGroup);
-        if (rotate != 0)
-            wrapper.getIcon().setRotate(rotate);
-        return toggleNode;
-    }
-
     public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) login();
     }

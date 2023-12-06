@@ -5,6 +5,7 @@ import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.models.Invoice;
+import com.ht.hoteldelluna.utils.Helper;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
@@ -26,7 +27,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,30 +64,6 @@ public class CashierManagerController implements Initializable, Reloadable {
     private final InvoicesService invoicesService = new InvoicesService();
     private final Stage stage;
 
-    public static final StringConverter<SortState> converter = new StringConverter<SortState>() {
-        @Override
-        public String toString(SortState state) {
-            if (state != null) {
-                switch (state) {
-                    case ASCENDING:
-                        return "Tăng dần";
-                    case DESCENDING:
-                        return "Giảm dần";
-                    case UNSORTED:
-                        return "Mặc định";
-                    default:
-                        return state.toString().toLowerCase();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public SortState fromString(String string) {
-            return SortState.valueOf(string.toUpperCase());
-        }
-    };
-
     public CashierManagerController(Stage stage) {
         this.stage = stage;
     }
@@ -111,9 +87,9 @@ public class CashierManagerController implements Initializable, Reloadable {
         checkOutTimeSelection.setItems(FXCollections.observableArrayList(SortState.values()));
         totalSelection.setItems(FXCollections.observableArrayList(SortState.values()));
 
-        checkInTimeSelection.setConverter(converter);
-        checkOutTimeSelection.setConverter(converter);
-        totalSelection.setConverter(converter);
+        checkInTimeSelection.setConverter(Helper.sortEnumConverter);
+        checkOutTimeSelection.setConverter(Helper.sortEnumConverter);
+        totalSelection.setConverter(Helper.sortEnumConverter);
 
         checkInTimeSelection.valueProperty().addListener((observable, oldValue, newValue) -> checkInTimeColumn.setSortState(newValue));
         checkOutTimeSelection.valueProperty().addListener((observable, oldValue, newValue) -> checkOutTimeColumn.setSortState(newValue));
