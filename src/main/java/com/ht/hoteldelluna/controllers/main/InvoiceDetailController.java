@@ -55,20 +55,24 @@ public class InvoiceDetailController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceIdLabel.setText(String.format("%04d", invoice.getId()));
-        createdAtLabel.setText(invoice.getFormattedCheckOutTime().substring(0, 10));
-        customerNameLabel.setText(invoice.getCustomerName());
+        if (this.invoice != null) {
+            invoiceIdLabel.setText(String.format("%04d", invoice.getId()));
+            createdAtLabel.setText(invoice.getFormattedCheckOutTime().substring(0, 10));
+            customerNameLabel.setText(invoice.getCustomerName());
 
-        roomIdLabel.setText(invoice.getRoomName());
-        roomTypeLabel.setText(invoice.getRoom().getType().getName());
-        floorNumLabel.setText(String.format("%02d", invoice.getRoom().getFloor().getNum()));
-        checkInTimeLabel.setText(invoice.getFormattedCheckInTime());
-        checkOutTimeLabel.setText(invoice.getFormattedCheckOutTime());
+            roomIdLabel.setText(invoice.getRoomName());
+            roomTypeLabel.setText(invoice.getRoom().getType().getName());
+            floorNumLabel.setText(String.format("%02d", invoice.getRoom().getFloor().getNum()));
+            checkInTimeLabel.setText(invoice.getFormattedCheckInTime());
+            checkOutTimeLabel.setText(invoice.getFormattedCheckOutTime());
 
-        pricePerHourLabel.setText(invoice.getRoom().getType().getFormattedPricePerHour());
-        totalTimeLabel.setText(String.valueOf(totalTime));
-        discountLabel.setText(isDiscount() ? "10%" : "Không");
-        totalLabel.setText(invoice.getFormattedTotal());
+            pricePerHourLabel.setText(invoice.getRoom().getType().getFormattedPricePerHour());
+            totalTimeLabel.setText(getFormattedTotalTime());
+            discountLabel.setText(isDiscount() ? "10%" : "Không");
+            totalLabel.setText(invoice.getFormattedTotal());
+        } else {
+            System.out.println("Cannot find invoice");
+        }
     }
 
     private String getFormattedTotalTime(){
@@ -88,6 +92,8 @@ public class InvoiceDetailController implements Initializable {
 
     public InvoiceDetailController(int invoiceId) {
         this.invoice = invoicesService.geInvoiceDetailsById(String.valueOf(invoiceId));
-        this.totalTime = getTotalTime();
+        if (this.invoice != null) {
+            this.totalTime = getTotalTime();
+        }
     }
 }
