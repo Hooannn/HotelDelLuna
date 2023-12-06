@@ -5,6 +5,9 @@ import com.ht.hoteldelluna.models.Invoice;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.Duration;
@@ -13,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class InvoiceDetailController implements Initializable {
     private final Invoice invoice;
+    private final int invoiceId;
     private final InvoicesService invoicesService = new InvoicesService();
 
     private double totalTime = 0;
@@ -53,10 +57,23 @@ public class InvoiceDetailController implements Initializable {
     @FXML
     private Label discountLabel;
 
+    @FXML
+    private GridPane invoiceDetailPane;
+
+    @FXML
+    private HBox customerNameBox;
+
+    @FXML
+    private Label changableLabel;
+
+    @FXML
+    private VBox notFoundPane;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        invoiceIdLabel.setText(String.format("%04d", this.invoiceId));
+
         if (this.invoice != null) {
-            invoiceIdLabel.setText(String.format("%04d", invoice.getId()));
             createdAtLabel.setText(invoice.getFormattedCheckOutTime().substring(0, 10));
             customerNameLabel.setText(invoice.getCustomerName());
 
@@ -71,7 +88,11 @@ public class InvoiceDetailController implements Initializable {
             discountLabel.setText(isDiscount() ? "10%" : "Không");
             totalLabel.setText(invoice.getFormattedTotal());
         } else {
-            System.out.println("Cannot find invoice");
+            invoiceDetailPane.setVisible(false);
+            customerNameBox.setVisible(false);
+            notFoundPane.setVisible(true);
+            changableLabel.setText("Trạng thái");
+            createdAtLabel.setText("Không tồn tại hoặc đã bị xóa");
         }
     }
 
@@ -91,6 +112,7 @@ public class InvoiceDetailController implements Initializable {
     }
 
     public InvoiceDetailController(int invoiceId) {
+        this.invoiceId = invoiceId;
         this.invoice = invoicesService.geInvoiceDetailsById(String.valueOf(invoiceId));
         if (this.invoice != null) {
             this.totalTime = getTotalTime();

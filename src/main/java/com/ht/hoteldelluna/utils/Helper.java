@@ -1,5 +1,8 @@
 package com.ht.hoteldelluna.utils;
 
+import io.github.palexdev.materialfx.enums.SortState;
+import javafx.util.StringConverter;
+
 import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -93,4 +96,28 @@ public class Helper {
         LocalDateTime now = LocalDateTime.now();
         return now.minusYears(1).with(TemporalAdjusters.lastDayOfYear()).with(LocalTime.MAX);
     }
+
+    public static StringConverter<SortState> sortEnumConverter = new StringConverter<SortState>() {
+        @Override
+        public String toString(SortState state) {
+            if (state != null) {
+                switch (state) {
+                    case ASCENDING:
+                        return "Tăng dần";
+                    case DESCENDING:
+                        return "Giảm dần";
+                    case UNSORTED:
+                        return "Mặc định";
+                    default:
+                        return state.toString().toLowerCase();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public SortState fromString(String string) {
+            return SortState.valueOf(string.toUpperCase());
+        }
+    };
 }
