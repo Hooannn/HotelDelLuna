@@ -27,7 +27,16 @@ public class FloorsService {
         }
         return floors;
     }
-
+    public boolean deleteFloorByID(String id) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM floors WHERE id = ?")) {
+            preparedStatement.setString(1, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public Floor getFloorById(String floorId) {
         Floor floor = null;
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM floors WHERE id = ?")) {
@@ -59,6 +68,21 @@ public class FloorsService {
             e.printStackTrace();
         }
         return floor;
+    }
+    public boolean checkFloorNum(int num) {
+        String query = "SELECT COUNT(*) FROM floors WHERE num = ?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setInt(1, num);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean addFloor(Floor floor) {

@@ -170,7 +170,7 @@ public class RoomSettingController implements Initializable, Reloadable {
         MFXTableColumn<Room> statusColumn = new MFXTableColumn<>("Trạng thái", false,
                 Comparator.comparing(Room::getStatus));
         MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", true,
-                null);
+                Comparator.comparing(Room::getId));
         actionColumn.setMinWidth(300);
         idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getId));
         nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getName));
@@ -178,10 +178,10 @@ public class RoomSettingController implements Initializable, Reloadable {
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
         actionColumn.setRowCellFactory(device -> {
-            MFXTableRowCell rc =new MFXTableRowCell<>(v->"");
+            MFXTableRowCell rc =new MFXTableRowCell<>(Room::getId);
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER);
-            MFXButton editBtn = new MFXButton("Edit");
+            MFXButton editBtn = new MFXButton(String.valueOf(device.getId()));
             MFXButton deleteBtn = new MFXButton("Delete");
             hBox.getChildren().addAll(editBtn,deleteBtn);
             device.getId();
@@ -210,39 +210,7 @@ public class RoomSettingController implements Initializable, Reloadable {
             return rc;
                 });
 
-//        roomTable.getSelectionModel().selectionProperty().addListener((observable, oldValue, newValue) -> {
-//            Room selectedRoom = roomTable.getSelectionModel().getSelectedValue();
-//            System.out.println("Selected room: " + selectedRoom);
-//            if (selectedRoom != null) {
-//                // Thực hiện các hành động tương ứng với dòng được chọn
-//                System.out.println("Clicked in row: " + selectedRoom.getName());
-//
-//                // Enable/disable buttons và thêm các hành động khác ở đây
-//                editButton.setDisable(false);
-//                deleteButton.setDisable(false);
-//
-//                editButton.setOnAction(e -> {
-//                    try {
-//                        updateRoom(e, selectedRoom);
-//                    } catch (IOException ioException) {
-//                        ioException.printStackTrace();
-//                    }
-//                });
-//
-//                deleteButton.setOnAction(e -> {
-//                    try {
-//                        deleteRoom(e);
-//                    } catch (IOException ioException) {
-//                        ioException.printStackTrace();
-//                    }
-//                });
-//            } else {
-//                // Không có dòng nào được chọn
-//                editButton.setDisable(true);
-//                deleteButton.setDisable(true);
-//            }
-//
-//        });
+
         roomTable.getTableColumns().addAll(idColumn, nameColumn, typeColumn, floorColumn, statusColumn,actionColumn);
         fetchDocuments();
         roomTable.setItems(sampleDocuments);
