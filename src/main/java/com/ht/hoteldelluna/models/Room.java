@@ -1,6 +1,8 @@
 package com.ht.hoteldelluna.models;
 
 import com.ht.hoteldelluna.enums.RoomStatus;
+import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+import javafx.scene.layout.HBox;
 
 public class Room {
     private int id;
@@ -9,12 +11,14 @@ public class Room {
     private Floor floor;
     private RoomStatus status;
 
+
     public Room() {}
     public Room(String name, RoomType type, Floor floor, RoomStatus status) {
         this.name = name;
         this.type = type;
         this.floor = floor;
         this.status = status;
+
     }
 
     public Room(int id, String name, RoomStatus status) {

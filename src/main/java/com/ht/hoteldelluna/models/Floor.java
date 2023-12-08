@@ -5,11 +5,14 @@ public class Floor {
     private int num;
 
     public Floor() {};
-
+    public Floor(int num) {
+        this.num = num;
+    }
     public Floor(int id, int num) {
         this.id = id;
         this.num = num;
     }
+
 
     public int getId() {
         return id;
