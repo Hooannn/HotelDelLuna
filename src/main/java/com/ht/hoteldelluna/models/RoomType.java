@@ -1,6 +1,8 @@
 package com.ht.hoteldelluna.models;
 
 
+import java.text.DecimalFormat;
+
 public class RoomType {
     private int id;
     private String name;
@@ -13,14 +15,30 @@ public class RoomType {
         this.name = name;
     }
 
+    public RoomType(String name) {
+        this.name = name;
+    }
+
     public RoomType(int id, String name, double pricePerHour) {
         this.id = id;
         this.name = name;
         this.pricePerHour = pricePerHour;
     }
 
+    public RoomType(String name, double pricePerHour) {
+        this.name = name;
+        this.pricePerHour = pricePerHour;
+    }
+
     public double getPricePerHour() {
         return pricePerHour;
+    }
+
+    public String getFormattedPricePerHour() {
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+        String formattedValue = decimalFormat.format(this.pricePerHour);
+        formattedValue += "₫";
+        return formattedValue;
     }
 
     public void setPricePerHour(double pricePerHour) {
@@ -45,6 +63,6 @@ public class RoomType {
 
     @Override
     public String toString() {
-        return "Phòng" + name;
+        return "Phòng " + name;
     }
 }

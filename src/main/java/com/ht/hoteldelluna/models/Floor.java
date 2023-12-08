@@ -13,6 +13,12 @@ public class Floor {
         this.num = num;
     }
 
+<<<<<<< HEAD
+=======
+    public Floor(int num) {
+        this.num = num;
+    }
+>>>>>>> a679b26fb5c0dcbcbf93cf73dd0a7679e27fcc00
 
     public int getId() {
         return id;

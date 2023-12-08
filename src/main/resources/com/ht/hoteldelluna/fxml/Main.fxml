@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -42,6 +43,50 @@
             <VBox.margin>
                 <Insets top="12.0" />
             </VBox.margin>
+         <children>
+            <ToggleButton fx:id="roomManagerToggle" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0">
+               <graphic>
+                  <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                           <children>
+                              <MFXFontIcon description="fas-house" size="20" />
+                           </children>
+                        </VBox>
+                        <Label text="Sơ đồ phòng" />
+                     </children>
+                  </HBox>
+               </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="dashboardToggle" mnemonicParsing="false" prefHeight="40.0" prefWidth="246.0">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                <children>
+                                  <MFXFontIcon description="fas-chart-line" size="20" />
+                                </children>
+                            </VBox>
+                            <Label text="Báo cáo" />
+                        </children>
+                    </HBox>
+                </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="cashierManagerToggle" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0" text="Thu ngân">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                <children>
+                                    <MFXFontIcon description="fas-dollar-sign" size="20" />
+                                </children>
+                            </VBox>
+                            <Label text="Thu ngân" />
+                        </children>
+                    </HBox>
+                </graphic>
+            </ToggleButton>
+         </children>
         </VBox>
         <Label fx:id="adminSettingLabel" styleClass="menu-label" text="CÀI ĐẶT">
             <VBox.margin>
@@ -52,6 +97,64 @@
             <VBox.margin>
                 <Insets top="12.0" />
             </VBox.margin>
+         <children>
+             <ToggleButton fx:id="roomSettingToggle" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0" text="Thiết lập phòng">
+               <graphic>
+                     <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                         <children>
+                             <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                 <children>
+                                     <MFXFontIcon description="fas-bed" size="20" />
+                                 </children>
+                             </VBox>
+                             <Label text="Thiết lập phòng" />
+                         </children>
+                     </HBox>
+               </graphic>
+             </ToggleButton>
+            <ToggleButton fx:id="roomTypeSettingToggle" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0" text="Thiết lập loại phòng">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                <children>
+                                    <MFXFontIcon description="fas-list" size="20" />
+                                </children>
+                            </VBox>
+                            <Label text="Thiết lập loại phòng" />
+                        </children>
+                    </HBox>
+                </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="staffSettingToggle" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0" text="Thiết lập nhân viên">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                <children>
+                                    <MFXFontIcon description="fas-user-tie" size="20" />
+                                </children>
+                            </VBox>
+                            <Label text="Thiết lập nhân viên" />
+                        </children>
+                    </HBox>
+                </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="floorSettingToggle" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="226.0" text="Thiết lập tầng">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="12.0">
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="24.0">
+                                <children>
+                                    <MFXFontIcon description="fas-wrench" size="20" />
+                                </children>
+                            </VBox>
+                            <Label text="Thiết lập tầng" />
+                        </children>
+                    </HBox>
+                </graphic>
+            </ToggleButton>
+         </children>
         </VBox>
       <Region VBox.vgrow="ALWAYS" />
         <HBox fx:id="signOutBtn" alignment="CENTER_LEFT" spacing="10.0">

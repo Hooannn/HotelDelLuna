@@ -1,4 +1,10 @@
 package com.ht.hoteldelluna.controllers.main;
 
-public class StaffSettingController {
+import com.ht.hoteldelluna.controllers.Reloadable;
+
+public class StaffSettingController implements Reloadable {
+    @Override
+    public void reload() {
+
+    }
 }

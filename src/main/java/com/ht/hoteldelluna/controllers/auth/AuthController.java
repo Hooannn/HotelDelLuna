@@ -72,7 +72,6 @@ public class AuthController implements Initializable {
     @FXML
     private MFXButton authLoginBtn;
 
-
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
     private  User user = null;
@@ -158,21 +157,6 @@ public class AuthController implements Initializable {
         );
         dialogContent.getStyleClass().add("mfx-info-dialog");
         dialog.showAndWait();
-    }
-
-    private ToggleButton createToggle(String icon, String text) {
-        return createToggle(icon, text, 0);
-    }
-
-    private ToggleButton createToggle(String icon, String text, double rotate) {
-        MFXIconWrapper wrapper = new MFXIconWrapper(icon, 24, 32);
-        MFXRectangleToggleNode toggleNode = new MFXRectangleToggleNode(text, wrapper);
-        toggleNode.setAlignment(Pos.CENTER_LEFT);
-        toggleNode.setMaxWidth(Double.MAX_VALUE);
-        toggleNode.setToggleGroup(toggleGroup);
-        if (rotate != 0)
-            wrapper.getIcon().setRotate(rotate);
-        return toggleNode;
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {

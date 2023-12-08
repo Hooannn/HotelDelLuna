@@ -1,14 +1,13 @@
 package com.ht.hoteldelluna.backend;
 
-import javax.swing.plaf.nimbus.State;
+import com.ht.hoteldelluna.AppConfig;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 public class Connection {
     public static Connection shared = new Connection();
-    static final String JDBC_URL = "jdbc:mysql://localhost:3306/hoanthui"; // Replace this to your local properties
-    static final String USER = "namkuner"; // Replace this to your local properties
-    static final String PASSWORD = "123456"; // Replace this to your local properties
     private java.sql.Connection connection;
     public java.sql.Connection getConnection() {
         return connection;
@@ -16,7 +15,7 @@ public class Connection {
     private Connection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(AppConfig.getJdbcUrl(), AppConfig.getUser(), AppConfig.getPassword());
 
             System.out.println("Connected to MySQL successfully!");
             createTablesIfNotExists();
