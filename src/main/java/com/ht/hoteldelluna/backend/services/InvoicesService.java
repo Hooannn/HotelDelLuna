@@ -42,7 +42,7 @@ public class InvoicesService {
         List<Invoice> invoices = new ArrayList<>();
         String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status AS room_status " +
                 "FROM invoices " +
-                "JOIN rooms ON invoices.room = rooms.id " +
+                "LEFT JOIN rooms ON invoices.room = rooms.id " +
                 "ORDER BY invoices.checkOutTime DESC";
         try (Statement statement = dbConnection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
@@ -79,9 +79,9 @@ public class InvoicesService {
         Invoice invoice = null;
         String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status, num AS floors, room_types.name AS room_type, pricePerHour " +
                 "FROM invoices " +
-                "JOIN rooms ON invoices.room = rooms.id " +
-                "JOIN floors ON rooms.floor = floors.id " +
-                "JOIN room_types ON rooms.type = room_types.id " +
+                "LEFT JOIN rooms ON invoices.room = rooms.id " +
+                "LEFT JOIN floors ON rooms.floor = floors.id " +
+                "LEFT JOIN room_types ON rooms.type = room_types.id " +
                 "WHERE invoices.id = ?";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, invoiceId);
@@ -126,7 +126,10 @@ public class InvoicesService {
         double total = resultSet.getDouble("total");
         String customerName = resultSet.getString("customerName");
 
-        Room room = new Room(resultSet.getInt("room"), resultSet.getString("room_name"), RoomStatus.valueOf(resultSet.getString("room_status")));
+        Room room = null;
+        if (resultSet.getObject("room") != null) {
+            room = new Room(resultSet.getInt("room"), resultSet.getString("room_name"), RoomStatus.valueOf(resultSet.getString("room_status")));
+        }
 
         return new Invoice(id, checkInTime, checkOutTime, total, customerName, room);
     }
@@ -138,14 +141,19 @@ public class InvoicesService {
         double total = resultSet.getDouble("total");
         String customerName = resultSet.getString("customerName");
 
-        Floor floor = new Floor(0, resultSet.getInt("floors"));
-        RoomType type = new RoomType(resultSet.getString("room_type"), resultSet.getDouble("pricePerHour"));
-        Room room = new Room(resultSet.getInt("room"),
-                resultSet.getString("room_name"),
-                type,
-                floor,
-                RoomStatus.valueOf(resultSet.getString("status"))
-        );
+        Floor floor = null;
+        RoomType type = null;
+        Room room = null;
+        if (resultSet.getObject("room") != null) {
+            type = new RoomType(resultSet.getString("room_type"), resultSet.getDouble("pricePerHour"));
+            floor = new Floor(0, resultSet.getInt("floors"));
+            room = new Room(resultSet.getInt("room"),
+                    resultSet.getString("room_name"),
+                    type,
+                    floor,
+                    RoomStatus.valueOf(resultSet.getString("status"))
+            );
+        }
 
         return new Invoice(id, checkInTime, checkOutTime, total, customerName, room);
     }
