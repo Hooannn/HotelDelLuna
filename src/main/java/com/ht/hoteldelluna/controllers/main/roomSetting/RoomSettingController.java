@@ -28,6 +28,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import io.github.palexdev.materialfx.controls.MFXButton;
 
 public class RoomSettingController implements Initializable, Reloadable {
@@ -161,6 +163,7 @@ public class RoomSettingController implements Initializable, Reloadable {
 //    }
     public void setupPaginated() {
         MFXTableColumn<Room> idColumn = new MFXTableColumn<>("ID", false, Comparator.comparing(Room::getId));
+
         MFXTableColumn<Room> nameColumn = new MFXTableColumn<>("Name", false,
                 Comparator.comparing(Room::getName));
         MFXTableColumn<Room> typeColumn = new MFXTableColumn<>("Type", false,
@@ -169,27 +172,31 @@ public class RoomSettingController implements Initializable, Reloadable {
                 Comparator.comparing(room -> room.getFloor().getNum()));
         MFXTableColumn<Room> statusColumn = new MFXTableColumn<>("Trạng thái", false,
                 Comparator.comparing(Room::getStatus));
-        MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", true,
-                Comparator.comparing(Room::getId));
-        actionColumn.setMinWidth(300);
+        MFXTableColumn<Room> actionColumn = new MFXTableColumn<>("Action", false
+                );
+        actionColumn.setMinWidth(200);
         idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getId));
         nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getName));
         typeColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getType().getName()));
         floorColumn.setRowCellFactory(device -> new MFXTableRowCell<>(room -> room.getFloor().getNum()));
         statusColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Room::getStatus));
+
         actionColumn.setRowCellFactory(device -> {
-            MFXTableRowCell rc =new MFXTableRowCell<>(Room::getId);
+            AtomicInteger id = new AtomicInteger();
+            MFXTableRowCell cell = new MFXTableRowCell<>(_device -> {
+                id.set(((Room) _device).getId());
+                return "";
+            });
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER);
-            MFXButton editBtn = new MFXButton(String.valueOf(device.getId()));
-            MFXButton deleteBtn = new MFXButton("Delete");
+            MFXButton editBtn = new MFXButton("Sửa");
+            MFXButton deleteBtn = new MFXButton("Xóa");
             hBox.getChildren().addAll(editBtn,deleteBtn);
-            device.getId();
 
             editBtn.setOnAction(e->{
                 try {
-                    System.out.println("ID: "+device.getId());
-                    Room selection = roomsService.getRoomById(String.valueOf(device.getId()));
+                    System.out.println("ID: "+id.get());
+                    Room selection = roomsService.getRoomById(String.valueOf(id.get()));
                     updateRoom(e,selection);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -206,8 +213,9 @@ public class RoomSettingController implements Initializable, Reloadable {
                     ioException.printStackTrace();
                 }
             });
-            rc.setGraphic(hBox);
-            return rc;
+            cell.setAlignment(Pos.TOP_CENTER);
+            cell.setGraphic(hBox);
+            return cell;
                 });
 
 

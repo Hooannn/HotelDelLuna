@@ -17,14 +17,14 @@ public class AppConfig {
     }
 
     public static String getJdbcUrl() {
-        return properties.getProperty("jdbc.url", "jdbc:mysql://localhost:3306/default");
+        return properties.getProperty("jdbc.url", "jdbc:mysql://localhost:3306/hoanthui");
     }
 
     public static String getUser() {
-        return properties.getProperty("user", "root");
+        return properties.getProperty("user", "namkuner");
     }
 
     public static String getPassword() {
-        return properties.getProperty("password", "");
+        return properties.getProperty("password", "123456");
     }
 }

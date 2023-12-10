@@ -1,11 +1,13 @@
-package com.ht.hoteldelluna.controllers.main.FloorSetting;
+package com.ht.hoteldelluna.controllers.main.RoomTypeSetting;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
 import com.ht.hoteldelluna.backend.services.FloorsService;
-import com.ht.hoteldelluna.controllers.main.roomSetting.UpdateRoomForm;
-import com.ht.hoteldelluna.models.Floor;
+import com.ht.hoteldelluna.backend.services.RoomTypesService;
 import com.ht.hoteldelluna.controllers.Reloadable;
+import com.ht.hoteldelluna.controllers.main.FloorSetting.UpdateFloor;
+import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Room;
+import com.ht.hoteldelluna.models.RoomType;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
@@ -22,7 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,58 +33,52 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FloorSettingController implements Initializable,Reloadable {
+public class RoomTypeSettingController implements Reloadable, Initializable {
     @FXML
-    private MFXButton create;
-    @FXML
-    private  MFXButton edit;
-    @FXML
-    private MFXButton delete;
-    @FXML
-    private MFXPaginatedTableView<Floor> table;
+    private MFXPaginatedTableView<RoomType> table;
 
-    @Override
-    public void reload() {
-        repaginate();
-    }
+    ObservableList<RoomType> sampleDocuments;
 
-
-    ObservableList<Floor> sampleDocuments; // Change Room to Floor
-
-    private List<Floor> floors; // Change Room to Floor
-    private final FloorsService floorsService = new FloorsService(); // Change RoomsService to FloorsService
-
-    public FloorSettingController() {
-        this.floors = floorsService.getFloors(); // Change getRooms() to getFloors()
+    private List<RoomType> roomTypes;
+    private final RoomTypesService roomTypesService = new RoomTypesService();
+    public RoomTypeSettingController () {
+        this.roomTypes = roomTypesService.getRoomTypes(); // Change getRooms() to getFloors()
     }
 
     private void refresh_data() {
-        this.floors = floorsService.getFloors(); // Change getRooms() to getFloors()
+        this.roomTypes = roomTypesService.getRoomTypes(); // Change getRooms() to getFloors()
     }
     @FXML
     private void fetchDocuments() {
-        this.sampleDocuments = FXCollections.observableList(floors);
+        this.sampleDocuments = FXCollections.observableList(roomTypes);
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupPaginated();
     }
 
+
+    @Override
+    public void reload() {
+
+    }
+
     public void setupPaginated() {
-        MFXTableColumn<Floor> idColumn = new MFXTableColumn<>("ID", false, Comparator.comparing(Floor::getId));
-        MFXTableColumn<Floor> numColumn = new MFXTableColumn<>("Num", false,
-                Comparator.comparing(Floor::getNum));
-        MFXTableColumn<Floor> actionColumn = new MFXTableColumn<>("Action", true,
-                null);
+        MFXTableColumn<RoomType> idColumn = new MFXTableColumn<>("ID", false, Comparator.comparing(RoomType::getId));
+        MFXTableColumn<RoomType> numColumn = new MFXTableColumn<>("Name", false,
+                Comparator.comparing(RoomType::getName));
+        MFXTableColumn<RoomType> priceColumn = new MFXTableColumn<>("Price", false,
+                Comparator.comparing(RoomType::getPricePerHour));
+        MFXTableColumn<RoomType> actionColumn = new MFXTableColumn<>("Action", true
+                );
         actionColumn.setMinWidth(200);
-        actionColumn.setTextAlignment(TextAlignment.CENTER);
-        idColumn.setRowCellFactory(floor -> new MFXTableRowCell<>(Floor::getId));
-        numColumn.setRowCellFactory(floor -> new MFXTableRowCell<>(Floor::getNum));
-        actionColumn.setRowCellFactory(floor -> {
+        idColumn.setRowCellFactory(roomType -> new MFXTableRowCell<>(RoomType::getId));
+        numColumn.setRowCellFactory(roomType -> new MFXTableRowCell<>(RoomType::getName));
+        actionColumn.setRowCellFactory(roomType -> {
 
             AtomicInteger id = new AtomicInteger();
             MFXTableRowCell cell = new MFXTableRowCell<>(_device -> {
-                id.set(((Floor) _device).getId());
+                id.set(((RoomType) _device).getId());
                 return "";
             });
 
@@ -95,17 +90,17 @@ public class FloorSettingController implements Initializable,Reloadable {
             editBtn.setOnAction(e->{
                 try {
                     System.out.println("ID: "+id.get());
-                    Floor selection = floorsService.getFloorById(String.valueOf(id.get()));
-                    updateFloor(e,selection);
+                    RoomType selection = roomTypesService.getRoomTypeById(String.valueOf(id.get()));
+                    updateRoomType(e,selection);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             });
             deleteBtn.setOnAction(e -> {
                 System.out.println("ID: " + id.get());
-                Floor selection = floorsService.getFloorById(String.valueOf(id.get()));
+                RoomType selection = roomTypesService.getRoomTypeById(String.valueOf(id.get()));
                 try {
-                    deleteFloor(e, selection);
+                    deleteRoomType(e, selection);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -113,49 +108,39 @@ public class FloorSettingController implements Initializable,Reloadable {
             cell.setGraphic(hBox);
             return cell;
         });
-        table.getTableColumns().addAll(idColumn, numColumn, actionColumn);
+        table.getTableColumns().addAll(idColumn, numColumn,priceColumn, actionColumn);
         fetchDocuments();
         table.setItems(sampleDocuments);
     }
     @FXML
-    private void updateFloor(ActionEvent event,Floor selection) throws IOException {
+    private void updateRoomType(ActionEvent event, RoomType selection) throws IOException {
         if (selection == null) {
             return;
         }
 
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/FloorSetting/updateFloor.fxml"));
-        UpdateFloor updateFloorForm = new UpdateFloor(selection);
-        loader.setControllerFactory(r -> updateFloorForm);
+        UpdateRoomType updateRoomType = new UpdateRoomType(selection);
+        loader.setControllerFactory(r -> updateRoomType);
         Parent root = loader.load();
         Stage stage = new Stage();
-        Scene scene = new Scene(root,600, 600);
-        stage.setTitle("Sửa thông tin Tầng");
+        Scene scene = new Scene(root, 600, 600);
+        stage.setTitle("Sửa thông tin kiểu phòng");
         stage.setScene(scene);
         stage.showAndWait();
-
-        try {
-            if (!stage.isShowing()) {
-                repaginate();
-            }
-
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
     }
-    private void deleteFloor(ActionEvent event, Floor floor) throws IOException {
-        if (floor == null) {
+    private void deleteRoomType(ActionEvent event, RoomType roomType) throws IOException {
+        if (roomType == null) {
             return;
         }
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Xóa Tầng");
         alert.setHeaderText(null);
-        alert.setContentText("Bạn chắc chắn muốn xóa Tầng : "+ floor.getNum());
+        alert.setContentText("Bạn chắc chắn muốn xóa Tầng : "+ roomType.getName());
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonType.CANCEL.getButtonData());
         alert.getButtonTypes().setAll(buttonTypeCancel, ButtonType.OK);
         alert.showAndWait();
         if (alert.getResult().getText().equals("OK")) {
-            floorsService.deleteFloorByID(String.valueOf(floor.getId()));
+            roomTypesService.deleteRoomType(String.valueOf(roomType.getId()));
             alert.close();
             repaginate();
         }
@@ -173,29 +158,24 @@ public class FloorSettingController implements Initializable,Reloadable {
             System.out.println(e);
         }
     }
-
-
-
     private void repaginate() {
         refresh_data() ;
         fetchDocuments();
         table.setItems(sampleDocuments);
     }
     @FXML
-    private void newFloor(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(com.ht.hoteldelluna.MFXResourcesLoader.loadURL("fxml/main/FloorSetting/NewFloorForm.fxml"));
+    public void newRoomType (ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting/newRoomType.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        Scene scene = new Scene(root,600, 400);
-        stage.setTitle("New Floor");
+        Scene scene = new Scene(root, 600, 600);
+        stage.setTitle("Thêm kiểu phòng");
         stage.setScene(scene);
         stage.showAndWait();
-
         try {
             if (!stage.isShowing()) {
                 repaginate();
             }
-
         }
         catch (Exception e) {
             System.out.println(e);

@@ -12,6 +12,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -66,15 +67,27 @@ public class UpdateRoomForm implements Initializable {
         }
 
     }
+    public void showRoomExistsNotification() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Room Exists");
+        alert.setHeaderText(null);
+        alert.setContentText("The room already exists in the database.");
+        alert.showAndWait();
+    }
     private void updateRoom(javafx.event.ActionEvent event) throws Exception {
 
+        RoomsService roomsService = new RoomsService();
+        String roomName = name.getText();
+        if (roomsService.checkNameofRoom(roomName))
+        {
+            showRoomExistsNotification();
+            return;
+        }
         if ( floor.getSelectedItem() == null || type.getSelectedItem() == null) {
             return;
         }
         else {
 
-            RoomsService roomsService = new RoomsService();
-            String roomName = name.getText();
             Floor valueFloor= floor.getSelectedItem();
             RoomType valueRoomType = type.getSelectedItem();
             roomsService.updateRoom(String.valueOf(room.getId()), roomName, String.valueOf(valueRoomType.getId()), String.valueOf(valueFloor.getId()));
@@ -106,6 +119,10 @@ public class UpdateRoomForm implements Initializable {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
+            Stage stage = (Stage) name.getScene().getWindow();
+            stage.close();
+        });
+        cancel.setOnAction(e -> {
             Stage stage = (Stage) name.getScene().getWindow();
             stage.close();
         });
