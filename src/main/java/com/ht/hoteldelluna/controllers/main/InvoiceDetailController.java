@@ -76,14 +76,21 @@ public class InvoiceDetailController implements Initializable {
         if (this.invoice != null) {
             createdAtLabel.setText(invoice.getFormattedCheckOutTime().substring(0, 10));
             customerNameLabel.setText(invoice.getCustomerName());
-
-            roomIdLabel.setText(invoice.getRoomName());
-            roomTypeLabel.setText(invoice.getRoom().getType().getName());
-            floorNumLabel.setText(String.format("%02d", invoice.getRoom().getFloor().getNum()));
             checkInTimeLabel.setText(invoice.getFormattedCheckInTime());
             checkOutTimeLabel.setText(invoice.getFormattedCheckOutTime());
 
-            pricePerHourLabel.setText(invoice.getRoom().getType().getFormattedPricePerHour());
+            if (invoice.getRoom() != null) {
+                roomIdLabel.setText(invoice.getRoomName());
+                roomTypeLabel.setText(invoice.getRoom().getType().getName());
+                floorNumLabel.setText(String.format("%02d", invoice.getRoom().getFloor().getNum()));
+                pricePerHourLabel.setText(invoice.getRoom().getType().getFormattedPricePerHour());
+            } else {
+                roomIdLabel.setText("Không còn tồn tại");
+                roomTypeLabel.setText("Không còn tồn tại");
+                floorNumLabel.setText("Không còn tồn tại");
+                pricePerHourLabel.setText("Không còn tồn tại");
+            }
+
             totalTimeLabel.setText(getFormattedTotalTime());
             discountLabel.setText(isDiscount() ? "10%" : "Không");
             totalLabel.setText(invoice.getFormattedTotal());
@@ -96,15 +103,27 @@ public class InvoiceDetailController implements Initializable {
         }
     }
 
-    private String getFormattedTotalTime(){
-        return String.valueOf(totalTime);
+    private String getFormattedTotalTime() {
+        int days = (int) (this.totalTime / 3600 / 24);
+        int hours = ((int) (this.totalTime / 3600)) % 24;
+        int mins = ((int) Math.ceil(this.totalTime / 60)) % 60;
+
+        if (days >= 1) {
+            if (hours < 1 && mins >= 1) {
+                return String.format("%02d ngày, %02d phút", days, mins);
+            } else {
+                return String.format("%02d ngày, %02d giờ", days, hours);
+            }
+        } else {
+            return String.format("%02d giờ, %02d phút", hours, mins);
+        }
     }
 
-    private boolean isDiscount () {
+    private boolean isDiscount() {
         return this.totalTime >= (24 * 3600);
     }
 
-    private double getTotalTime () {
+    private double getTotalTime() {
         LocalDateTime checkInTime = LocalDateTime.parse(invoice.getCheckInTime());
         LocalDateTime checkOutTime = LocalDateTime.parse(invoice.getCheckOutTime());
         Duration duration = Duration.between(checkInTime, checkOutTime);

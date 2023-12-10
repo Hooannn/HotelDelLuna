@@ -79,7 +79,11 @@ public class Invoice {
     }
 
     public String getRoomName() {
-        return this.room.getName();
+        if(this.room != null) {
+            return this.room.getName();
+        } else {
+            return "Đã bị xóa";
+        }
     }
     @Override
     public String toString() {
