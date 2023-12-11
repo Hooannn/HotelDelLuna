@@ -249,7 +249,6 @@ public class DashboardController implements Initializable, Reloadable {
 
             setupDashboard(startTime, endTime, prevStartTime, prevEndTime, newValue);
         });
-        timeSelection.selectFirst();
     }
 
     private void setupRevenueChart(String timeframe) {
@@ -388,6 +387,12 @@ public class DashboardController implements Initializable, Reloadable {
 
     @Override
     public void reload() {
-
+        String prevSelected = timeSelection.getSelectedItem();
+        if (prevSelected == null) {
+            timeSelection.selectFirst();
+        } else {
+            timeSelection.clearSelection();
+            timeSelection.selectItem(prevSelected);
+        }
     }
 }
