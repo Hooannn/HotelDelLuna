@@ -17,9 +17,7 @@ public class Connection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(AppConfig.getJdbcUrl(), AppConfig.getUser(), AppConfig.getPassword());
 
-            System.out.println("Connected to MySQL successfully!");
             createTablesIfNotExists();
-            System.out.println("Created the tables!");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +70,7 @@ public class Connection {
                     "total DECIMAL(10, 2)," +
                     "customerName VARCHAR(255)," +
                     "room INT," +
-                    "FOREIGN KEY (room) REFERENCES rooms(id)" +
+                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE SET NULL" +
                     ")";
             statement.executeUpdate(createInvoiceTableSQL);
 
@@ -86,7 +84,7 @@ public class Connection {
                     "customerCount INT," +
                     "status ENUM('OPENING', 'CLOSED')," +
                     "room INT," +
-                    "FOREIGN KEY (room) REFERENCES rooms(id)" +
+                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE CASCADE" +
                     ")";
             statement.executeUpdate(createReservationTableSQL);
         } catch (Exception e) {
