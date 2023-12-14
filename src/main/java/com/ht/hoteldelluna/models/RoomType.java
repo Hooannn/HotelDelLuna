@@ -1,6 +1,8 @@
 package com.ht.hoteldelluna.models;
 
 
+import com.ht.hoteldelluna.backend.services.RoomTypesService;
+
 import java.text.DecimalFormat;
 
 public class RoomType {

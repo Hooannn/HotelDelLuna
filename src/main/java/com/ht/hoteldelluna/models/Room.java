@@ -4,6 +4,8 @@ import com.ht.hoteldelluna.enums.RoomStatus;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import javafx.scene.layout.HBox;
 
+import java.util.SplittableRandom;
+
 public class Room {
     private int id;
     private String name;
@@ -40,6 +42,7 @@ public class Room {
         this.status = status;
     }
 
+
     public int getId() {
         return this.id;
     }
@@ -70,6 +73,7 @@ public class Room {
     public void setFloor(Floor floor) {
         this.floor = floor;
     }
+
 
     @Override
     public String toString() {

@@ -42,4 +42,5 @@ module com.ht.hoteldelluna {
     opens com.ht.hoteldelluna.controllers.main.roomSetting;
     opens com.ht.hoteldelluna.controllers.main.FloorSetting;
     opens com.ht.hoteldelluna.controllers.main.RoomTypeSetting;
+    opens com.ht.hoteldelluna.controllers.main.StaffSetting;
 }
