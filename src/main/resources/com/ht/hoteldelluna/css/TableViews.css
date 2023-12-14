@@ -25,11 +25,13 @@
 
 .table-modify-record-btn,
 .table-modify-record-btn:focused {
-    -fx-background-color: #ffc107;
+    -fx-text-fill: white;
+    -fx-background-color: #007bff;
 }
 
 .table-delete-record-btn,
 .table-delete-record-btn:focused {
+    -fx-text-fill: white;
     -fx-background-color: #dc3545;
 }
 

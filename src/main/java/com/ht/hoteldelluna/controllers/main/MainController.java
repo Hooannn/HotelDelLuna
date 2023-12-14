@@ -6,6 +6,8 @@ import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
+import com.ht.hoteldelluna.controllers.main.StaffSetting.StaffSettingController;
+import com.ht.hoteldelluna.controllers.main.roomSetting.RoomSettingController;
 import com.ht.hoteldelluna.enums.UserRole;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
@@ -158,12 +160,14 @@ public class MainController implements Initializable {
         tabs.add(new Tab(cashierManagerToggle, csloader));
 
         FXMLLoader rsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomSetting.fxml"));
+        rsloader.setControllerFactory(c -> new RoomSettingController(this.stage));
         tabs.add(new Tab(roomSettingToggle, rsloader));
 
         FXMLLoader rtsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting.fxml"));
         tabs.add(new Tab(roomTypeSettingToggle, rtsloader));
 
-        FXMLLoader ssloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/StaffSetting.fxml"));
+        FXMLLoader ssloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/StaffSetting/StaffSetting.fxml"));
+        ssloader.setControllerFactory(c -> new StaffSettingController(this.stage));
         tabs.add(new Tab(staffSettingToggle, ssloader));
 
         FXMLLoader fsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/FloorSetting.fxml"));

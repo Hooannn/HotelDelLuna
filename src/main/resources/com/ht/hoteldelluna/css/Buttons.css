@@ -34,7 +34,7 @@
 	-fx-font-smoothing-type: lcd;
 }
 
-#custom {
+.custom {
 	-fx-background-color: -mfx-purple;
 	-fx-text-fill: white
 }

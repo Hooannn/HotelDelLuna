@@ -6,10 +6,7 @@ import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.models.Invoice;
 import com.ht.hoteldelluna.utils.Helper;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
-import io.github.palexdev.materialfx.controls.MFXTableColumn;
+import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
@@ -46,7 +43,7 @@ public class CashierManagerController implements Initializable, Reloadable {
     private MFXComboBox<SortState> totalSelection;
 
     @FXML
-    private MFXPaginatedTableView<Invoice> invoicesTable;
+    private MFXTableView<Invoice> invoicesTable;
 
     @FXML
     private HBox listViewMode;
@@ -76,10 +73,6 @@ public class CashierManagerController implements Initializable, Reloadable {
         setupSelections();
         setupDialog();
         invoicesTable.autosizeColumnsOnInitialization();
-
-        When.onChanged(invoicesTable.currentPageProperty())
-                .then((oldValue, newValue) -> invoicesTable.autosizeColumns())
-                .listen();
     }
 
     private void setupSelections() {
@@ -136,8 +129,6 @@ public class CashierManagerController implements Initializable, Reloadable {
         actionColumn.prefWidthProperty().bind(invoicesTable.widthProperty().multiply(0.1));
 
         invoicesTable.getTableColumns().addAll(idxColumn, nameColumn, roomIdColumn, checkInTimeColumn, checkOutTimeColumn, totalColumn, actionColumn);
-        invoicesTable.setRowsPerPage(10);
-        invoicesTable.setPagesToShow(5);
         invoicesTable.setItems(FXCollections.observableArrayList(invoices));
     }
 
