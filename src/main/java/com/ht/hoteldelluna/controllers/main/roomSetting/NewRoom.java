@@ -3,6 +3,7 @@ package com.ht.hoteldelluna.controllers.main.roomSetting;
 import com.ht.hoteldelluna.backend.services.FloorsService;
 import com.ht.hoteldelluna.backend.services.RoomTypesService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
+import com.ht.hoteldelluna.delegate.NewEntityDelegate;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Room;
@@ -12,15 +13,9 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class NewRoom {
-
-    @FXML
-    private Button okNewRoom;
-    @FXML
-    private Button cancelNewRoom;
     @FXML
     private MFXTextField nameOfRoom;
     @FXML
@@ -28,7 +23,10 @@ public class NewRoom {
     @FXML
     private MFXComboBox type;
     public Stage stage;
-    // Write a funciton to check nameofRoom in Room database has been existed or not
+    private NewEntityDelegate delegate;
+    public NewRoom(NewEntityDelegate delegate) {
+        this.delegate = delegate;
+    }
 
     @FXML
     public void initialize() {
@@ -42,45 +40,31 @@ public class NewRoom {
         }
     }
 
-
-    public void showRoomExistsNotification() {
+    public void showAlertMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Room Exists");
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("The room already exists in the database.");
-        alert.showAndWait();
-    }
-    //Check if floor is empty
-    public void showFloorEmptyNotification() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Floor Empty");
-        alert.setHeaderText(null);
-        alert.setContentText("Please choose floor.");
-        alert.showAndWait();
-    }
-    //Check if type is empty
-    public void showTypeEmptyNotification() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Type Empty");
-        alert.setHeaderText(null);
-        alert.setContentText("Please choose type.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
     @FXML
-    public  void checkOK (ActionEvent event) {
+    public void checkOK (ActionEvent event) {
         String name = nameOfRoom.getText();
         RoomsService roomsService = new RoomsService();
-        //check nameofRoom in Room database has been existed or not. If existed then show a dialog to notify
+        if (name.isEmpty() || name.isBlank()) {
+            showAlertMessage("Yêu cầu không hợp lệ", "Tên phòng không được để trống.");
+            return;
+        }
         if (roomsService.checkNameofRoom(name)) {
-            showRoomExistsNotification();
+            showAlertMessage("Yêu cầu không hợp lệ", "Phòng đã tồn tại.");
             return;
         }
         else if (floor.getSelectionModel().getSelectedItem() == null) {
-            showFloorEmptyNotification();
+            showAlertMessage("Yêu cầu không hợp lệ", "Tầng không được để trống.");
             return;
         }
         else if (type.getSelectionModel().getSelectedItem() == null) {
-            showTypeEmptyNotification();
+            showAlertMessage("Yêu cầu không hợp lệ", "Loại phòng không được để trống.");
             return;
         }
         RoomTypesService roomTypesService = new RoomTypesService();
@@ -93,13 +77,12 @@ public class NewRoom {
 
         Room room = new Room(name, roomType, floorNumber, RoomStatus.AVAILABLE);
         roomsService.addRoom(room, String.valueOf(roomType.getId()), String.valueOf(floorNumber.getId()));
-        Stage stage = (Stage) nameOfRoom.getScene().getWindow();
-        stage.close();
+
+        delegate.onCreated();
     }
+
+    @FXML
     public void checkCancel (ActionEvent event) {
-        Stage stage = (Stage) nameOfRoom.getScene().getWindow();
-        stage.close();
+        delegate.onCancelled();
     }
-
-
 }

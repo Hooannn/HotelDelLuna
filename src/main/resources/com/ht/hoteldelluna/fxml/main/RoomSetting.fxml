@@ -2,32 +2,66 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXContextMenuItem?>
-<?import io.github.palexdev.materialfx.controls.MFXPaginatedTableView?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="396.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.roomSetting.RoomSettingController">
-    <Label />
-   <MFXButton fx:id="btnNewCreate" layoutX="456.0" layoutY="27.0" onAction="#checkForm" text="Tạo mới" />
-   <VBox layoutX="7.0" layoutY="100.0" prefHeight="289.0" prefWidth="770.0">
+<AnchorPane prefHeight="667.0" prefWidth="1029.0" styleClass="contentPane" stylesheets="@../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.roomSetting.RoomSettingController">
+<children>
+   <VBox prefHeight="200.0" prefWidth="100.0" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-         <HBox prefHeight="69.0" prefWidth="586.0">
+         <HBox alignment="CENTER_LEFT">
             <children>
-               <MFXContextMenuItem alignment="TOP_CENTER" prefHeight="69.0" prefWidth="95.0" text="Sort by:" />
-               <MFXComboBox fx:id="roomPopularity" alignment="TOP_CENTER" prefHeight="45.0" prefWidth="104.0" text="Popularity" />
-               <MFXComboBox fx:id="roomSeller" alignment="TOP_CENTER" prefHeight="45.0" prefWidth="118.0" text="Seller Details" />
-               <MFXComboBox fx:id="roomBudget" alignment="TOP_CENTER" prefHeight="47.0" prefWidth="118.0" text="Budget" />
-               <MFXComboBox fx:id="roomDelivery" alignment="CENTER" prefHeight="47.0" prefWidth="134.0" text="Delivery Time" />
+               <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Thiết lập phòng" />
+               <Region HBox.hgrow="ALWAYS" />
+               <MFXButton fx:id="btnNewCreate" onAction="#showNewRoomDialog" styleClass="addNewBtn" stylesheets="@../../css/Main.css" text="Tạo mới" />
             </children>
          </HBox>
-         <MFXPaginatedTableView fx:id="roomTable" prefHeight="225.0" prefWidth="763.0" />
+         <VBox prefHeight="341.0" prefWidth="600.0" spacing="12.0" styleClass="contentWrapper" stylesheets="@../../css/Main.css" VBox.vgrow="ALWAYS">
+            <padding>
+               <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <children>
+               <HBox alignment="CENTER_LEFT" spacing="15.0">
+                  <children>
+                     <Label styleClass="sortByLabel" stylesheets="@../../css/Main.css" text="Lọc theo:" />
+                     <MFXComboBox fx:id="filterFloorSelection" floatMode="ABOVE" layoutX="243.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Tầng">
+                        <opaqueInsets>
+                           <Insets />
+                        </opaqueInsets>
+                     </MFXComboBox>
+                     <MFXComboBox fx:id="filterTypeSelection" floatMode="ABOVE" layoutX="110.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Loại phòng">
+                        <opaqueInsets>
+                           <Insets />
+                        </opaqueInsets>
+                     </MFXComboBox>
+                     <MFXComboBox fx:id="filterStatusSelection" floatMode="ABOVE" layoutX="110.0" layoutY="10.0" prefHeight="32.0" prefWidth="124.0" promptText="Trạng thái">
+                        <opaqueInsets>
+                           <Insets />
+                        </opaqueInsets>
+                     </MFXComboBox>
+                     <Region HBox.hgrow="ALWAYS" />
+                     <HBox>
+                           <children>
+                              <MFXButton onAction="#clearFilter" prefHeight="32.0" text="Đặt lại bộ lọc">
+                                 <graphic>
+                                    <MFXFontIcon description="fas-filter-circle-xmark" size="10" />
+                                 </graphic>
+                              </MFXButton>
+                           </children></HBox>
+                  </children>
+               </HBox>
+               <Separator prefWidth="200.0" />
+               <MFXTableView fx:id="roomsTable" footerVisible="false" prefHeight="534.0" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
+            </children>
+         </VBox>
       </children>
    </VBox>
-   <MFXTextField alignment="TOP_CENTER" graphicTextGap="0.0" layoutX="47.0" layoutY="28.0" prefHeight="49.0" prefWidth="106.0" text="Thiết lập bảng" />
-   <MFXButton fx:id="editButton" layoutX="300.0" layoutY="27.0" text="Edit" />
-   <MFXButton fx:id="deleteButton" layoutX="363.0" layoutY="27.0" text="Delete" />
+</children>
 </AnchorPane>

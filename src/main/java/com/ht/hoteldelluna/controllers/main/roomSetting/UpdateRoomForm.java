@@ -3,17 +3,15 @@ package com.ht.hoteldelluna.controllers.main.roomSetting;
 import com.ht.hoteldelluna.backend.services.FloorsService;
 import com.ht.hoteldelluna.backend.services.RoomTypesService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
-import com.ht.hoteldelluna.enums.RoomStatus;
+import com.ht.hoteldelluna.delegate.UpdateEntityDelegate;
 import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Room;
 import com.ht.hoteldelluna.models.RoomType;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,72 +26,55 @@ public class UpdateRoomForm implements Initializable {
     @FXML
     private MFXComboBox<RoomType> type;
 
-    @FXML
-    private MFXTextField price;
-
-    @FXML
-    private MFXComboBox<String> state;
-    @FXML
-    private MFXButton ok;
-    @FXML
-    private MFXButton cancel;
-    private String roomName;
-
+    private UpdateEntityDelegate delegate;
     private Room room;
-    public UpdateRoomForm(Room room) {
-        // Initialize your form (if needed) e.g., populate ComboBox items
+    public UpdateRoomForm(Room room, UpdateEntityDelegate delegate) {
         this.room = room;
-
-
+        this.delegate = delegate;
     }
     public void displayRoomInformation(Room room) {
         name.setText(room.getName());
         floor.setText(room.getFloor().toString());
         type.setText(room.getType().toString());
-        // Kiểm tra xem giá trị có tồn tại trong danh sách không
         if (floor.getItems().contains(room.getFloor())) {
-            floor.getSelectionModel().selectItem(room.getFloor());
+            floor.selectItem(room.getFloor());
         }
 
         if (type.getItems().contains(room.getType())) {
-            type.getSelectionModel().selectItem(room.getType());
+            type.selectItem(room.getType());
         }
-
-        price.setText(String.valueOf(room.getType().getPricePerHour()));
-
-        // Kiểm tra xem giá trị có tồn tại trong danh sách không
-        if (state.getItems().contains(room.getStatus().toString())) {
-            state.getSelectionModel().selectItem(room.getStatus().toString());
-        }
-
     }
-    public void showRoomExistsNotification() {
+
+    public void showAlertMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Room Exists");
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("The room already exists in the database.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
-    private void updateRoom(javafx.event.ActionEvent event) throws Exception {
 
+    @FXML
+    public void updateRoom(javafx.event.ActionEvent event) {
         RoomsService roomsService = new RoomsService();
-        String roomName = name.getText();
-        if (roomsService.checkNameofRoom(roomName))
+        String updatedName = name.getText();
+        if (updatedName.isEmpty() || updatedName.isBlank()) {
+            showAlertMessage("Yêu cầu không hợp lệ", "Tên phòng không được để trống.");
+            return;
+        }
+        if (!updatedName.equals(room.getName()) && roomsService.checkNameofRoom(updatedName))
         {
-            showRoomExistsNotification();
+            showAlertMessage("Yêu cầu không hợp lệ", "Phòng đã tồn tại.");
             return;
         }
-        if ( floor.getSelectedItem() == null || type.getSelectedItem() == null) {
-            return;
-        }
-        else {
+        Floor valueFloor = floor.getSelectedItem() == null ? room.getFloor() : floor.getSelectedItem();
+        RoomType valueRoomType = type.getSelectedItem() == null ? room.getType() : type.getSelectedItem();
+        roomsService.updateRoom(String.valueOf(room.getId()), updatedName, String.valueOf(valueRoomType.getId()), String.valueOf(valueFloor.getId()));
+        delegate.onUpdated();
+    }
 
-            Floor valueFloor= floor.getSelectedItem();
-            RoomType valueRoomType = type.getSelectedItem();
-            roomsService.updateRoom(String.valueOf(room.getId()), roomName, String.valueOf(valueRoomType.getId()), String.valueOf(valueFloor.getId()));
-        }
-        // Update room
-
+    @FXML
+    public void cancel() {
+        delegate.onCancelled();
     }
 
 
@@ -107,25 +88,6 @@ public class UpdateRoomForm implements Initializable {
         for (RoomType roomType : roomTypesService.getRoomTypes()) {
             this.type.getItems().add(roomType);
         }
-        for (RoomStatus status : RoomStatus.values()) {
-            this.state.getItems().add(String.valueOf(status));
-        }
         displayRoomInformation(room);
-        price.setDisable(true);
-        state.setDisable(true);
-        ok.setOnAction(e -> {
-            try {
-                updateRoom(e);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            Stage stage = (Stage) name.getScene().getWindow();
-            stage.close();
-        });
-        cancel.setOnAction(e -> {
-            Stage stage = (Stage) name.getScene().getWindow();
-            stage.close();
-        });
-
     }
 }

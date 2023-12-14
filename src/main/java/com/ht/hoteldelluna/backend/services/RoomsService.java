@@ -34,7 +34,6 @@ public class RoomsService {
         return rooms;
     }
 
-    // Mark: Doing
     public Room getRoomById(String roomId) {
         Room room = null;
         String query = "SELECT rooms.*, floors.num AS floor_num, room_types.name AS type_name, room_types.pricePerHour AS type_price_per_hour " +
@@ -110,7 +109,7 @@ public class RoomsService {
             return false;
         }
     }
-    public  boolean updateRoom(String roomId, String name, String roomTypeId, String floorId) {
+    public boolean updateRoom(String roomId, String name, String roomTypeId, String floorId) {
         String query = "UPDATE rooms SET name = ?, type = ?, floor = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
