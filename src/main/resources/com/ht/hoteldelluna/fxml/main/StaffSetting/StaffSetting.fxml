@@ -18,7 +18,7 @@
         <children>
             <HBox alignment="CENTER_LEFT">
                 <children>
-                    <Label styleClass="heading" stylesheets="@../../../css/Main.css" text="Thiết lập phòng" />
+                    <Label styleClass="heading" stylesheets="@../../../css/Main.css" text="Thiết lập nhân viên" />
                     <Region HBox.hgrow="ALWAYS" />
                     <MFXButton onAction="#showNewRoomDialog" styleClass="addNewBtn" stylesheets="@../../../css/Main.css" text="Tạo mới" />
                 </children>
