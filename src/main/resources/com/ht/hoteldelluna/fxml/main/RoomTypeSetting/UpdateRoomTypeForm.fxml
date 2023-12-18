@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomTypeSetting.UpdateRoomType">
+    <children>
+        <VBox layoutX="10.0" layoutY="10.0" prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Buttons.css">
+            <children>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="136.0" prefWidth="480.0" spacing="12.0">
+                            <children>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại Phòng" wrappingWidth="79.423828125" />
+                              <MFXTextField fx:id="name" prefHeight="49.0" prefWidth="132.0" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giá" />
+                              <MFXTextField fx:id="price" prefHeight="49.0" prefWidth="111.0" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="4.0">
+                    <children>
+                        <MFXButton onAction="#updateRoomType" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Cập nhật" />
+                        <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -119,4 +119,14 @@ public class FloorsService {
             e.printStackTrace();
         }
     }
+
+    public void updateFloor(int id, int i) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE floors SET num = ? WHERE id = ?")) {
+            preparedStatement.setInt(1, i);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

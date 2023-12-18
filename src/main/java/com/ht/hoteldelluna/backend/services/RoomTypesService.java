@@ -105,4 +105,41 @@ public class RoomTypesService {
             return false;
         }
     }
+
+    public boolean checkRoomTypeName(String updatedName) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM room_types WHERE name = ?")) {
+            preparedStatement.setString(1, updatedName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void updateRoomType(int id, String updatedName, int i) {
+        //update room type
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE room_types SET name = ?, pricePerHour = ? WHERE id = ?")) {
+            preparedStatement.setString(1, updatedName);
+            preparedStatement.setInt(2, i);
+            preparedStatement.setInt(3, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public void addRoomType(String name, int i) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO room_types (name, pricePerHour) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, i);
+            int rowsAffected = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
