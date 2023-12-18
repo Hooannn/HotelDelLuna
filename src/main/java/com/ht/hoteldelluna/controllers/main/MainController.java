@@ -5,7 +5,9 @@ import com.ht.hoteldelluna.Tab;
 import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.controllers.Reloadable;
 import com.ht.hoteldelluna.controllers.auth.AuthController;
+import com.ht.hoteldelluna.controllers.main.FloorSetting.FloorSettingController;
 import com.ht.hoteldelluna.controllers.main.RoomManager.RoomManagerController;
+import com.ht.hoteldelluna.controllers.main.RoomTypeSetting.RoomTypeSettingController;
 import com.ht.hoteldelluna.controllers.main.StaffSetting.StaffSettingController;
 import com.ht.hoteldelluna.controllers.main.roomSetting.RoomSettingController;
 import com.ht.hoteldelluna.enums.UserRole;
@@ -164,6 +166,7 @@ public class MainController implements Initializable {
         tabs.add(new Tab(roomSettingToggle, rsloader));
 
         FXMLLoader rtsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting.fxml"));
+        rtsloader.setControllerFactory(c -> new RoomTypeSettingController(this.stage));
         tabs.add(new Tab(roomTypeSettingToggle, rtsloader));
 
         FXMLLoader ssloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/StaffSetting/StaffSetting.fxml"));
@@ -171,6 +174,7 @@ public class MainController implements Initializable {
         tabs.add(new Tab(staffSettingToggle, ssloader));
 
         FXMLLoader fsloader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/FloorSetting.fxml"));
+        fsloader.setControllerFactory(c -> new FloorSettingController(this.stage));
         tabs.add(new Tab(floorSettingToggle, fsloader));
 
         for (Tab tab : tabs) {

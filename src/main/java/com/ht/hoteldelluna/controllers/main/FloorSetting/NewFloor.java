@@ -3,6 +3,7 @@ package com.ht.hoteldelluna.controllers.main.FloorSetting;
 import com.ht.hoteldelluna.backend.services.FloorsService;
 import com.ht.hoteldelluna.backend.services.RoomTypesService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
+import com.ht.hoteldelluna.delegate.NewEntityDelegate;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Floor;
 import com.ht.hoteldelluna.models.Room;
@@ -17,59 +18,52 @@ import javafx.stage.Stage;
 
 public class NewFloor {
     @FXML
-    private Button okNewRoom;
-    @FXML
-    private Button cancelNewRoom;
-    @FXML
-    private MFXTextField num;
-
-
+    private MFXTextField nameOfRoom;
     public Stage stage;
-    // Write a funciton to check nameofRoom in Room database has been existed or not
 
+    private NewEntityDelegate delegate;
+    public NewFloor(NewEntityDelegate delegate) {
+        this.delegate = delegate;
+    }
     @FXML
     public void initialize() {
     }
 
 
-
-    public void showFloorExistsNotification() {
+    public void showAlertMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Floor Exists");
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("The Floor already exists in the database.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
-    //Check if floor is empty
-    public void showFloorEmptyNotification() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Floor Empty");
-        alert.setHeaderText(null);
-        alert.setContentText("Please choose floor.");
-        alert.showAndWait();
-    }
-    //Check if type is empty
     @FXML
-    public  void checkOK (ActionEvent event) {
-        String fl = num.getText();
+    public void checkOK (ActionEvent event) {
+        String name = nameOfRoom.getText();
         FloorsService floorsService = new FloorsService();
-        if (num.getText().isEmpty()) {
-            showFloorEmptyNotification();
+        if (name.isEmpty() || name.isBlank()) {
+            showAlertMessage("Yêu cầu không hợp lệ", "Tầng không được để trống.");
             return;
         }
-        else if (floorsService.checkFloorNum(Integer.parseInt(fl))) {
-            showFloorExistsNotification();
+        try {
+            Integer.parseInt(name);
+        } catch (NumberFormatException e) {
+            showAlertMessage("Yêu cầu không hợp lệ", "Tầng phải là số.");
             return;
         }
+        if (floorsService.checkFloorNum(Integer.parseInt(name))) {
+            showAlertMessage("Yêu cầu không hợp lệ", "Tầng đã tồn tại.");
+            return;
+        }
+        //check floor is number
 
-
-        Floor newfloor = new Floor( Integer.parseInt(fl));
-        floorsService.addFloor(newfloor);
-        Stage stage = (Stage) num.getScene().getWindow();
-        stage.close();
+        Floor floor = new Floor(Integer.parseInt(name));
+        floorsService.addFloor(floor);
+        delegate.onCreated();
     }
+
+    @FXML
     public void checkCancel (ActionEvent event) {
-        Stage stage = (Stage) num.getScene().getWindow();
-        stage.close();
+        delegate.onCancelled();
     }
 }
