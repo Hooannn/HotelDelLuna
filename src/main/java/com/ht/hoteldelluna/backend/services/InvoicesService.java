@@ -2,10 +2,7 @@ package com.ht.hoteldelluna.backend.services;
 
 import com.ht.hoteldelluna.backend.Connection;
 import com.ht.hoteldelluna.enums.RoomStatus;
-import com.ht.hoteldelluna.models.Floor;
-import com.ht.hoteldelluna.models.Invoice;
-import com.ht.hoteldelluna.models.Room;
-import com.ht.hoteldelluna.models.RoomType;
+import com.ht.hoteldelluna.models.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -77,8 +74,9 @@ public class InvoicesService {
 
     public Invoice geInvoiceDetailsById(String invoiceId) {
         Invoice invoice = null;
-        String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status, num AS floors, room_types.name AS room_type, pricePerHour " +
+        String query = "SELECT invoices.*, rooms.name AS room_name, rooms.status, num AS floors, room_types.name AS room_type, pricePerHour, users.fullName as created_by_name " +
                 "FROM invoices " +
+                "LEFT JOIN users ON users.id = invoices.createdBy " +
                 "LEFT JOIN rooms ON invoices.room = rooms.id " +
                 "LEFT JOIN floors ON rooms.floor = floors.id " +
                 "LEFT JOIN room_types ON rooms.type = room_types.id " +
@@ -94,6 +92,26 @@ public class InvoicesService {
             e.printStackTrace();
         }
         return invoice;
+    }
+
+    public boolean addInvoice(Invoice invoice, String roomId, String createdBy) {
+        if (createdBy == null) {
+            return addInvoice(invoice, roomId);
+        }
+        String query = "INSERT INTO invoices (checkInTime, checkOutTime, total, customerName, room, createdBy) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, invoice.getCheckInTime());
+            preparedStatement.setString(2, invoice.getCheckOutTime());
+            preparedStatement.setDouble(3, invoice.getTotal());
+            preparedStatement.setString(4, invoice.getCustomerName());
+            preparedStatement.setString(5, roomId);
+            preparedStatement.setString(6, createdBy);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean addInvoice(Invoice invoice, String roomId) {
@@ -113,6 +131,7 @@ public class InvoicesService {
     }
 
     public double calculateTotalPrice(double hours, double pricePerHour) {
+        if (hours < 0) return 0;
         if (hours >= 24) {
             return hours * pricePerHour * 90/100;
         }
@@ -138,6 +157,8 @@ public class InvoicesService {
         int id = resultSet.getInt("id");
         String checkInTime = resultSet.getString("checkInTime");
         String checkOutTime = resultSet.getString("checkOutTime");
+        String createdByName = resultSet.getString("created_by_name");
+        int createdById = resultSet.getInt("createdBy");
         double total = resultSet.getDouble("total");
         String customerName = resultSet.getString("customerName");
 
@@ -154,8 +175,8 @@ public class InvoicesService {
                     RoomStatus.valueOf(resultSet.getString("status"))
             );
         }
-
-        return new Invoice(id, checkInTime, checkOutTime, total, customerName, room);
+        User createdBy = new User(createdById, createdByName);
+        return new Invoice(id, checkInTime, checkOutTime, total, customerName, room, createdBy);
     }
 
     private Invoice parseInvoiceWithRoomTypeResultSet(ResultSet resultSet) throws SQLException {

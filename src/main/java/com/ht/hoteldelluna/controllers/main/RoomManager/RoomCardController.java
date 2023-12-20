@@ -1,6 +1,7 @@
 package com.ht.hoteldelluna.controllers.main.RoomManager;
 
 import com.ht.hoteldelluna.MFXResourcesLoader;
+import com.ht.hoteldelluna.backend.AppState;
 import com.ht.hoteldelluna.backend.services.InvoicesService;
 import com.ht.hoteldelluna.backend.services.ReservationsService;
 import com.ht.hoteldelluna.backend.services.RoomsService;
@@ -67,6 +68,7 @@ public class RoomCardController implements Initializable {
     private final Reservation reservation;
     private final ReservationsService reservationsService = new ReservationsService();
     private final InvoicesService invoicesService = new InvoicesService();
+    private final AppState appState = AppState.shared;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         roomNameLabel.setText(room.getName());
@@ -85,7 +87,7 @@ public class RoomCardController implements Initializable {
             }
             checkInDateTimeLabel.setText(checkInTime.format(formatter));
             Duration duration = Duration.between(checkInTime, timeAfter);
-            long totalMinutes = duration.toMinutes();
+            long totalMinutes = duration.toMinutes() < 0 ? 0 : duration.toMinutes();
             timeCounterLabel.setText(String.valueOf(totalMinutes) + "p");
             double hours = (double) duration.toSeconds() / 3600;
             double total = invoicesService.calculateTotalPrice(hours, room.getType().getPricePerHour());
@@ -199,7 +201,7 @@ public class RoomCardController implements Initializable {
                     try {
                         CheckInFormController checkInFormController = loader.getController();
                         Reservation reservation = checkInFormController.getReservation();
-                        reservationsService.addReservation(reservation, String.valueOf(room.getId()));
+                        reservationsService.addReservation(reservation, String.valueOf(room.getId()), String.valueOf(appState.getAuthUser().getId()));
                         dialog.close();
                         delegate.onCheckedIn(room);
                     } catch (Exception e) {
@@ -219,7 +221,7 @@ public class RoomCardController implements Initializable {
     }
 
     private void showCheckOutDialog() {
-        MFXButton updateButton = new MFXButton("Cập nhật");
+        MFXButton updateButton = new MFXButton("Cập nhật ghi chú");
         MFXButton checkOutButton = new MFXButton("Thanh toán");
         MFXButton exitButton = new MFXButton("Thoát");
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomManager/CheckInForm.fxml"));
@@ -292,7 +294,8 @@ public class RoomCardController implements Initializable {
                             reservation.getCheckOutTime(),
                             total,
                             reservation.getCustomerName()),
-                    String.valueOf(room.getId())
+                    String.valueOf(room.getId()),
+                    reservation.getCreatedBy().getFullName() == null ? null : String.valueOf(reservation.getCreatedBy().getId())
             );
             dialog.close();
             delegate.onCheckedOut(room);
@@ -329,6 +332,7 @@ public class RoomCardController implements Initializable {
 
             dialogContent.setMaxSize(stage.getMaxWidth(), stage.getMaxHeight());
             VBox vBox = new VBox();
+            vBox.getStyleClass().add("check-in-form");
             vBox.getChildren().add(new Label("Tên khách hàng: " + finalReservation.getCustomerName()));
             vBox.getChildren().add(new Label("Tên phòng: " + room.getName()));
             vBox.getChildren().add(new Label("Loại phòng: " + room.getType().getName()));
@@ -341,7 +345,7 @@ public class RoomCardController implements Initializable {
             double hours = (double) duration.toSeconds() / 3600;
             double total = invoicesService.calculateTotalPrice(hours, room.getType().getPricePerHour());
             Label totalLabel = new Label("Tổng tiền: " + Helper.formatCurrency(total));
-            totalLabel.setFont(Font.font("Arial", FontWeight.MEDIUM, 16));
+            totalLabel.setFont(Font.font("Roboto", FontWeight.MEDIUM, 16));
             vBox.getChildren().add(totalLabel);
             vBox.setPadding(new Insets(16));
             vBox.setSpacing(4);

@@ -66,6 +66,7 @@ public class CheckInFormController implements Initializable {
         }
 
         if (reservation != null) {
+            authUserNameTextField.setText(reservation.getCreatedBy().getFullName() == null ? "Không còn tồn tại" : reservation.getCreatedBy().getFullName());
             LocalDateTime checkInTime = LocalDateTime.parse(reservation.getCheckInTime());
             LocalDateTime timeAfter = null;
             if (reservation.getCheckOutTime() != null) {

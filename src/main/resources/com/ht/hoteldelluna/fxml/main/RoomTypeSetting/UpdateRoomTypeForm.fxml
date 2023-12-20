@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomTypeSetting.UpdateRoomType">
+<AnchorPane styleClass="check-in-form" prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomTypeSetting.UpdateRoomType">
     <children>
-        <VBox layoutX="10.0" layoutY="10.0" prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Buttons.css">
+        <VBox layoutX="10.0" layoutY="10.0" prefHeight="225.0" prefWidth="480.0">
             <children>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
@@ -33,7 +33,7 @@
                 </VBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="4.0">
                     <children>
-                        <MFXButton onAction="#updateRoomType" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Cập nhật" />
+                        <MFXButton style="-fx-background-color: -mfx-purple;" onAction="#updateRoomType" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Cập nhật" />
                         <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ" />
                     </children>
                 </HBox>

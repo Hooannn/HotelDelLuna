@@ -13,12 +13,16 @@ public class Reservation {
     private String checkInTime;
     private String checkOutTime;
     private String customerName;
+    private User createdBy;
     private String note;
     private ReservationStatus status;
     private int customerCount;
 
     public Reservation() {}
 
+    public User getCreatedBy() {
+        return createdBy;
+    }
     public Reservation(int id, String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status) {
         this.id = id;
         this.checkInTime = checkInTime;
@@ -28,7 +32,6 @@ public class Reservation {
         this.status = status;
         this.customerCount = customerCount;
     }
-
     public Reservation(int id, String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status, Room room) {
         this.id = id;
         this.checkInTime = checkInTime;
@@ -37,6 +40,17 @@ public class Reservation {
         this.note = note;
         this.status = status;
         this.customerCount = customerCount;
+        this.room = room;
+    }
+    public Reservation(int id, String checkInTime, String checkOutTime, String customerName, int customerCount, String note, ReservationStatus status, Room room, User createdBy) {
+        this.id = id;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.customerName = customerName;
+        this.note = note;
+        this.status = status;
+        this.customerCount = customerCount;
+        this.createdBy = createdBy;
         this.room = room;
     }
 
