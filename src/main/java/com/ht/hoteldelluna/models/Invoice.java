@@ -13,7 +13,10 @@ public class Invoice {
     private double total;
     private String customerName;
     private Room room; // reference to Room
-
+    private User createdBy;
+    public User getCreatedBy() {
+        return createdBy;
+    }
     public Invoice() {
     }
 
@@ -26,6 +29,16 @@ public class Invoice {
 
     public Invoice(int id, String checkInTime, String checkOutTime, double total, String customerName, Room room) {
         this.id = id;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.total = total;
+        this.customerName = customerName;
+        this.room = room;
+    }
+
+    public Invoice(int id, String checkInTime, String checkOutTime, double total, String customerName, Room room, User createdBy) {
+        this.id = id;
+        this.createdBy = createdBy;
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.total = total;

@@ -220,3 +220,21 @@
 .contentPane .mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:selected {
 	-fx-background-color: -primary-color;
 }
+
+.check-in-form {
+    -fx-font-family: 'Roboto Regular';
+}
+
+.custom {
+    -fx-font-family: 'Roboto Medium';
+    -fx-background-color: -mfx-purple;
+    -fx-text-fill: white;
+}
+
+.text-button {
+    -fx-font-family: 'Roboto Medium';
+    -fx-background-color: #F5F5F5;
+	-fx-border-color: #F5F5F5;
+	-fx-border-radius: 3;
+	-fx-text-fill: #737373;
+}

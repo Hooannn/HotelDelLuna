@@ -31,7 +31,7 @@
                     <HBox alignment="CENTER_LEFT" spacing="15.0">
                         <children>
                             <Label styleClass="sortByLabel" stylesheets="@../../../css/Main.css" text="Lọc theo:" />
-                            <MFXComboBox fx:id="filterRoleSelection" floatMode="ABOVE" layoutX="243.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Role">
+                            <MFXComboBox fx:id="filterRoleSelection" floatMode="ABOVE" layoutX="243.0" layoutY="10.0" prefHeight="32.0" prefWidth="180.0" promptText="Vai trò">
                                 <opaqueInsets>
                                     <Insets />
                                 </opaqueInsets>

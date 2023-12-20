@@ -5,6 +5,7 @@ import com.ht.hoteldelluna.enums.ReservationStatus;
 import com.ht.hoteldelluna.enums.RoomStatus;
 import com.ht.hoteldelluna.models.Reservation;
 import com.ht.hoteldelluna.models.Room;
+import com.ht.hoteldelluna.models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +20,9 @@ public class ReservationsService {
 
     public List<Reservation> getReservations() {
         List<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status, rooms.status AS room_status " +
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status, rooms.status AS room_status, users.fullName as created_by_name " +
                 "FROM reservations " +
+                "JOIN users ON reservations.createdBy = users.id " +
                 "JOIN rooms ON reservations.room = rooms.id";
         try (Statement statement = dbConnection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
@@ -36,8 +38,9 @@ public class ReservationsService {
 
     public List<Reservation> getOpeningReservations() {
         List<Reservation> openingReservations = new ArrayList<>();
-        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status " +
+        String query = "SELECT reservations.*, rooms.name AS room_name, rooms.status AS room_status, users.fullName as created_by_name " +
                 "FROM reservations " +
+                "LEFT JOIN users ON reservations.createdBy = users.id " +
                 "JOIN rooms ON reservations.room = rooms.id " +
                 "WHERE reservations.status = 'OPENING'";
         try (Statement statement = dbConnection.createStatement();
@@ -168,12 +171,12 @@ public class ReservationsService {
         }
     }
 
-    public boolean addReservation(Reservation reservation, String roomId) {
+    public boolean addReservation(Reservation reservation, String roomId, String createdBy) {
         RoomsService roomsService = new RoomsService();
         try {
             dbConnection.setAutoCommit(false);
 
-            String insertReservationQuery = "INSERT INTO reservations (checkInTime, status, room, customerName, note, customerCount) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertReservationQuery = "INSERT INTO reservations (checkInTime, status, room, customerName, note, customerCount, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = dbConnection.prepareStatement(insertReservationQuery, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setString(1, reservation.getCheckInTime());
                 preparedStatement.setString(2, reservation.getStatus().toString());
@@ -181,6 +184,7 @@ public class ReservationsService {
                 preparedStatement.setString(4, reservation.getCustomerName());
                 preparedStatement.setString(5, reservation.getNote());
                 preparedStatement.setString(6, String.valueOf(reservation.getCustomerCount()));
+                preparedStatement.setString(7, createdBy);
                 preparedStatement.executeUpdate();
             }
 
@@ -219,7 +223,9 @@ public class ReservationsService {
 
     private Reservation parseReservationResultSet(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
+        int createdById = resultSet.getInt("createdBy");
         String checkInTime = resultSet.getString("checkInTime");
+        String createdByName = resultSet.getString("created_by_name");
         String checkOutTime = resultSet.getString("checkOutTime");
         String statusString = resultSet.getString("status");
         ReservationStatus status = ReservationStatus.valueOf(statusString);
@@ -230,6 +236,7 @@ public class ReservationsService {
         String roomName = resultSet.getString("room_name");
         String roomStatus = resultSet.getString("room_status");
         Room room = new Room(roomId, roomName, RoomStatus.valueOf(roomStatus));
-        return new Reservation(id, checkInTime, checkOutTime, customerName, customerCount, note, status, room);
+        User createdBy = new User(createdById, createdByName);
+        return new Reservation(id, checkInTime, checkOutTime, customerName, customerCount, note, status, room, createdBy);
     }
 }

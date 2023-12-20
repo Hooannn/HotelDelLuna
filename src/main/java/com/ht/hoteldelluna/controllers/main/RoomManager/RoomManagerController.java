@@ -66,7 +66,10 @@ public class RoomManagerController implements Initializable, RoomCardControllerD
         Floor prevSelected = floorsSelection.getSelectedItem();
         floorsSelection.getItems().clear();
         floorsSelection.setItems(FXCollections.observableList(floors));
-        floorsSelection.valueProperty().addListener((observable, oldValue, newValue) -> setupRoomCards(newValue.getId()));
+        floorsSelection.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                setupRoomCards(newValue.getId());
+        });
 
         if (prevSelected == null) {
             floorsSelection.selectFirst();

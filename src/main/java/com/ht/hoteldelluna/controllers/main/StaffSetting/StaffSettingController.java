@@ -116,7 +116,7 @@ public class StaffSettingController implements Initializable, Reloadable, NewEnt
                 Comparator.comparing(User::getUsername));
         MFXTableColumn<User> passwordColumn = new MFXTableColumn<>("Mật khẩu", false,
                 Comparator.comparing(User::getPassword));
-        MFXTableColumn<User> roleColumn = new MFXTableColumn<>("Role", false,
+        MFXTableColumn<User> roleColumn = new MFXTableColumn<>("Vai trò", false,
                 Comparator.comparing(User::getRole));
 
         MFXTableColumn<User> actionColumn = new MFXTableColumn<>("Thao tác", false);

@@ -8,8 +8,11 @@ public class User {
     private String username;
     private String password;
     private UserRole role;
-
     public User() {}
+    public User(int id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
+    }
 
     public User(int id, String fullName, String username, String password, UserRole role) {
         this.id = id;

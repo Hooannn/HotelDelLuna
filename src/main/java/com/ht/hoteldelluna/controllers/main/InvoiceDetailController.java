@@ -19,10 +19,14 @@ public class InvoiceDetailController implements Initializable {
     private final int invoiceId;
     private final InvoicesService invoicesService = new InvoicesService();
 
+
     private double totalTime = 0;
 
     @FXML
     private Label checkInTimeLabel;
+
+    @FXML
+    private Label createdByNameLabel;
 
     @FXML
     private Label checkOutTimeLabel;
@@ -90,7 +94,7 @@ public class InvoiceDetailController implements Initializable {
                 floorNumLabel.setText("Không còn tồn tại");
                 pricePerHourLabel.setText("Không còn tồn tại");
             }
-
+            createdByNameLabel.setText(invoice.getCreatedBy().getFullName() == null ? "Không còn tồn tại" : invoice.getCreatedBy().getFullName());
             totalTimeLabel.setText(getFormattedTotalTime());
             discountLabel.setText(isDiscount() ? "10%" : "Không");
             totalLabel.setText(invoice.getFormattedTotal());

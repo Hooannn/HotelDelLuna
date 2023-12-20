@@ -69,8 +69,10 @@ public class Connection {
                     "checkOutTime VARCHAR(255)," +
                     "total DECIMAL(10, 2)," +
                     "customerName VARCHAR(255)," +
+                    "createdBy INT," +
                     "room INT," +
-                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE SET NULL" +
+                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE SET NULL," +
+                    "FOREIGN KEY (createdBy) REFERENCES users(id) ON DELETE SET NULL" +
                     ")";
             statement.executeUpdate(createInvoiceTableSQL);
 
@@ -80,11 +82,13 @@ public class Connection {
                     "checkInTime VARCHAR(255)," +
                     "checkOutTime VARCHAR(255)," +
                     "customerName VARCHAR(255)," +
+                    "createdBy INT," +
                     "note VARCHAR(255)," +
                     "customerCount INT," +
                     "status ENUM('OPENING', 'CLOSED')," +
                     "room INT," +
-                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE CASCADE" +
+                    "FOREIGN KEY (room) REFERENCES rooms(id) ON DELETE CASCADE," +
+                    "FOREIGN KEY (createdBy) REFERENCES users(id) ON DELETE SET NULL" +
                     ")";
             statement.executeUpdate(createReservationTableSQL);
         } catch (Exception e) {

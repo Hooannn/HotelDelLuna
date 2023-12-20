@@ -33,7 +33,6 @@ module com.ht.hoteldelluna {
     opens com.ht.hoteldelluna;
     opens com.ht.hoteldelluna.models;
     opens com.ht.hoteldelluna.controllers.main;
-    opens com.ht.hoteldelluna.controllers.test;
     opens com.ht.hoteldelluna.controllers.auth;
     
     exports com.ht.hoteldelluna;
