@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import jfxtras.scene.layout.HBox?>
 
-<?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <AnchorPane prefHeight="667.0" prefWidth="1029.0" styleClass="contentPane" stylesheets="@../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.CashierManagerController">
     <children>
         <VBox prefHeight="200.0" prefWidth="100.0" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -41,7 +41,7 @@
                            </opaqueInsets>
                         </MFXComboBox>
                         <Region HBox.hgrow="ALWAYS" />
-                        <HBox spacing="10.0">
+                        <HBox spacing="10.0" visible="false">
                            <children>
                               <HBox fx:id="tableViewMode" alignment="CENTER" stylesheets="@../../css/Main.css">
                                  <children>
@@ -62,7 +62,7 @@
                      </children>
                   </HBox>
                   <Separator prefWidth="200.0" />
-                  <MFXTableView footerVisible="false" fx:id="invoicesTable" prefHeight="534.0" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS"/>
+                  <MFXTableView fx:id="invoicesTable" footerVisible="false" prefHeight="534.0" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             </children>

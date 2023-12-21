@@ -225,6 +225,10 @@
     -fx-font-family: 'Roboto Regular';
 }
 
+.check-in-form .mfx-button {
+	-fx-cursor: hand;
+}
+
 .custom {
     -fx-font-family: 'Roboto Medium';
     -fx-background-color: -mfx-purple;
