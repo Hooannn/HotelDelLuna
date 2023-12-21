@@ -18,13 +18,13 @@
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại Phòng" wrappingWidth="79.423828125" />
-                              <MFXTextField fx:id="name" prefHeight="49.0" prefWidth="132.0" />
+                              <MFXTextField fx:id="name" prefHeight="49.0" prefWidth="127.0" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giá" />
-                              <MFXTextField fx:id="price" prefHeight="49.0" prefWidth="111.0" />
+                              <MFXTextField fx:id="price" prefHeight="49.0" prefWidth="127.0" />
                                     </children>
                                 </HBox>
                             </children>

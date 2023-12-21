@@ -4,7 +4,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -16,7 +15,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT">
                     <children>
-                        <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Thiết lập phòng" />
+                        <Label styleClass="heading" stylesheets="@../../css/Main.css" text="Thiết lập loại phòng" />
                         <Region HBox.hgrow="ALWAYS" />
                         <MFXButton fx:id="btnNewCreate" onAction="#showNewRoomDialog" styleClass="addNewBtn" stylesheets="@../../css/Main.css" text="Tạo mới" />
                     </children>
@@ -32,7 +31,6 @@
                                 <HBox />
                             </children>
                         </HBox>
-                        <Separator prefWidth="200.0" />
                         <MFXTableView fx:id="roomsTable" footerVisible="false" prefHeight="534.0" prefWidth="1000.0" styleClass="invoicesTable" stylesheets="@../../css/TableViews.css" VBox.vgrow="ALWAYS" />
                     </children>
                 </VBox>

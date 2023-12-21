@@ -152,12 +152,9 @@ public class FloorSettingController implements Initializable, Reloadable, NewEnt
         MFXTableColumn<Floor> idxColumn = new MFXTableColumn<>("STT", false);
         idxColumn.setRowCellFactory(room ->  new MFXTableRowCell<>(_room -> floors.indexOf(_room) + 1));
 
-        MFXTableColumn<Floor> idColumn = new MFXTableColumn<>("ID", false,
-                Comparator.comparing(Floor::getId));
         MFXTableColumn<Floor> numColumn = new MFXTableColumn<>("Tầng", false,
                 Comparator.comparing(Floor::getNum));
         MFXTableColumn<Floor> actionColumn = new MFXTableColumn<>("Thao tác", false);
-        idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Floor::getId));
         numColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Floor::getNum));
         actionColumn.setRowCellFactory(room -> {
             AtomicInteger id = new AtomicInteger();
@@ -198,13 +195,12 @@ public class FloorSettingController implements Initializable, Reloadable, NewEnt
 
 
 
-        idxColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.1));
-        idColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.25));
-        actionColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.40));
-        numColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.25));
+        idxColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.44));
+        actionColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.12));
+        numColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.44));
 
 
-        roomsTable.getTableColumns().addAll(idxColumn, idColumn, numColumn, actionColumn);
+        roomsTable.getTableColumns().addAll(idxColumn,  numColumn, actionColumn);
     }
 
 
