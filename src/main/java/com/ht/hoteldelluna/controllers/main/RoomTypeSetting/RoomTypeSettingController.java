@@ -146,15 +146,14 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
         MFXTableColumn<RoomType> idxColumn = new MFXTableColumn<>("STT", false);
         idxColumn.setRowCellFactory(room ->  new MFXTableRowCell<>(_room -> roomTypes.indexOf(_room) + 1));
 
-        MFXTableColumn<RoomType> idColumn = new MFXTableColumn<>("ID", false,
-                Comparator.comparing(RoomType::getId));
+
         MFXTableColumn<RoomType> numColumn = new MFXTableColumn<>("Loại Phòng", false,
                 Comparator.comparing(RoomType::getName));
         MFXTableColumn<RoomType> priceColumn = new MFXTableColumn<>("Giá", false,
                 Comparator.comparing(RoomType::getPricePerHour));
         MFXTableColumn<RoomType> actionColumn = new MFXTableColumn<>("Thao tác", false);
 
-        idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(RoomType::getId));
+
         numColumn.setRowCellFactory(device -> new MFXTableRowCell<>(RoomType::getName));
         priceColumn.setRowCellFactory(device -> new MFXTableRowCell<>(RoomType::getPricePerHour));
         actionColumn.setRowCellFactory(room -> {
@@ -196,15 +195,16 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
 
 
 
-        idxColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.1));
-        idColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.1));
-        priceColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.3));
-        actionColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.3));
+        idxColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.12));
 
-        numColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.2));
+        priceColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.375));
+        numColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.375));
+        actionColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.13));
 
 
-        roomsTable.getTableColumns().addAll(idxColumn, idColumn, numColumn,priceColumn, actionColumn);
+
+
+        roomsTable.getTableColumns().addAll(idxColumn,  numColumn,priceColumn, actionColumn);
     }
 
 
