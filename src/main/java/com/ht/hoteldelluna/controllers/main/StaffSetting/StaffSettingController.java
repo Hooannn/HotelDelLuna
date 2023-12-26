@@ -114,15 +114,15 @@ public class StaffSettingController implements Initializable, Reloadable, NewEnt
                 Comparator.comparing(User::getFullName));
         MFXTableColumn<User> usernameColumn = new MFXTableColumn<>("Tài khoản", false,
                 Comparator.comparing(User::getUsername));
-        MFXTableColumn<User> passwordColumn = new MFXTableColumn<>("Mật khẩu", false,
-                Comparator.comparing(User::getPassword));
+//        MFXTableColumn<User> passwordColumn = new MFXTableColumn<>("Mật khẩu", false,
+//                Comparator.comparing(User::getPassword));
         MFXTableColumn<User> roleColumn = new MFXTableColumn<>("Vai trò", false,
                 Comparator.comparing(User::getRole));
 
         MFXTableColumn<User> actionColumn = new MFXTableColumn<>("Thao tác", false);
         nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(User::getFullName));
         usernameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(User::getUsername));
-        passwordColumn.setRowCellFactory(device -> new MFXTableRowCell<>(User::getPassword));
+//        passwordColumn.setRowCellFactory(device -> new MFXTableRowCell<>(User::getPassword));
         roleColumn.setRowCellFactory(device -> new MFXTableRowCell<>(User::getRole));
 
         actionColumn.setRowCellFactory(user -> {
@@ -162,15 +162,14 @@ public class StaffSettingController implements Initializable, Reloadable, NewEnt
             return cell;
         });
 
-        idxColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.08));
-        nameColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.21));
-        usernameColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.21));
-        passwordColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.19));
-        roleColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.19));
+        idxColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.1));
+        nameColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.31));
+        usernameColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.24));
+//        passwordColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.19));
+        roleColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.22));
         actionColumn.prefWidthProperty().bind(staffsTable.widthProperty().multiply(0.13));
 
-
-        staffsTable.getTableColumns().addAll(idxColumn, nameColumn, usernameColumn, passwordColumn, roleColumn, actionColumn);
+        staffsTable.getTableColumns().addAll(idxColumn, nameColumn, usernameColumn, roleColumn, actionColumn);
     }
 
 

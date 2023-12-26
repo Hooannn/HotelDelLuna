@@ -2,12 +2,13 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane styleClass="check-in-form" prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomTypeSetting.UpdateRoomType">
+<AnchorPane prefHeight="225.0" prefWidth="480.0" styleClass="check-in-form" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.RoomTypeSetting.UpdateRoomType">
     <children>
         <VBox layoutX="10.0" layoutY="10.0" prefHeight="225.0" prefWidth="480.0">
             <children>
@@ -18,23 +19,26 @@
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại Phòng" wrappingWidth="79.423828125" />
-                              <MFXTextField fx:id="name" prefHeight="49.0" prefWidth="127.0" />
+                              <MFXTextField fx:id="name" floatMode="ABOVE" prefHeight="49.0" prefWidth="160.0" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giá" />
-                              <MFXTextField fx:id="price" prefHeight="49.0" prefWidth="127.0" />
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giá" wrappingWidth="18.958419799804688" />
+                              <MFXTextField fx:id="price" floatMode="ABOVE" prefHeight="49.0" prefWidth="160.0" />
                                     </children>
                                 </HBox>
                             </children>
                         </HBox>
                     </children>
                 </VBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="4.0">
+                <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="8.0">
                     <children>
-                        <MFXButton style="-fx-background-color: -mfx-purple;" onAction="#updateRoomType" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Cập nhật" />
-                        <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ" />
+                        <MFXButton onAction="#updateRoomType" prefHeight="41.0" prefWidth="110.0" style="-fx-background-color: -mfx-purple;" styleClass="custom" text="Cập nhật" />
+                        <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></MFXButton>
                     </children>
                 </HBox>
             </children>

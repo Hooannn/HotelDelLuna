@@ -58,6 +58,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
     public RoomTypeSettingController(Stage stage) {
         this.stage = stage;
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupPaginated();
@@ -65,10 +66,12 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
         setupDialog();
 
     }
+
     private void setupFilter() {
 
     }
-    private void deleteRoom(ActionEvent event,RoomType roomType) throws IOException {
+
+    private void deleteRoom(ActionEvent event, RoomType roomType) throws IOException {
         if (roomType == null) {
             return;
         }
@@ -105,8 +108,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
                 reload();
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -116,7 +118,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting/NewRoomTypeForm.fxml"));
         NewRoomType controller = new NewRoomType(this);
         loader.setControllerFactory(r -> controller);
-        dialogContent.setHeaderText("Tạo Loại Phòng mới");
+        dialogContent.setHeaderText("Tạo loại phòng mới");
         dialogContent.setContent(null);
         dialogContent.setContentText(null);
         try {
@@ -131,7 +133,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/RoomTypeSetting/UpdateRoomTypeForm.fxml"));
         UpdateRoomType controller = new UpdateRoomType(selection, this);
         loader.setControllerFactory(r -> controller);
-        dialogContent.setHeaderText("Sửa thông tin Loại Phòng");
+        dialogContent.setHeaderText("Sửa thông tin loại phòng");
         dialogContent.setContent(null);
         dialogContent.setContentText(null);
         try {
@@ -144,7 +146,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
 
     public void setupPaginated() {
         MFXTableColumn<RoomType> idxColumn = new MFXTableColumn<>("STT", false);
-        idxColumn.setRowCellFactory(room ->  new MFXTableRowCell<>(_room -> roomTypes.indexOf(_room) + 1));
+        idxColumn.setRowCellFactory(room -> new MFXTableRowCell<>(_room -> roomTypes.indexOf(_room) + 1));
 
 
         MFXTableColumn<RoomType> numColumn = new MFXTableColumn<>("Loại Phòng", false,
@@ -169,8 +171,8 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
             MFXButton deleteBtn = new MFXButton("Xóa");
             editBtn.getStyleClass().add("table-modify-record-btn");
             deleteBtn.getStyleClass().add("table-delete-record-btn");
-            hBox.getChildren().addAll(editBtn,deleteBtn);
-            editBtn.setOnAction(e->{
+            hBox.getChildren().addAll(editBtn, deleteBtn);
+            editBtn.setOnAction(e -> {
                         try {
                             RoomType selection = roomTypesService.getRoomTypeById(String.valueOf(id.get()));
                             showUpdateRoomDialog(selection);
@@ -180,10 +182,10 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
                     }
             );
 
-            deleteBtn.setOnAction(e->{
+            deleteBtn.setOnAction(e -> {
                 try {
                     RoomType selection = roomTypesService.getRoomTypeById(String.valueOf(id.get()));
-                    deleteRoom(e,selection);
+                    deleteRoom(e, selection);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
@@ -193,21 +195,13 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
             return cell;
         });
 
-
-
         idxColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.12));
-
         priceColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.375));
         numColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.375));
         actionColumn.prefWidthProperty().bind(roomsTable.widthProperty().multiply(0.13));
 
-
-
-
-        roomsTable.getTableColumns().addAll(idxColumn,  numColumn,priceColumn, actionColumn);
+        roomsTable.getTableColumns().addAll(idxColumn, numColumn, priceColumn, actionColumn);
     }
-
-
 
 
     @Override
@@ -215,7 +209,6 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
         this.roomTypes = roomTypesService.getRoomTypes();
         roomsTable.setItems(FXCollections.observableArrayList(roomTypes));
     }
-
 
 
     private void setupDialog() {
@@ -240,6 +233,7 @@ public class RoomTypeSettingController implements Initializable, Reloadable, New
             dialogContent.getStyleClass().add("mfx-info-dialog");
         });
     }
+
     @Override
     public void onCreated() {
         dialog.close();

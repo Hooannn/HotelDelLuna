@@ -3,12 +3,13 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane styleClass="check-in-form" prefHeight="225.0" prefWidth="480.0" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.roomSetting.UpdateRoomForm">
+<AnchorPane prefHeight="225.0" prefWidth="480.0" styleClass="check-in-form" stylesheets="@../../../css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ht.hoteldelluna.controllers.main.roomSetting.UpdateRoomForm">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="225.0" prefWidth="480.0">
          <children>
@@ -16,32 +17,41 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="32.0" prefWidth="480.0" spacing="12.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên" wrappingWidth="56.0615234375" />
-                        <MFXTextField fx:id="name" floatMode="ABOVE" prefHeight="42.0" prefWidth="411.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên" wrappingWidth="43.490116357803345">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Text>
+                        <MFXTextField fx:id="name" floatMode="ABOVE" prefHeight="42.0" prefWidth="375.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="480.0" spacing="12.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tầng" wrappingWidth="55.423828125" />
-                              <MFXComboBox fx:id="floor" floatMode="ABOVE" prefHeight="42.0" prefWidth="201.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tầng" wrappingWidth="43.42376482486725" />
+                              <MFXComboBox fx:id="floor" floatMode="ABOVE" prefHeight="42.0" prefWidth="154.0" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại phòng" />
-                              <MFXComboBox fx:id="type" floatMode="ABOVE" prefHeight="42.0" prefWidth="218.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại phòng">
+                                 <HBox.margin>
+                                    <Insets left="8.0" />
+                                 </HBox.margin></Text>
+                              <MFXComboBox fx:id="type" floatMode="ABOVE" prefHeight="42.0" prefWidth="128.0" />
                            </children>
                         </HBox>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="4.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="8.0">
                <children>
-                  <MFXButton style="-fx-background-color: -mfx-purple;" onAction="#updateRoom" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Cập nhật" />
-                  <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ" />
+                  <MFXButton onAction="#updateRoom" prefHeight="41.0" prefWidth="110.0" style="-fx-background-color: -mfx-purple;" styleClass="custom" text="Cập nhật" />
+                  <MFXButton onAction="#cancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ">
+                     <HBox.margin>
+                        <Insets right="26.0" />
+                     </HBox.margin></MFXButton>
                </children>
             </HBox>
          </children>
