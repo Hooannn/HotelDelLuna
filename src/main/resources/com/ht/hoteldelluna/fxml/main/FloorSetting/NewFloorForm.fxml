@@ -21,7 +21,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="4.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="480.0" spacing="8.0">
                <children>
                   <MFXButton style="-fx-background-color: -mfx-purple;" fx:id="okNewRoom" onAction="#checkOK" prefHeight="41.0" prefWidth="110.0" styleClass="custom" text="Đồng ý" />
                   <MFXButton fx:id="cancelNewRoom" onAction="#checkCancel" prefHeight="41.0" prefWidth="110.0" styleClass="text-button" text="Huỷ bỏ" />

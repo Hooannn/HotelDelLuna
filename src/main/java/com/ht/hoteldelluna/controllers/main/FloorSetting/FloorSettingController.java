@@ -137,7 +137,7 @@ public class FloorSettingController implements Initializable, Reloadable, NewEnt
         FXMLLoader loader = new FXMLLoader(MFXResourcesLoader.loadURL("fxml/main/FloorSetting/updateFloor.fxml"));
         UpdateFloor controller = new UpdateFloor(selection, this);
         loader.setControllerFactory(r -> controller);
-        dialogContent.setHeaderText("Sửa thông tin Tầng");
+        dialogContent.setHeaderText("Sửa thông tin tầng");
         dialogContent.setContent(null);
         dialogContent.setContentText(null);
         try {
